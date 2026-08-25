@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pistes de recherche — Les Berthos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Public+Sans:wght@400;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#efe7d8; --paper-dark:#e4d9c3; --ink:#3a2e22; --ink-soft:#6b5c48;
+  --wax:#8c2f39; --brass:#b8863b; --sage:#5b7065; --line:#c9bda3; --cream:#f6efdd;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Public Sans', Arial, sans-serif; font-size:18px; line-height:1.55;
+  background-image: radial-gradient(var(--paper-dark) 0.6px, transparent 0.6px);
+  background-size: 14px 14px;
+}
+.hero{
+  position:relative; background-image:
+    linear-gradient(180deg, rgba(30,20,10,.25) 0%, rgba(30,20,10,.55) 60%, var(--paper) 100%),
+    url('assets/hero-bg.jpg');
+  background-size:cover; background-position:center 30%;
+  padding:4.5rem 1.5rem 2.2rem; text-align:center;
+}
+.hero h1{
+  font-family:'Playfair Display', Georgia, serif; font-size:3rem; margin:0 0 .4rem;
+  color:var(--cream); letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.5);
+}
+.hero p{margin:0; color:var(--cream); opacity:.9; font-size:1.05rem; text-shadow:0 1px 6px rgba(0,0,0,.5)}
+nav.site{
+  display:flex; justify-content:center; gap:1.6rem; padding:.9rem 0; background:var(--paper-dark);
+  border-bottom:1px solid var(--line); font-weight:600; letter-spacing:.3px; flex-wrap:wrap;
+}
+nav.site a{color:var(--ink); text-decoration:none; border-bottom:2px solid transparent; padding-bottom:2px}
+nav.site a:hover, nav.site a:focus{border-bottom-color:var(--wax)}
+main{max-width:880px; margin:0 auto; padding:2.2rem 1.5rem 4rem}
+h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1.7rem; margin-top:2.2rem}
+.card{
+  background:#faf6ec; border:1px solid var(--line); border-radius:3px;
+  padding:1.4rem 1.6rem; margin:1.1rem 0; box-shadow:0 1px 0 var(--line);
+}
+.card a.name{font-family:'Playfair Display', Georgia, serif; font-size:1.3rem; color:var(--ink); text-decoration:none}
+.card a.name:hover{color:var(--wax)}
+.stamp{
+  display:inline-block; font-family:'Special Elite', 'Courier New', monospace; font-size:.72rem;
+  text-transform:uppercase; letter-spacing:1.5px; padding:.25rem .55rem; border:2px solid; border-radius:2px;
+  transform:rotate(-3deg); margin-left:.6rem; vertical-align:middle;
+}
+.stamp.confirme{color:var(--sage); border-color:var(--sage)}
+.stamp.hypothese{color:var(--brass); border-color:var(--brass)}
+.stamp.inconnu{color:var(--wax); border-color:var(--wax)}
+.meta{color:var(--ink-soft); font-size:.95rem; margin:.3rem 0 0}
+.histoire{margin-top:.7rem}
+.piste{
+  background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin-top:.8rem;
+  font-size:.98rem;
+}
+.piste strong{color:var(--brass)}
+.idcard{
+  display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px;
+  padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap;
+}
+.idcard .photo{
+  width:140px; height:170px; flex-shrink:0; background:var(--paper-dark); border:1px solid var(--ink-soft);
+  object-fit:cover; display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
+  font-size:.8rem; text-align:center; padding:.5rem;
+}
+.idcard .infos{flex:1; min-width:220px}
+.idcard .infos h2{margin:0 0 .2rem; font-size:1.5rem}
+.idcard .infos .eyebrow{
+  font-family:'Special Elite','Courier New',monospace; font-size:.7rem; letter-spacing:2px;
+  color:var(--ink-soft); text-transform:uppercase; margin-bottom:.4rem;
+}
+.idcard dl{display:grid; grid-template-columns:auto 1fr; gap:.25rem .8rem; margin:.7rem 0 0; font-size:.95rem}
+.idcard dt{color:var(--ink-soft)}
+.idcard dd{margin:0}
+.gallery{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.9rem}
+.gallery a{display:block; width:90px; height:90px; overflow:hidden; border:1px solid var(--line); border-radius:3px}
+.gallery img{width:100%; height:100%; object-fit:cover; display:block}
+footer.contact{
+  margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark);
+  border-top:1px solid var(--line);
+}
+footer.contact a.btn{
+  display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none;
+  padding:.7rem 1.4rem; border-radius:3px; font-weight:700;
+}
+footer.contact a.btn:hover{background:#732530}
+.empty{color:var(--ink-soft); font-style:italic}
+.back{display:inline-block; margin-bottom:1.2rem; color:var(--ink-soft); text-decoration:none}
+.back:hover{color:var(--wax)}
+.archive-box{background:#faf6ec; border:1px solid var(--line); border-left:4px solid var(--wax); padding:1.2rem 1.4rem; margin:1.2rem 0}
+@media (max-width:600px){
+  .hero h1{font-size:2.1rem} body{font-size:17px} .idcard{flex-direction:column; align-items:center; text-align:center}
+  .idcard dl{grid-template-columns:1fr; text-align:center}
+}
+</style>
+</head><body>
+<header style="padding:1.6rem 1.5rem; text-align:center; border-bottom:1px solid var(--line);">
+                   <a href="index.html" style="font-family:'Playfair Display',Georgia,serif; font-size:1.5rem; color:var(--wax); text-decoration:none;">Les Berthos</a>
+                 </header>
+
+    <nav class="site">
+      <a href="index.html">Accueil</a>
+      <a href="pistes.html" style="border-bottom-color:var(--wax)">Pistes de recherche</a>
+      <a href="archives-privees.html">Archives privées</a>
+    </nav>
+<main><p class='empty'>Aucune piste ouverte pour l'instant : soit tout est confirmé, soit l'arbre est encore vide.</p></main>
+<footer class="contact">
+  <p>Une photo, une lettre, un souvenir, une correction ? Écrivez-nous, ça complète directement l'enquête.</p>
+  <a class="btn" href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">
+    Envoyer une piste par mail</a>
+</footer>
+</body></html>
