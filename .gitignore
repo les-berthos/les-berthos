@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 __pycache__/
 *.pyc
 .DS_Store
+=======
+__pycache__/ *.pyc .DS_Store
+>>>>>>> 998bb3d73e913b4ad341d90b1a7d4c786ccfad3f

@@ -99,6 +99,7 @@ CSS = """
 }
 *{box-sizing:border-box}
 body{
+<<<<<<< HEAD
   margin:0; color:var(--ink);
   font-family:'Public Sans', Arial, sans-serif; font-size:18px; line-height:1.55;
   background-image:
@@ -113,6 +114,18 @@ body{
 .hero{
   position:relative;
   background-image: linear-gradient(180deg, rgba(20,14,8,.4) 0%, rgba(20,14,8,.68) 100%);
+=======
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Public Sans', Arial, sans-serif; font-size:18px; line-height:1.55;
+  background-image: radial-gradient(var(--paper-dark) 0.6px, transparent 0.6px);
+  background-size: 14px 14px;
+}
+.hero{
+  position:relative; background-image:
+    linear-gradient(180deg, rgba(30,20,10,.25) 0%, rgba(30,20,10,.55) 60%, var(--paper) 100%),
+    url('assets/hero-bg.jpg');
+  background-size:cover; background-position:center 30%;
+>>>>>>> 998bb3d73e913b4ad341d90b1a7d4c786ccfad3f
   padding:4.5rem 1.5rem 2.2rem; text-align:center;
 }
 .hero h1{
@@ -413,4 +426,8 @@ def main():
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     main()
+=======
+    main()
+>>>>>>> 998bb3d73e913b4ad341d90b1a7d4c786ccfad3f
