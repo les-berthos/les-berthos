@@ -10,16 +10,20 @@
 }
 *{box-sizing:border-box}
 body{
-  margin:0; background:var(--paper); color:var(--ink);
+  margin:0; color:var(--ink);
   font-family:'Public Sans', Arial, sans-serif; font-size:18px; line-height:1.55;
-  background-image: radial-gradient(var(--paper-dark) 0.6px, transparent 0.6px);
-  background-size: 14px 14px;
+  background-image:
+    radial-gradient(var(--paper-dark) 0.6px, transparent 0.6px),
+    linear-gradient(rgba(239,231,216,.87), rgba(239,231,216,.87)),
+    url('https://i.postimg.cc/vmTKF4ZQ/arriere-plan-Bertho.png');
+  background-size: 14px 14px, cover, cover;
+  background-position: 0 0, center, center;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-attachment: scroll, fixed, fixed;
 }
 .hero{
-  position:relative; background-image:
-    linear-gradient(180deg, rgba(30,20,10,.25) 0%, rgba(30,20,10,.55) 60%, var(--paper) 100%),
-    url('assets/hero-bg.jpg');
-  background-size:cover; background-position:center 30%;
+  position:relative;
+  background-image: linear-gradient(180deg, rgba(20,14,8,.4) 0%, rgba(20,14,8,.68) 100%);
   padding:4.5rem 1.5rem 2.2rem; text-align:center;
 }
 .hero h1{
@@ -103,7 +107,71 @@ footer.contact a.btn:hover{background:#732530}
       <a href="pistes.html">Pistes de recherche</a>
       <a href="archives-privees.html">Archives privées</a>
     </nav>
-<main><p class='empty'>L'arbre est encore vide — dès que le « Registre des personnes » du tableau Excel contient une première ligne, cette page affichera la première fiche.</p></main>
+<main><h2>Les personnes identifiées jusqu'ici</h2>
+            <div class="card">
+              <a class="name" href="personnes/P001.html">Anna Victorine BERTHOLON</a> <span class="stamp confirme">confirmé</span>
+              <p class="meta">MEME · née/né 1913-06-16 00:00:00</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P002.html">Jean-Pierre BERTHOLON</a> <span class="stamp confirme">confirmé</span>
+              <p class="meta">Mari de MEME (le PEPE) · née/né 1910-11-08 00:00:00</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P003.html">Pierre Joannes Antoine BERTHOLON</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Frère du PEPE · née/né 1933-06-17 00:00:00</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P010.html">François GIRAUD</a> <span class="stamp confirme">confirmé</span>
+              <p class="meta">papa de MEME · née/né ?</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P011.html">Joséphine Claudia SOLY</a> <span class="stamp confirme">confirmé</span>
+              <p class="meta">maman de MEME · née/né ?</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P021.html">Elise Jeanne Marie BERTHOLON</a> <span class="stamp confirme">confirmé</span>
+              <p class="meta">maman du PEPE · née/né 22 avril 1889</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P020.html">Cyprien BERTHOLON</a> <span class="stamp confirme">confirmé</span>
+              <p class="meta">papa du PEPE · née/né 10 septembre 1882</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P022.html">Jean-Jacques LAULAGNIER</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Tonton du PEPE · née/né ainé de la fraterie</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P023.html">Elisabeth LAULAGNIER</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Tatan du PEPE ou Maman du PEPE · née/né ?</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P024.html">Marguerite LAULAGNIER</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Tatan du PEPE   · née/né ?</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P025.html">Marie LAULAGNIER</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Tatan du PEPE   · née/né ?</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P026.html">Jean-Pierre LAULAGNIER</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Tonton du PEPE · née/né second fils</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P027.html">Philomène LAULAGNIER</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Tatan du PEPE · née/né ?</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P028.html">Françoise LAULAGNIER</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Tatan du PEPE · née/né ?</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/P029.html">Jacques LAULAGNIER</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Père des tantes et oncles du PEPE · née/né ?</p>
+            </div>
+            <div class="card">
+              <a class="name" href="personnes/.html">Elisabeth BESSIERES</a> <span class="stamp inconnu">à enquêter</span>
+              <p class="meta">Mères des tantes et oncles du PEPE · née/né ?</p>
+            </div></main>
 <footer class="contact">
   <p>Une photo, une lettre, un souvenir, une correction ? Écrivez-nous, ça complète directement l'enquête.</p>
   <a class="btn" href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">
