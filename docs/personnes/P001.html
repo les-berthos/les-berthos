@@ -7,6 +7,7 @@
 :root{
   --paper:#efe7d8; --paper-dark:#e4d9c3; --ink:#3a2e22; --ink-soft:#6b5c48;
   --wax:#8c2f39; --brass:#b8863b; --sage:#5b7065; --line:#c9bda3; --cream:#f6efdd;
+  --meme:#a8455c; --pepe:#3f6a78;
 }
 *{box-sizing:border-box}
 body{
@@ -62,8 +63,21 @@ h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1
 .piste strong{color:var(--brass)}
 .idcard{
   display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px;
-  padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap;
+  padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px;
 }
+.idcard.branche-meme{border-left-color:var(--meme)}
+.idcard.branche-pepe{border-left-color:var(--pepe)}
+.legend{display:flex; gap:1.4rem; align-items:center; font-size:.9rem; color:var(--ink-soft); margin:.6rem 0 1.4rem; flex-wrap:wrap}
+.legend .dot{display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:.4rem; vertical-align:middle}
+.legend .dot.meme{background:var(--meme)} .legend .dot.pepe{background:var(--pepe)}
+.field-stamp{
+  display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.62rem;
+  text-transform:uppercase; letter-spacing:1px; padding:.1rem .4rem; border-radius:2px; margin-left:.5rem;
+  border:1px solid;
+}
+.field-stamp.confirme{color:var(--sage); border-color:var(--sage)}
+.field-stamp.verifier{color:var(--brass); border-color:var(--brass)}
+.field-stamp.manque{color:var(--wax); border-color:var(--wax)}
 .idcard .photo{
   width:140px; height:170px; flex-shrink:0; background:var(--paper-dark); border:1px solid var(--ink-soft);
   object-fit:cover; display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
@@ -106,17 +120,18 @@ footer.contact a.btn:hover{background:#732530}
 
     <nav class="site">
       <a href="../index.html">Accueil</a>
+      <a href="../fiches.html">Fiches des acteurs</a>
       <a href="../pistes.html">Pistes de recherche</a>
       <a href="../archives-privees.html">Archives privées</a>
     </nav>
 <main>
-        <a class="back" href="../index.html">&larr; Retour à l'arbre</a>
-        <div class="idcard">
+        <a class="back" href="../fiches.html">&larr; Retour aux fiches</a>
+        <div class="idcard branche-meme">
           <div class="photo">Pas encore de photo</div>
           <div class="infos">
             <div class="eyebrow">MEME</div>
             <h2>Anna Victorine BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-            <dl><dt>Née/né le</dt><dd>1913-06-16 00:00:00</dd><dt>Lieu de naissance</dt><dd>Châtillon d'Azergues (Rhône)</dd><dt>Décédée/décédé le</dt><dd>1994-03-12 00:00:00</dd><dt>Lieu de décès</dt><dd>Saint-Galmier</dd><dt>Fils / fille de</dt><dd><a href="P010.html">François GIRAUD</a> et <a href="P011.html">Joséphine Claudia SOLY</a></dd></dl>
+            <dl><dt>Née/né le</dt><dd>16 juin 1913 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Châtillon d'Azergues (Rhône) <span class="field-stamp confirme">confirmé</span></dd><dt>Décédée/décédé le</dt><dd>12 mars 1994 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de décès</dt><dd>Saint-Galmier <span class="field-stamp confirme">confirmé</span></dd><dt>Fils / fille de</dt><dd><a href="P010.html">François GIRAUD</a> et <a href="P011.html">Joséphine Claudia SOLY</a></dd></dl>
           </div>
         </div>
         
