@@ -37,6 +37,89 @@ def split_list(v):
     return [x.strip() for x in re.split(r"[;\n]", str(v)) if x.strip()]
 
 
+MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+           "août", "septembre", "octobre", "novembre", "décembre"]
+
+
+def format_date_fr(raw):
+    """Reformate une date en 'DD mois AAAA'. Si non reconnue, renvoie le texte tel quel."""
+    if is_blank(raw):
+        return raw
+    s = str(raw).strip()
+    # Cas Excel qui a stocké une vraie date (ex. '1913-06-16 00:00:00' ou '1913-06-16')
+    m = re.match(r"^(\d{4})-(\d{2})-(\d{2})", s)
+    if m:
+        y, mo, d = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        if 1 <= mo <= 12:
+            return f"{d} {MOIS_FR[mo-1]} {y}"
+    # Cas texte 'JJ/MM/AAAA'
+    m = re.match(r"^(\d{1,2})/(\d{1,2})/(\d{4})$", s)
+    if m:
+        d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        if 1 <= mo <= 12:
+            return f"{d} {MOIS_FR[mo-1]} {y}"
+    return s  # texte libre ('vers 1895', '1901', etc.) affiché tel quel
+
+
+def field_status(raw):
+    """Renvoie (texte_affiché, statut) où statut est 'confirme' / 'verifier' / 'manque'.
+    Un '?' en fin de case = à vérifier. Case vide = à enquêter."""
+    if is_blank(raw):
+        return "", "manque"
+    s = str(raw).strip()
+    if s.endswith("?"):
+        return format_date_fr(s[:-1].strip()), "verifier"
+    return format_date_fr(s), "confirme"
+
+
+def mini_stamp(status):
+    label = {"confirme": "confirmé", "verifier": "à confirmer", "manque": "à enquêter"}[status]
+    return f'<span class="field-stamp {status}">{label}</span>'
+
+
+def compute_branches(personnes: pd.DataFrame):
+    """Calcule automatiquement, pour chaque personne, si elle est du côté MEME ou du côté
+    PEPE, en remontant/descendant les liens Père/Mère/Fratrie depuis MEME et son conjoint."""
+    idx = by_id_index(personnes)
+    branch = {}
+    meme_id = None
+    for pid, row in idx.items():
+        if str(row.get("Lien avec la MEME", "")).strip().lower() == "meme":
+            meme_id = pid
+            break
+    if not meme_id:
+        return branch
+    branch[meme_id] = "MEME"
+    pepe_id = str(idx[meme_id].get("Conjoint(s) (ID Personne)", "")).strip()
+    if pepe_id and pepe_id in idx:
+        branch[pepe_id] = "PEPE"
+
+    changed = True
+    passes = 0
+    while changed and passes < len(personnes) + 2:
+        changed = False
+        passes += 1
+        for pid, row in idx.items():
+            if pid in branch:
+                continue
+            # hérite de la branche d'un enfant déjà connu
+            for kid in find_children(pid, personnes):
+                kid_id = str(kid.get("ID Personne", "")).strip()
+                if kid_id in branch:
+                    branch[pid] = branch[kid_id]
+                    changed = True
+                    break
+            if pid in branch:
+                continue
+            # hérite de la branche d'un frère/soeur déjà connu
+            for sib_id in split_list(row.get("Fratrie (ID Personne)", "")):
+                if sib_id in branch:
+                    branch[pid] = branch[sib_id]
+                    changed = True
+                    break
+    return branch
+
+
 def load_data():
     personnes = pd.read_excel(XLSX, sheet_name="Registre des personnes", dtype=str)
     personnes = personnes.dropna(how="all")
@@ -96,6 +179,7 @@ CSS = """
 :root{
   --paper:#efe7d8; --paper-dark:#e4d9c3; --ink:#3a2e22; --ink-soft:#6b5c48;
   --wax:#8c2f39; --brass:#b8863b; --sage:#5b7065; --line:#c9bda3; --cream:#f6efdd;
+  --meme:#a8455c; --pepe:#3f6a78;
 }
 *{box-sizing:border-box}
 body{
@@ -151,8 +235,21 @@ h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1
 .piste strong{color:var(--brass)}
 .idcard{
   display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px;
-  padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap;
+  padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px;
 }
+.idcard.branche-meme{border-left-color:var(--meme)}
+.idcard.branche-pepe{border-left-color:var(--pepe)}
+.legend{display:flex; gap:1.4rem; align-items:center; font-size:.9rem; color:var(--ink-soft); margin:.6rem 0 1.4rem; flex-wrap:wrap}
+.legend .dot{display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:.4rem; vertical-align:middle}
+.legend .dot.meme{background:var(--meme)} .legend .dot.pepe{background:var(--pepe)}
+.field-stamp{
+  display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.62rem;
+  text-transform:uppercase; letter-spacing:1px; padding:.1rem .4rem; border-radius:2px; margin-left:.5rem;
+  border:1px solid;
+}
+.field-stamp.confirme{color:var(--sage); border-color:var(--sage)}
+.field-stamp.verifier{color:var(--brass); border-color:var(--brass)}
+.field-stamp.manque{color:var(--wax); border-color:var(--wax)}
 .idcard .photo{
   width:140px; height:170px; flex-shrink:0; background:var(--paper-dark); border:1px solid var(--ink-soft);
   object-fit:cover; display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
@@ -206,6 +303,7 @@ def page(title, body, active="", depth=0):
     nav = f"""
     <nav class="site">
       {navlink('index.html', "Accueil", 'accueil')}
+      {navlink('fiches.html', "Fiches des acteurs", 'fiches')}
       {navlink('pistes.html', "Pistes de recherche", 'pistes')}
       {navlink('archives-privees.html', "Archives privées", 'archives')}
     </nav>"""
@@ -242,29 +340,46 @@ def stamp(statut: str) -> str:
     return '<span class="stamp inconnu">à enquêter</span>'
 
 
-def build_index(personnes: pd.DataFrame):
+def build_fiches(personnes: pd.DataFrame, branches: dict):
     if personnes.empty:
         body = (
-            "<p class='empty'>L'arbre est encore vide — dès que le « Registre des personnes » du "
+            "<p class='empty'>Aucun acteur pour l'instant — dès que le « Registre des personnes » du "
             "tableau Excel contient une première ligne, cette page affichera la première fiche.</p>"
         )
     else:
+        legend = """
+        <div class="legend">
+          <span><span class="dot meme"></span>Côté MEME</span>
+          <span><span class="dot pepe"></span>Côté PEPE</span>
+        </div>"""
         cards = []
         for _, row in personnes.iterrows():
             pid = row.get("ID Personne", "")
             name = person_display_name(row)
             lien = row.get("Lien avec la MEME", "")
-            naiss = row.get("Date de naissance") or row.get("Date de naissance estimée") or "?"
+            branche = branches.get(str(pid).strip(), "")
+            branche_class = f" branche-{branche.lower()}" if branche in ("MEME", "PEPE") else ""
+            naiss_txt, _ = field_status(row.get("Date de naissance") or row.get("Date de naissance estimée"))
             cards.append(f"""
-            <div class="card">
+            <div class="card idcard{branche_class}" style="flex-direction:column">
               <a class="name" href="personnes/{slug(pid)}.html">{name}</a> {stamp(row.get('Statut (confirmé / hypothèse)'))}
-              <p class="meta">{'' if is_blank(lien) else lien + ' · '}née/né {naiss}</p>
+              <p class="meta">{'' if is_blank(lien) else lien + ' · '}née/né {naiss_txt or '?'}</p>
             </div>""")
-        body = "<h2>Les personnes identifiées jusqu'ici</h2>" + "".join(cards)
+        body = "<h2>Les acteurs de l'histoire, jusqu'ici</h2>" + legend + "".join(cards)
+    (DOCS / "fiches.html").write_text(page("Fiches des acteurs", body, active="fiches", depth=0), encoding="utf-8")
+
+
+def build_index(personnes: pd.DataFrame):
+    body = f"""
+    <p>L'arbre visuel est encore en chantier — en attendant, retrouvez chaque
+    personne identifiée, avec ce qu'on sait d'elle, sur la page
+    <a href="fiches.html"><strong>Fiches des acteurs</strong></a>.</p>
+    <p class="meta">{len(personnes)} acteur(s) recensé(s) pour l'instant.</p>
+    """
     (DOCS / "index.html").write_text(page("Accueil", body, active="accueil", depth=0), encoding="utf-8")
 
 
-def build_person_pages(personnes: pd.DataFrame):
+def build_person_pages(personnes: pd.DataFrame, branches: dict):
     PERSONNES_DIR.mkdir(parents=True, exist_ok=True)
     idx = by_id_index(personnes)
 
@@ -292,6 +407,8 @@ def build_person_pages(personnes: pd.DataFrame):
         sources = row.get("Sources (ID Document)", "")
         notes = row.get("Notes / Hypothèses", "")
         lien_meme = row.get("Lien avec la MEME", "")
+        branche = branches.get(str(pid).strip(), "")
+        branche_class = f" branche-{branche.lower()}" if branche in ("MEME", "PEPE") else ""
 
         photos = split_list(row.get("Photos (liens Postimage, séparés par ;)", ""))
         portrait = photos[0] if photos else None
@@ -310,18 +427,18 @@ def build_person_pages(personnes: pd.DataFrame):
             kid_links = [f'<a href="{slug(k.get("ID Personne",""))}.html">{person_display_name(k)}</a>' for k in kids]
             kids_html = f"<dt>Père / mère de</dt><dd>{', '.join(kid_links)}</dd>"
 
-        rows_dl = []
+        etat_civil_rows = []
         for label, key in [
             ("Née/né le", "Date de naissance"), ("Vers (estimée)", "Date de naissance estimée"),
             ("Lieu de naissance", "Lieu de naissance"), ("Décédée/décédé le", "Date de décès"),
             ("Lieu de décès", "Lieu de décès"),
         ]:
-            v = row.get(key, "")
-            if not is_blank(v):
-                rows_dl.append(f"<dt>{label}</dt><dd>{v}</dd>")
-        dl_html = "".join(rows_dl) + parents_html + kids_html
-        if not dl_html:
-            dl_html = "<dt>État civil</dt><dd class='empty'>encore inconnu</dd>"
+            raw = row.get(key, "")
+            if key.startswith("Date de naissance estimée") and not is_blank(row.get("Date de naissance", "")):
+                continue  # inutile d'afficher l'estimée si la date exacte est connue
+            txt, status = field_status(raw)
+            etat_civil_rows.append(f"<dt>{label}</dt><dd>{txt or '—'} {mini_stamp(status)}</dd>")
+        dl_html = "".join(etat_civil_rows) + parents_html + kids_html
 
         photo_html = (
             f'<img class="photo" src="{portrait}" alt="Portrait de {name}">' if portrait
@@ -342,8 +459,8 @@ def build_person_pages(personnes: pd.DataFrame):
         sources_html = f"<p class='meta'>Sources : {sources}</p>" if not is_blank(sources) else ""
 
         body = f"""
-        <a class="back" href="../index.html">&larr; Retour à l'arbre</a>
-        <div class="idcard">
+        <a class="back" href="../fiches.html">&larr; Retour aux fiches</a>
+        <div class="idcard{branche_class}">
           {photo_html}
           <div class="infos">
             <div class="eyebrow">{'' if is_blank(lien_meme) else lien_meme}</div>
@@ -405,8 +522,10 @@ def build_archives_privees():
 def main():
     DOCS.mkdir(exist_ok=True)
     personnes = load_data()
+    branches = compute_branches(personnes)
     build_index(personnes)
-    build_person_pages(personnes)
+    build_fiches(personnes, branches)
+    build_person_pages(personnes, branches)
     build_pistes(personnes)
     build_archives_privees()
     print(f"Site généré dans {DOCS} — {len(personnes)} personne(s).")
