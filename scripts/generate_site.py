@@ -331,40 +331,127 @@ def page(title, body, active="", depth=0):
 </body></html>"""
 
 
+def render_idcard(row, personnes, branches, idx, link_or_text, depth):
+    pid = row.get("ID Personne", "")
+    name = person_display_name(row)
+    lien_meme = row.get("Lien avec la MEME", "")
+    branche = branches.get(str(pid).strip(), "")
+    branche_class = f" branche-{branche.lower()}" if branche in ("MEME", "PEPE") else ""
+
+    photos = split_list(row.get("Photos (liens Postimage, séparés par ;)", ""))
+    portrait = photos[0] if photos else None
+    gallery_photos = photos[1:] if len(photos) > 1 else []
+
+    pere = link_or_text(row.get("Père (ID Personne)", ""))
+    mere = link_or_text(row.get("Mère (ID Personne)", ""))
+    parents_bits = [p for p in (pere, mere) if p]
+    parents_html = ""
+    if parents_bits:
+        parents_html = f"<dt>Fils / fille de</dt><dd>{' et '.join(parents_bits)}</dd>"
+
+    kids = find_children(str(pid).strip(), personnes)
+    kids_html = ""
+    if kids:
+        kid_links = [f'<a href="{"personnes/" if depth == 0 else ""}{slug(k.get("ID Personne",""))}.html">{person_display_name(k)}</a>' for k in kids]
+        kids_html = f"<dt>Père / mère de</dt><dd>{', '.join(kid_links)}</dd>"
+
+    etat_civil_rows = []
+    for label, key in [
+        ("Née/né le", "Date de naissance"), ("Vers (estimée)", "Date de naissance estimée"),
+        ("Lieu de naissance", "Lieu de naissance"), ("Décédée/décédé le", "Date de décès"),
+        ("Lieu de décès", "Lieu de décès"),
+    ]:
+        raw = row.get(key, "")
+        if key == "Date de naissance estimée" and not is_blank(row.get("Date de naissance", "")):
+            continue
+        txt, status = field_status(raw)
+        etat_civil_rows.append(f"<dt>{label}</dt><dd>{txt or '—'} {mini_stamp(status)}</dd>")
+    dl_html = "".join(etat_civil_rows) + parents_html + kids_html
+
+    photo_html = (
+        f'<img class="photo" src="{portrait}" alt="Portrait de {name}">' if portrait
+        else '<div class="photo">Pas encore de photo</div>'
+    )
+
+    gallery_html = ""
+    if gallery_photos:
+        thumbs = "".join(
+            f'<a href="{u}" target="_blank" rel="noopener"><img src="{u}" alt="Photo de {name}" loading="lazy"></a>'
+            for u in gallery_photos
+        )
+        gallery_html = f"<div class='gallery'>{thumbs}</div>"
+
+    histoire = row.get("Petite histoire", "")
+    piste = row.get("Piste de recherche", "")
+    notes = row.get("Notes / Hypothèses", "")
+    sources = row.get("Sources (ID Document)", "")
+    histoire_html = f"<div class='histoire'><p>{histoire}</p></div>" if not is_blank(histoire) else ""
+    piste_html = f"<div class='piste'><strong>Piste de recherche :</strong> {piste}</div>" if not is_blank(piste) else ""
+    notes_html = f"<p class='meta'>{notes}</p>" if not is_blank(notes) else ""
+    sources_html = f"<p class='meta'>Sources : {sources}</p>" if not is_blank(sources) else ""
+
+    anchor = f'<a name="{slug(pid)}"></a>' if depth == 0 else ""
+    return f"""
+    {anchor}
+    <div class="idcard{branche_class}">
+      {photo_html}
+      <div class="infos">
+        <div class="eyebrow">{'' if is_blank(lien_meme) else lien_meme}</div>
+        <h2>{name} {stamp(row.get('Statut (confirmé / hypothèse)'))}</h2>
+        <dl>{dl_html}</dl>
+        {histoire_html}
+        {piste_html}
+        {notes_html}
+        {sources_html}
+        {gallery_html}
+      </div>
+    </div>
+    """
+
+
 def stamp(statut: str) -> str:
     s = (statut or "").strip().lower()
-    if s.startswith("conf"):
+    if is_blank(statut):
+        return '<span class="stamp inconnu">à enquêter</span>'
+    if s.startswith("confirmé") or s.startswith("confirme"):
         return '<span class="stamp confirme">confirmé</span>'
-    if s.startswith("hyp"):
-        return '<span class="stamp hypothese">hypothèse</span>'
-    return '<span class="stamp inconnu">à enquêter</span>'
+    return '<span class="stamp hypothese">à confirmer</span>'
 
 
 def build_fiches(personnes: pd.DataFrame, branches: dict):
     if personnes.empty:
         body = (
             "<p class='empty'>Aucun acteur pour l'instant — dès que le « Registre des personnes » du "
-            "tableau Excel contient une première ligne, cette page affichera la première fiche.</p>"
+            "tableau Excel contient une première ligne, cette page affichera sa fiche.</p>"
         )
     else:
+        idx = by_id_index(personnes)
+
+        def name_or_id(pid):
+            pid = str(pid).strip()
+            if not pid:
+                return None
+            row = idx.get(pid)
+            return person_display_name(row) if row is not None else pid
+
+        def link_or_text(pid):
+            pid = str(pid).strip()
+            label = name_or_id(pid)
+            if label is None:
+                return None
+            if pid in idx:
+                return f'<a href="#{slug(pid)}">{label}</a>'
+            return label
+
         legend = """
         <div class="legend">
           <span><span class="dot meme"></span>Côté MEME</span>
           <span><span class="dot pepe"></span>Côté PEPE</span>
         </div>"""
-        cards = []
-        for _, row in personnes.iterrows():
-            pid = row.get("ID Personne", "")
-            name = person_display_name(row)
-            lien = row.get("Lien avec la MEME", "")
-            branche = branches.get(str(pid).strip(), "")
-            branche_class = f" branche-{branche.lower()}" if branche in ("MEME", "PEPE") else ""
-            naiss_txt, _ = field_status(row.get("Date de naissance") or row.get("Date de naissance estimée"))
-            cards.append(f"""
-            <div class="card idcard{branche_class}" style="flex-direction:column">
-              <a class="name" href="personnes/{slug(pid)}.html">{name}</a> {stamp(row.get('Statut (confirmé / hypothèse)'))}
-              <p class="meta">{'' if is_blank(lien) else lien + ' · '}née/né {naiss_txt or '?'}</p>
-            </div>""")
+        cards = [
+            render_idcard(row, personnes, branches, idx, link_or_text, depth=0)
+            for _, row in personnes.iterrows()
+        ]
         body = "<h2>Les acteurs de l'histoire, jusqu'ici</h2>" + legend + "".join(cards)
     (DOCS / "fiches.html").write_text(page("Fiches des acteurs", body, active="fiches", depth=0), encoding="utf-8")
 
@@ -402,78 +489,8 @@ def build_person_pages(personnes: pd.DataFrame, branches: dict):
     for _, row in personnes.iterrows():
         pid = row.get("ID Personne", "")
         name = person_display_name(row)
-        histoire = row.get("Petite histoire", "")
-        piste = row.get("Piste de recherche", "")
-        sources = row.get("Sources (ID Document)", "")
-        notes = row.get("Notes / Hypothèses", "")
-        lien_meme = row.get("Lien avec la MEME", "")
-        branche = branches.get(str(pid).strip(), "")
-        branche_class = f" branche-{branche.lower()}" if branche in ("MEME", "PEPE") else ""
-
-        photos = split_list(row.get("Photos (liens Postimage, séparés par ;)", ""))
-        portrait = photos[0] if photos else None
-        gallery_photos = photos[1:] if len(photos) > 1 else []
-
-        pere = link_or_text(row.get("Père (ID Personne)", ""))
-        mere = link_or_text(row.get("Mère (ID Personne)", ""))
-        parents_bits = [p for p in (pere, mere) if p]
-        parents_html = ""
-        if parents_bits:
-            parents_html = f"<dt>Fils / fille de</dt><dd>{' et '.join(parents_bits)}</dd>"
-
-        kids = find_children(str(pid).strip(), personnes)
-        kids_html = ""
-        if kids:
-            kid_links = [f'<a href="{slug(k.get("ID Personne",""))}.html">{person_display_name(k)}</a>' for k in kids]
-            kids_html = f"<dt>Père / mère de</dt><dd>{', '.join(kid_links)}</dd>"
-
-        etat_civil_rows = []
-        for label, key in [
-            ("Née/né le", "Date de naissance"), ("Vers (estimée)", "Date de naissance estimée"),
-            ("Lieu de naissance", "Lieu de naissance"), ("Décédée/décédé le", "Date de décès"),
-            ("Lieu de décès", "Lieu de décès"),
-        ]:
-            raw = row.get(key, "")
-            if key.startswith("Date de naissance estimée") and not is_blank(row.get("Date de naissance", "")):
-                continue  # inutile d'afficher l'estimée si la date exacte est connue
-            txt, status = field_status(raw)
-            etat_civil_rows.append(f"<dt>{label}</dt><dd>{txt or '—'} {mini_stamp(status)}</dd>")
-        dl_html = "".join(etat_civil_rows) + parents_html + kids_html
-
-        photo_html = (
-            f'<img class="photo" src="{portrait}" alt="Portrait de {name}">' if portrait
-            else '<div class="photo">Pas encore de photo</div>'
-        )
-
-        gallery_html = ""
-        if gallery_photos:
-            thumbs = "".join(
-                f'<a href="{u}" target="_blank" rel="noopener"><img src="{u}" alt="Photo de {name}" loading="lazy"></a>'
-                for u in gallery_photos
-            )
-            gallery_html = f"<h2>Galerie</h2><div class='gallery'>{thumbs}</div>"
-
-        histoire_html = f"<div class='histoire'><p>{histoire}</p></div>" if not is_blank(histoire) else ""
-        piste_html = f"<div class='piste'><strong>Piste de recherche :</strong> {piste}</div>" if not is_blank(piste) else ""
-        notes_html = f"<p class='meta'>{notes}</p>" if not is_blank(notes) else ""
-        sources_html = f"<p class='meta'>Sources : {sources}</p>" if not is_blank(sources) else ""
-
-        body = f"""
-        <a class="back" href="../fiches.html">&larr; Retour aux fiches</a>
-        <div class="idcard{branche_class}">
-          {photo_html}
-          <div class="infos">
-            <div class="eyebrow">{'' if is_blank(lien_meme) else lien_meme}</div>
-            <h2>{name} {stamp(row.get('Statut (confirmé / hypothèse)'))}</h2>
-            <dl>{dl_html}</dl>
-          </div>
-        </div>
-        {histoire_html}
-        {piste_html}
-        {notes_html}
-        {sources_html}
-        {gallery_html}
-        """
+        card = render_idcard(row, personnes, branches, idx, link_or_text, depth=1)
+        body = f"""<a class="back" href="../fiches.html">&larr; Retour aux fiches</a>{card}"""
         (PERSONNES_DIR / f"{slug(pid)}.html").write_text(
             page(name, body, depth=1), encoding="utf-8"
         )
@@ -486,11 +503,17 @@ def build_pistes(personnes: pd.DataFrame):
     else:
         cards = []
         for lead in leads:
-            link = f"personnes/{slug(lead['id'])}.html"
+            link = f"fiches.html#{slug(lead['id'])}"
+            subject = f"Une piste pour {lead['name']}"
+            body_txt = f"Bonjour,%0D%0A%0D%0AÀ propos de {lead['name']} : {lead['text']}%0D%0A%0D%0AVoici ce que j'ai :"
+            mailto = f"mailto:{CONTACT_EMAIL}?subject={subject.replace(' ', '%20')}&body={body_txt}"
             cards.append(f"""
             <div class="card">
               <a class="name" href="{link}">{lead['name']}</a>
               <div class="piste"><strong>À chercher :</strong> {lead['text']}</div>
+              <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
+                 text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
+                 href="{mailto}">Envoyer un document pour cette piste</a>
             </div>""")
         body = "<h2>Ce qu'il nous manque encore</h2>" + "".join(cards)
     (DOCS / "pistes.html").write_text(page("Pistes de recherche", body, active="pistes", depth=0), encoding="utf-8")
