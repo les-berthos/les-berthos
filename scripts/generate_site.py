@@ -34,7 +34,7 @@ def is_blank(v) -> bool:
 def split_list(v):
     if is_blank(v):
         return []
-    return [x.strip() for x in re.split(r"[;\n]", str(v)) if x.strip()]
+    return [x.strip() for x in re.split(r"[;,\n]", str(v)) if x.strip()]
 
 
 MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
@@ -127,6 +127,60 @@ def load_data():
         personnes = personnes[~personnes["ID Personne"].astype(str).str.contains("EXEMPLE", na=False)]
     personnes = personnes.fillna("")
     return personnes
+
+
+def load_documents():
+    try:
+        docs = pd.read_excel(XLSX, sheet_name="Feuille1", dtype=str)
+    except Exception:
+        return pd.DataFrame()
+    docs = docs.dropna(how="all")
+    if docs.empty or "ID Document" not in docs.columns:
+        return pd.DataFrame()
+    docs = docs[docs["ID Document"].astype(str).str.strip() != ""]
+    return docs.fillna("")
+
+
+def find_documents_for_person(pid, documents: pd.DataFrame):
+    if documents.empty or "Personnes mentionnées" not in documents.columns:
+        return []
+    pid = str(pid).strip()
+    matches = []
+    for _, row in documents.iterrows():
+        if pid in split_list(row.get("Personnes mentionnées", "")):
+            matches.append(row)
+    return matches
+
+
+def render_documents_block(pid, documents, idx, title="Documents connus"):
+    docs = find_documents_for_person(pid, documents)
+    if not docs:
+        return ""
+
+    def person_label(other_pid):
+        other_pid = other_pid.strip()
+        if other_pid == str(pid).strip():
+            return None
+        row = idx.get(other_pid)
+        label = person_display_name(row) if row is not None else other_pid
+        return f'<a href="#{slug(other_pid)}">{label}</a>' if row is not None else label
+
+    chips = []
+    for d in docs:
+        type_doc = d.get("Type de document", "") or "Document"
+        photo = d.get("Photo du document", "")
+        lieu = d.get("Rangement physique", "")
+        autres_ids = [p for p in split_list(d.get("Personnes mentionnées", "")) if p.strip() != str(pid).strip()]
+        autres = [person_label(a) for a in autres_ids]
+        autres = [a for a in autres if a]
+        lien_html = f'<a href="{photo}" target="_blank" rel="noopener">voir</a>' if not is_blank(photo) else "<span class='empty'>pas encore de lien</span>"
+        chips.append(f"""
+        <div class="doc-chip">
+          <strong>{type_doc}</strong> — {lien_html}
+          {f"<span class='meta'>Chez : {lieu}</span>" if not is_blank(lieu) else ""}
+          {f"<span class='meta'>Avec : {', '.join(autres)}</span>" if autres else ""}
+        </div>""")
+    return f"<h3>{title}</h3><div class='doc-list'>{''.join(chips)}</div>"
 
 
 def person_display_name(row) -> str:
@@ -267,6 +321,13 @@ h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1
 .gallery{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.9rem}
 .gallery a{display:block; width:90px; height:90px; overflow:hidden; border:1px solid var(--line); border-radius:3px}
 .gallery img{width:100%; height:100%; object-fit:cover; display:block}
+h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1.05rem; margin:1rem 0 .4rem}
+.doc-list{display:flex; flex-direction:column; gap:.5rem}
+.doc-chip{
+  background:var(--paper-dark); border:1px solid var(--line); border-radius:3px;
+  padding:.6rem .9rem; font-size:.9rem;
+}
+.doc-chip .meta{display:block; margin-top:.15rem}
 footer.contact{
   margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark);
   border-top:1px solid var(--line);
@@ -331,7 +392,7 @@ def page(title, body, active="", depth=0):
 </body></html>"""
 
 
-def render_idcard(row, personnes, branches, idx, link_or_text, depth):
+def render_idcard(row, personnes, branches, idx, link_or_text, depth, documents=None):
     pid = row.get("ID Personne", "")
     name = person_display_name(row)
     lien_meme = row.get("Lien avec la MEME", "")
@@ -345,28 +406,27 @@ def render_idcard(row, personnes, branches, idx, link_or_text, depth):
     pere = link_or_text(row.get("Père (ID Personne)", ""))
     mere = link_or_text(row.get("Mère (ID Personne)", ""))
     parents_bits = [p for p in (pere, mere) if p]
-    parents_html = ""
-    if parents_bits:
-        parents_html = f"<dt>Fils / fille de</dt><dd>{' et '.join(parents_bits)}</dd>"
+    parents_html = f"<dt>Enfant de</dt><dd>{' et '.join(parents_bits)}</dd>" if parents_bits else ""
 
     kids = find_children(str(pid).strip(), personnes)
     kids_html = ""
     if kids:
-        kid_links = [f'<a href="{"personnes/" if depth == 0 else ""}{slug(k.get("ID Personne",""))}.html">{person_display_name(k)}</a>' for k in kids]
-        kids_html = f"<dt>Père / mère de</dt><dd>{', '.join(kid_links)}</dd>"
+        kid_links = [f'<a href="{"#" if depth == 0 else ""}{slug(k.get("ID Personne",""))}{".html" if depth else ""}">{person_display_name(k)}</a>' for k in kids]
+        kids_html = f"<dt>Parent de</dt><dd>{', '.join(kid_links)}</dd>"
+
+    fratrie_ids = split_list(row.get("Fratrie (ID Personne)", ""))
+    fratrie_links = [link_or_text(f) for f in fratrie_ids]
+    fratrie_links = [f for f in fratrie_links if f]
+    fratrie_html = f"<dt>Fratrie de</dt><dd>{', '.join(fratrie_links)}</dd>" if fratrie_links else ""
 
     etat_civil_rows = []
     for label, key in [
-        ("Née/né le", "Date de naissance"), ("Vers (estimée)", "Date de naissance estimée"),
-        ("Lieu de naissance", "Lieu de naissance"), ("Décédée/décédé le", "Date de décès"),
-        ("Lieu de décès", "Lieu de décès"),
+        ("Née/né le", "Date de naissance"), ("Lieu de naissance", "Lieu de naissance"),
+        ("Décédée/décédé le", "Date de décès"), ("Lieu de décès", "Lieu de décès"),
     ]:
-        raw = row.get(key, "")
-        if key == "Date de naissance estimée" and not is_blank(row.get("Date de naissance", "")):
-            continue
-        txt, status = field_status(raw)
+        txt, status = field_status(row.get(key, ""))
         etat_civil_rows.append(f"<dt>{label}</dt><dd>{txt or '—'} {mini_stamp(status)}</dd>")
-    dl_html = "".join(etat_civil_rows) + parents_html + kids_html
+    dl_html = "".join(etat_civil_rows) + parents_html + kids_html + fratrie_html
 
     photo_html = (
         f'<img class="photo" src="{portrait}" alt="Portrait de {name}">' if portrait
@@ -382,13 +442,8 @@ def render_idcard(row, personnes, branches, idx, link_or_text, depth):
         gallery_html = f"<div class='gallery'>{thumbs}</div>"
 
     histoire = row.get("Petite histoire", "")
-    piste = row.get("Piste de recherche", "")
-    notes = row.get("Notes / Hypothèses", "")
-    sources = row.get("Sources (ID Document)", "")
     histoire_html = f"<div class='histoire'><p>{histoire}</p></div>" if not is_blank(histoire) else ""
-    piste_html = f"<div class='piste'><strong>Piste de recherche :</strong> {piste}</div>" if not is_blank(piste) else ""
-    notes_html = f"<p class='meta'>{notes}</p>" if not is_blank(notes) else ""
-    sources_html = f"<p class='meta'>Sources : {sources}</p>" if not is_blank(sources) else ""
+    docs_html = render_documents_block(pid, documents, idx) if documents is not None else ""
 
     anchor = f'<a name="{slug(pid)}"></a>' if depth == 0 else ""
     return f"""
@@ -400,10 +455,8 @@ def render_idcard(row, personnes, branches, idx, link_or_text, depth):
         <h2>{name} {stamp(row.get('Statut (confirmé / hypothèse)'))}</h2>
         <dl>{dl_html}</dl>
         {histoire_html}
-        {piste_html}
-        {notes_html}
-        {sources_html}
         {gallery_html}
+        {docs_html}
       </div>
     </div>
     """
@@ -418,7 +471,7 @@ def stamp(statut: str) -> str:
     return '<span class="stamp hypothese">à confirmer</span>'
 
 
-def build_fiches(personnes: pd.DataFrame, branches: dict):
+def build_fiches(personnes: pd.DataFrame, branches: dict, documents: pd.DataFrame):
     if personnes.empty:
         body = (
             "<p class='empty'>Aucun acteur pour l'instant — dès que le « Registre des personnes » du "
@@ -449,7 +502,7 @@ def build_fiches(personnes: pd.DataFrame, branches: dict):
           <span><span class="dot pepe"></span>Côté PEPE</span>
         </div>"""
         cards = [
-            render_idcard(row, personnes, branches, idx, link_or_text, depth=0)
+            render_idcard(row, personnes, branches, idx, link_or_text, depth=0, documents=documents)
             for _, row in personnes.iterrows()
         ]
         body = "<h2>Les acteurs de l'histoire, jusqu'ici</h2>" + legend + "".join(cards)
@@ -466,7 +519,7 @@ def build_index(personnes: pd.DataFrame):
     (DOCS / "index.html").write_text(page("Accueil", body, active="accueil", depth=0), encoding="utf-8")
 
 
-def build_person_pages(personnes: pd.DataFrame, branches: dict):
+def build_person_pages(personnes: pd.DataFrame, branches: dict, documents: pd.DataFrame):
     PERSONNES_DIR.mkdir(parents=True, exist_ok=True)
     idx = by_id_index(personnes)
 
@@ -489,15 +542,16 @@ def build_person_pages(personnes: pd.DataFrame, branches: dict):
     for _, row in personnes.iterrows():
         pid = row.get("ID Personne", "")
         name = person_display_name(row)
-        card = render_idcard(row, personnes, branches, idx, link_or_text, depth=1)
+        card = render_idcard(row, personnes, branches, idx, link_or_text, depth=1, documents=documents)
         body = f"""<a class="back" href="../fiches.html">&larr; Retour aux fiches</a>{card}"""
         (PERSONNES_DIR / f"{slug(pid)}.html").write_text(
             page(name, body, depth=1), encoding="utf-8"
         )
 
 
-def build_pistes(personnes: pd.DataFrame):
+def build_pistes(personnes: pd.DataFrame, documents: pd.DataFrame):
     leads = compute_leads(personnes)
+    idx = by_id_index(personnes)
     if not leads:
         body = "<p class='empty'>Aucune piste ouverte pour l'instant : soit tout est confirmé, soit l'arbre est encore vide.</p>"
     else:
@@ -507,10 +561,12 @@ def build_pistes(personnes: pd.DataFrame):
             subject = f"Une piste pour {lead['name']}"
             body_txt = f"Bonjour,%0D%0A%0D%0AÀ propos de {lead['name']} : {lead['text']}%0D%0A%0D%0AVoici ce que j'ai :"
             mailto = f"mailto:{CONTACT_EMAIL}?subject={subject.replace(' ', '%20')}&body={body_txt}"
+            docs_html = render_documents_block(lead["id"], documents, idx, title="Ce que l'on a déjà")
             cards.append(f"""
             <div class="card">
               <a class="name" href="{link}">{lead['name']}</a>
-              <div class="piste"><strong>À chercher :</strong> {lead['text']}</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> {lead['text']}</div>
+              {docs_html}
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="{mailto}">Envoyer un document pour cette piste</a>
@@ -545,13 +601,14 @@ def build_archives_privees():
 def main():
     DOCS.mkdir(exist_ok=True)
     personnes = load_data()
+    documents = load_documents()
     branches = compute_branches(personnes)
     build_index(personnes)
-    build_fiches(personnes, branches)
-    build_person_pages(personnes, branches)
-    build_pistes(personnes)
+    build_fiches(personnes, branches, documents)
+    build_person_pages(personnes, branches, documents)
+    build_pistes(personnes, documents)
     build_archives_privees()
-    print(f"Site généré dans {DOCS} — {len(personnes)} personne(s).")
+    print(f"Site généré dans {DOCS} — {len(personnes)} personne(s), {len(documents)} document(s).")
 
 
 if __name__ == "__main__":
