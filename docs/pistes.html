@@ -95,6 +95,13 @@ h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1
 .gallery{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.9rem}
 .gallery a{display:block; width:90px; height:90px; overflow:hidden; border:1px solid var(--line); border-radius:3px}
 .gallery img{width:100%; height:100%; object-fit:cover; display:block}
+h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1.05rem; margin:1rem 0 .4rem}
+.doc-list{display:flex; flex-direction:column; gap:.5rem}
+.doc-chip{
+  background:var(--paper-dark); border:1px solid var(--line); border-radius:3px;
+  padding:.6rem .9rem; font-size:.9rem;
+}
+.doc-chip .meta{display:block; margin-top:.15rem}
 footer.contact{
   margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark);
   border-top:1px solid var(--line);
@@ -122,99 +129,209 @@ footer.contact a.btn:hover{background:#732530}
       <a href="index.html">Accueil</a>
       <a href="fiches.html">Fiches des acteurs</a>
       <a href="pistes.html" style="border-bottom-color:var(--wax)">Pistes de recherche</a>
-      <a href="archives-privees.html">Archives privées</a>
+      <a href="archives-privees.html">Archives</a>
     </nav>
-<main><h2>Ce qu'il nous manque encore</h2>
+<main>
+    <div class="legend">
+      <span><span class="dot meme"></span>Côté MEME</span>
+      <span><span class="dot pepe"></span>Côté PEPE (plus la teinte est foncée, plus la génération est ancienne)</span>
+    </div><h2>Ce qu'il nous manque encore</h2>
             <div class="card">
               <a class="name" href="fiches.html#P003">Pierre Joannes Antoine BERTHOLON</a>
-              <div class="piste"><strong>À chercher :</strong> Même père et mère du PEPE</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> Même père et mère du PEPE</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>livret individuel de guerre Pierre BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EQ3XYVFNHC#7gfdMxxfAQU4" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P021">Elise Jeanne Marie BERTHOLON</a>, <a href="#P020">Cyprien BERTHOLON</a></span>
+        </div>
+        <div class="doc-chip">
+          <strong>carte de priorité des méres de famille Elise BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EDTWWRM5Q0#1Ie4R1PZID5U" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P021">Elise Jeanne Marie BERTHOLON</a>, <a href="#P031">Marie BERTHOLON</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Pierre%20Joannes%20Antoine%20BERTHOLON&body=Bonjour,%0D%0A%0D%0AÀ propos de Pierre Joannes Antoine BERTHOLON : Même père et mère du PEPE%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P022">Jean-Jacques LAULAGNIER</a>
-              <div class="piste"><strong>À chercher :</strong> Maréchal à Perret commune de ARAULES</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> Maréchal à Perret commune de ARAULES</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P023">Elisabeth LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Jean-Jacques%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Jean-Jacques LAULAGNIER : Maréchal à Perret commune de ARAULES%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P023">Elisabeth LAULAGNIER</a>
-              <div class="piste"><strong>À chercher :</strong> commune d'ANNONAY</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> commune d'ANNONAY</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Elisabeth%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Elisabeth LAULAGNIER : commune d'ANNONAY%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P024">Marguerite LAULAGNIER</a>
-              <div class="piste"><strong>À chercher :</strong> célibataire pont de l'enceinte commune d'YSSINGEAUX</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> célibataire pont de l'enceinte commune d'YSSINGEAUX</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Marguerite%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Marguerite LAULAGNIER : célibataire pont de l'enceinte commune d'YSSINGEAUX%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P025">Marie LAULAGNIER</a>
-              <div class="piste"><strong>À chercher :</strong> chapteuil commune de St JULIEN CHAPTEUIL</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> chapteuil commune de St JULIEN CHAPTEUIL</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Marie%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Marie LAULAGNIER : chapteuil commune de St JULIEN CHAPTEUIL%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P026">Jean-Pierre LAULAGNIER</a>
-              <div class="piste"><strong>À chercher :</strong> maréchal à Combvieille commune d'ARAULES</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> maréchal à Combvieille commune d'ARAULES</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Jean-Pierre%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Jean-Pierre LAULAGNIER : maréchal à Combvieille commune d'ARAULES%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
-              <a class="name" href="fiches.html#P027">Philomène LAULAGNIER</a>
-              <div class="piste"><strong>À chercher :</strong> assistée autorisé de son époux Pierre BESSON Pont de l'enceinte commune d'YSSINGEAUX</div>
+              <a class="name" href="fiches.html#P027">Philomène BESSON</a>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> assistée autorisé de son époux Pierre BESSON Pont de l'enceinte commune d'YSSINGEAUX</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
-                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Philomène%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Philomène LAULAGNIER : assistée autorisé de son époux Pierre BESSON Pont de l'enceinte commune d'YSSINGEAUX%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
+                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Philomène%20BESSON&body=Bonjour,%0D%0A%0D%0AÀ propos de Philomène BESSON : assistée autorisé de son époux Pierre BESSON Pont de l'enceinte commune d'YSSINGEAUX%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P028">Françoise LAULAGNIER</a>
-              <div class="piste"><strong>À chercher :</strong> décédé à St JULIEN CHAPTEUIL en 1899</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> décédé à St JULIEN CHAPTEUIL en 1899</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Françoise%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Françoise LAULAGNIER : décédé à St JULIEN CHAPTEUIL en 1899%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P029">Jacques LAULAGNIER</a>
-              <div class="piste"><strong>À chercher :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Jacques%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Jacques LAULAGNIER : Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P030">Elisabeth BESSIERES</a>
-              <div class="piste"><strong>À chercher :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
-                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Elisabeth%20BESSIERES&body=Bonjour,%0D%0A%0D%0AÀ propos de Elisabeth BESSIERES : Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
+                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Elisabeth%20BESSIERES&body=Bonjour,%0D%0A%0D%0AÀ propos de Elisabeth BESSIERES : Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P031">Marie BERTHOLON</a>
-              <div class="piste"><strong>À chercher :</strong> Champs encore inconnus : Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>carte de priorité des méres de famille Elise BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EDTWWRM5Q0#1Ie4R1PZID5U" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P021">Elise Jeanne Marie BERTHOLON</a>, <a href="#P003">Pierre Joannes Antoine BERTHOLON</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Marie%20BERTHOLON&body=Bonjour,%0D%0A%0D%0AÀ propos de Marie BERTHOLON : Champs encore inconnus : Lieu de naissance, Date de décès, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P032">Marius BERTHOLON</a>
-              <div class="piste"><strong>À chercher :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>capture par Allemand de Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/VDDSEQ3WJ4#vVJX5rDAvOyA" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          
+        </div>
+        <div class="doc-chip">
+          <strong>autorisation travail à Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/19HF811QK4#rGIEaSDUA0xQ" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          
+        </div>
+        <div class="doc-chip">
+          <strong>livret individuel de guerre Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/SB4Q66QNRG#hjzB9Dg8tzcE" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          <span class='meta'>Avec : <a href="#P021">Elise Jeanne Marie BERTHOLON</a>, <a href="#P020">Cyprien BERTHOLON</a></span>
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Marius%20BERTHOLON&body=Bonjour,%0D%0A%0D%0AÀ propos de Marius BERTHOLON : Champs encore inconnus : Date de décès, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P033">Alban Marius Laurens BERTHOLON</a>
-              <div class="piste"><strong>À chercher :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              <h3>Ce que l'on a déjà</h3><div class='doc-list'>
+        <div class="doc-chip">
+          <strong>confirmation Alban BERTHOLON</strong> — <a href="https://drive.proton.me/urls/2K3Q7AC8BR#IMDj5ibQphlT" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          
+        </div>
+        <div class="doc-chip">
+          <strong>certificat etude primaire Alban Marius Laurens BERTHOLON</strong> — <a href="https://drive.proton.me/urls/84ZXTY9RKM#kyX0Ln9BiuMD" target="_blank" rel="noopener">voir</a>
+          <span class='meta'>Chez : Simone</span>
+          
+        </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Alban%20Marius%20Laurens%20BERTHOLON&body=Bonjour,%0D%0A%0D%0AÀ propos de Alban Marius Laurens BERTHOLON : Champs encore inconnus : Date de décès, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
+            </div>
+            <div class="card">
+              <a class="name" href="fiches.html#P034">Pierre    BESSONS</a>
+              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              
+              <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
+                 text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
+                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Pierre%20%20%20%20BESSONS&body=Bonjour,%0D%0A%0D%0AÀ propos de Pierre    BESSONS : Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div></main>
 <footer class="contact">
   <p>Une photo, une lettre, un souvenir, une correction ? Écrivez-nous, ça complète directement l'enquête.</p>
