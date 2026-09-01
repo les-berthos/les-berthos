@@ -42,7 +42,7 @@ def split_urls(v):
     """Comme split_list mais sans le ':' comme séparateur, pour ne pas couper les liens http(s)://"""
     if is_blank(v):
         return []
-    return [x.strip() for x in re.split(r"[;\n]", str(v)) if x.strip()]
+    return [x.strip() for x in re.split(r"[;,\n]", str(v)) if x.strip()]
 
 
 MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
@@ -110,7 +110,6 @@ def compute_branches(personnes: pd.DataFrame):
         for pid, row in idx.items():
             if pid in branch:
                 continue
-            # hérite de la branche d'un enfant déjà connu
             for kid in find_children(pid, personnes):
                 kid_id = str(kid.get("ID Personne", "")).strip()
                 if kid_id in branch:
@@ -119,10 +118,20 @@ def compute_branches(personnes: pd.DataFrame):
                     break
             if pid in branch:
                 continue
-            # hérite de la branche d'un frère/soeur déjà connu
             for sib_id in split_list(row.get("Fratrie (ID Personne)", "")):
                 if sib_id in branch:
                     branch[pid] = branch[sib_id]
+                    changed = True
+                    break
+            if pid in branch:
+                continue
+            # hérite de la branche du père ou de la mère, sauf si le parent est
+            # MEME ou PEPE lui-même (leurs enfants communs ne sont ni l'un ni l'autre)
+            pere_col = find_col(row, PERE_COLONNES)
+            mere_col = find_col(row, MERE_COLONNES)
+            for parent_id in (str(row.get(pere_col, "")).strip(), str(row.get(mere_col, "")).strip()):
+                if parent_id and parent_id not in (meme_id, pepe_id) and parent_id in branch:
+                    branch[pid] = branch[parent_id]
                     changed = True
                     break
     return branch
@@ -431,7 +440,7 @@ def page(title, body, active="", depth=0):
       {navlink('index.html', "Accueil", 'accueil')}
       {navlink('fiches.html', "Fiches des acteurs", 'fiches')}
       {navlink('pistes.html', "Pistes de recherche", 'pistes')}
-      {navlink('archives-privees.html', "Archives privées", 'archives')}
+      {navlink('archives-privees.html', "Archives", 'archives')}
     </nav>"""
     if active == "accueil" and depth == 0:
         header = f"""<header class="hero"><h1>{SITE_TITLE}</h1><p>{SITE_TAGLINE}</p></header>"""
@@ -459,40 +468,53 @@ def page(title, body, active="", depth=0):
 
 def render_idcard(row, personnes, branches, idx, link_or_text, depth, documents=None):
     pid = row.get("ID Personne", "")
-    name = person_display_name(row)
+    prenom = row.get("Prénom(s)", "")
+    nom = row.get("Nom", "")
     nom_naissance = row.get("Nom de naissance (si différent)", "")
-    lien_meme = get_lien(row)
     sexe = str(row.get("Sexe", "")).strip().upper()
+    lien_meme = get_lien(row)
+    generation = row.get("Génération", "")
     branche = branches.get(str(pid).strip(), "")
-    branche_class = f" branche-{branche.lower()}" if branche in ("MEME", "PEPE") else ""
+    color = branch_color(branche, generation) if branche in ("MEME", "PEPE") else None
+    border_style = f' style="border-left-color:{color}"' if color else ""
+
+    # Titre : "Prénom Nom de naissance" en normal + "épouse Nom" en gras, pour les femmes mariées
+    if sexe == "F" and not is_blank(nom_naissance) and nom_naissance.strip().upper() != str(nom).strip().upper():
+        titre = f'<span style="font-weight:400">{prenom} {nom_naissance}</span> <span style="font-weight:800">épouse {nom}</span>'
+    else:
+        titre = person_display_name(row)
 
     photos = split_urls(row.get("Photos (liens Postimage, séparés par ;)", ""))
     portrait = photos[0] if photos else None
     gallery_photos = photos[1:] if len(photos) > 1 else []
 
-    pere = link_or_text(row.get("Père (ID Personne)", ""))
-    mere = link_or_text(row.get("Mère (ID Personne)", ""))
-    parents_bits = [p for p in (pere, mere) if p]
-    parents_html = f"<dt>Enfant de</dt><dd>{' et '.join(parents_bits)}</dd>" if parents_bits else ""
+    pere_col = find_col(row, PERE_COLONNES)
+    mere_col = find_col(row, MERE_COLONNES)
+    conjoint_col = find_col(row, CONJOINT_COLONNES)
+    fratrie_col = find_col(row, FRATRIE_COLONNES)
 
-    conjoint_label = "Épouse de" if sexe == "F" else ("Époux de" if sexe in ("H", "M") else "Conjoint(e) de")
-    conjoints = [link_or_text(c) for c in split_list(row.get("Conjoint(s) (ID Personne)", ""))]
+    pere = link_or_text(row.get(pere_col, ""))
+    pere_html = f"<dt>{label_from_header(pere_col)}</dt><dd>{pere}</dd>" if pere else ""
+    mere = link_or_text(row.get(mere_col, ""))
+    mere_html = f"<dt>{label_from_header(mere_col)}</dt><dd>{mere}</dd>" if mere else ""
+
+    conjoints = [link_or_text(c) for c in split_list(row.get(conjoint_col, ""))]
     conjoints = [c for c in conjoints if c]
-    conjoint_html = f"<dt>{conjoint_label}</dt><dd>{', '.join(conjoints)}</dd>" if conjoints else ""
+    conjoint_html = f"<dt>{label_from_header(conjoint_col)}</dt><dd>{', '.join(conjoints)}</dd>" if conjoints else ""
 
     kids = find_children(str(pid).strip(), personnes)
     kids_html = ""
     if kids:
         kid_links = [f'<a href="{"#" if depth == 0 else ""}{slug(k.get("ID Personne",""))}{".html" if depth else ""}">{person_display_name(k)}</a>' for k in kids]
-        kids_html = f"<dt>Parent de</dt><dd>{', '.join(kid_links)}</dd>"
+        kids_html = f"<dt>Enfants</dt><dd>{', '.join(kid_links)}</dd>"
 
-    fratrie_ids = split_list(row.get("Fratrie (ID Personne)", ""))
+    fratrie_ids = split_list(row.get(fratrie_col, ""))
     fratrie_links = [link_or_text(f) for f in fratrie_ids]
     fratrie_links = [f for f in fratrie_links if f]
-    fratrie_html = f"<dt>Fratrie de</dt><dd>{', '.join(fratrie_links)}</dd>" if fratrie_links else ""
+    fratrie_html = f"<dt>{label_from_header(fratrie_col)}</dt><dd>{', '.join(fratrie_links)}</dd>" if fratrie_links else ""
 
     nom_naissance_html = ""
-    if not is_blank(nom_naissance) and nom_naissance.strip().upper() != row.get("Nom", "").strip().upper():
+    if titre == person_display_name(row) and not is_blank(nom_naissance) and nom_naissance.strip().upper() != str(nom).strip().upper():
         nom_naissance_html = f"<dt>Nom de naissance</dt><dd>{nom_naissance}</dd>"
 
     etat_civil_rows = [nom_naissance_html] if nom_naissance_html else []
@@ -508,17 +530,17 @@ def render_idcard(row, personnes, branches, idx, link_or_text, depth, documents=
     lieu_deces = row.get("Lieu de décès", "")
     if not is_blank(lieu_deces):
         etat_civil_rows.append(f"<dt>Lieu de décès</dt><dd>{lieu_deces}</dd>")
-    dl_html = "".join(etat_civil_rows) + conjoint_html + parents_html + kids_html + fratrie_html
+    dl_html = "".join(etat_civil_rows) + conjoint_html + pere_html + mere_html + kids_html + fratrie_html
 
     photo_html = (
-        f'<img class="photo" src="{portrait}" alt="Portrait de {name}">' if portrait
+        f'<img class="photo" src="{portrait}" alt="Portrait de {person_display_name(row)}">' if portrait
         else '<div class="photo">Pas encore de photo</div>'
     )
 
     gallery_html = ""
     if gallery_photos:
         thumbs = "".join(
-            f'<a href="{u}" target="_blank" rel="noopener"><img src="{u}" alt="Photo de {name}" loading="lazy"></a>'
+            f'<a href="{u}" target="_blank" rel="noopener"><img src="{u}" alt="Photo" loading="lazy"></a>'
             for u in gallery_photos
         )
         gallery_html = f"<div class='gallery'>{thumbs}</div>"
@@ -528,17 +550,52 @@ def render_idcard(row, personnes, branches, idx, link_or_text, depth, documents=
     anchor = f'<a name="{slug(pid)}"></a>' if depth == 0 else ""
     return f"""
     {anchor}
-    <div class="idcard{branche_class}">
+    <div class="idcard"{border_style}>
       {photo_html}
       <div class="infos">
         <div class="eyebrow">{'' if is_blank(lien_meme) else lien_meme}</div>
-        <h2>{name} {stamp(row.get('Statut (confirmé / hypothèse)'))}</h2>
+        <h2>{titre} {stamp(row.get('Statut (confirmé / hypothèse)'))}</h2>
         <dl>{dl_html}</dl>
         {gallery_html}
         {docs_html}
       </div>
     </div>
     """
+
+
+PERE_COLONNES = ["Père (ID Personne)", "Papa (ID Personne)"]
+MERE_COLONNES = ["Mère (ID Personne)", "Maman (ID Personne)"]
+CONJOINT_COLONNES = ["Conjoint(s) (ID Personne)", "Conjoint (ID Personne)"]
+FRATRIE_COLONNES = ["Fratrie (ID Personne)"]
+
+
+def find_col(row, candidates):
+    for c in candidates:
+        if c in row.index:
+            return c
+    return candidates[0]
+
+
+def label_from_header(header):
+    return re.sub(r"\s*\(.*?\)\s*$", "", str(header)).strip()
+
+
+def branch_color(branch, generation):
+    import colorsys
+    if branch == "MEME":
+        hue = 345 / 360
+    elif branch == "PEPE":
+        hue = 205 / 360
+    else:
+        return None
+    try:
+        g = int(float(str(generation).strip()))
+    except Exception:
+        g = 1
+    g = max(0, min(g, 5))
+    lightness = max(0.26, 0.60 - g * 0.06)
+    r, gg, b = colorsys.hls_to_rgb(hue, lightness, 0.55)
+    return "#{:02x}{:02x}{:02x}".format(int(r * 255), int(gg * 255), int(b * 255))
 
 
 def stamp(statut: str) -> str:
@@ -575,16 +632,11 @@ def build_fiches(personnes: pd.DataFrame, branches: dict, documents: pd.DataFram
                 return f'<a href="#{slug(pid)}">{label}</a>'
             return label
 
-        legend = """
-        <div class="legend">
-          <span><span class="dot meme"></span>Côté MEME</span>
-          <span><span class="dot pepe"></span>Côté PEPE</span>
-        </div>"""
         cards = [
             render_idcard(row, personnes, branches, idx, link_or_text, depth=0, documents=documents)
             for _, row in personnes.iterrows()
         ]
-        body = "<h2>Les acteurs de l'histoire, jusqu'ici</h2>" + legend + "".join(cards)
+        body = "<h2>Les acteurs de l'histoire, jusqu'ici</h2>" + "".join(cards)
     (DOCS / "fiches.html").write_text(page("Fiches des acteurs", body, active="fiches", depth=0), encoding="utf-8")
 
 
@@ -631,8 +683,13 @@ def build_person_pages(personnes: pd.DataFrame, branches: dict, documents: pd.Da
 def build_pistes(personnes: pd.DataFrame, documents: pd.DataFrame):
     leads = compute_leads(personnes)
     idx = by_id_index(personnes)
+    legend = """
+    <div class="legend">
+      <span><span class="dot meme"></span>Côté MEME</span>
+      <span><span class="dot pepe"></span>Côté PEPE (plus la teinte est foncée, plus la génération est ancienne)</span>
+    </div>"""
     if not leads:
-        body = "<p class='empty'>Aucune piste ouverte pour l'instant : soit tout est confirmé, soit l'arbre est encore vide.</p>"
+        body = legend + "<p class='empty'>Aucune piste ouverte pour l'instant : soit tout est confirmé, soit l'arbre est encore vide.</p>"
     else:
         cards = []
         for lead in leads:
@@ -650,11 +707,19 @@ def build_pistes(personnes: pd.DataFrame, documents: pd.DataFrame):
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
                  href="{mailto}">Envoyer un document pour cette piste</a>
             </div>""")
-        body = "<h2>Ce qu'il nous manque encore</h2>" + "".join(cards)
+        body = legend + "<h2>Ce qu'il nous manque encore</h2>" + "".join(cards)
     (DOCS / "pistes.html").write_text(page("Pistes de recherche", body, active="pistes", depth=0), encoding="utf-8")
 
 
-def build_archives_privees(documents: pd.DataFrame):
+def build_archives_privees(personnes: pd.DataFrame, documents: pd.DataFrame):
+    idx = by_id_index(personnes)
+
+    def person_label(pid):
+        pid = pid.strip()
+        row = idx.get(pid)
+        label = person_display_name(row) if row is not None else pid
+        return f'<a href="fiches.html#{slug(pid)}">{label}</a>' if row is not None else label
+
     body = f"""
     <h2>Pourquoi certains documents ne sont pas sur ce site</h2>
     <div class="archive-box">
@@ -676,19 +741,22 @@ def build_archives_privees(documents: pd.DataFrame):
         rows = []
         for _, d in documents.iterrows():
             doc_id = d.get("ID Document", "")
-            nom = d.get("Nom du doc") or d.get("Type de document") or "—"
-            mentionnes = get_personnes_mentionnees(d)
+            nom = d.get("Nom du doc") or "—"
+            lien = get_doc_link(d)
+            lien_html = f'<a href="{lien}" target="_blank" rel="noopener">voir</a>' if not is_blank(lien) else "<span class='empty'>pas encore de lien</span>"
+            mentionnes = sorted(set(get_personnes_mentionnees(d)))
+            noms = [person_label(p) for p in mentionnes]
             lieu = d.get("Rangement physique", "")
             statut = "<span class='field-stamp confirme'>exploité</span>" if mentionnes else "<span class='field-stamp manque'>à explorer</span>"
             rows.append(f"""
             <div class="doc-chip">
-              <strong>{doc_id}</strong> — {nom} {statut}
+              <strong>{doc_id} — {nom}</strong> {statut} · {lien_html}
               {f"<span class='meta'>Chez : {lieu}</span>" if not is_blank(lieu) else ""}
-              {f"<span class='meta'>{len(set(mentionnes))} personne(s) reliée(s)</span>" if mentionnes else ""}
+              {f"<span class='meta'>Personnes citées : {', '.join(noms)}</span>" if noms else ""}
             </div>""")
         body += f"<h2>Inventaire de tous les documents scannés ({len(documents)})</h2><div class='doc-list'>{''.join(rows)}</div>"
     (DOCS / "archives-privees.html").write_text(
-        page("Archives privées", body, active="archives", depth=0), encoding="utf-8"
+        page("Archives", body, active="archives", depth=0), encoding="utf-8"
     )
 
 
@@ -701,7 +769,7 @@ def main():
     build_fiches(personnes, branches, documents)
     build_person_pages(personnes, branches, documents)
     build_pistes(personnes, documents)
-    build_archives_privees(documents)
+    build_archives_privees(personnes, documents)
     print(f"Site généré dans {DOCS} — {len(personnes)} personne(s), {len(documents)} document(s).")
 
 
