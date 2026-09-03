@@ -654,9 +654,9 @@ def parse_gen(v):
 
 
 R = 34          # rayon des cercles
-SPACING_X = 118  # écart horizontal entre deux personnes d'une même génération
-ROW_H = 168      # écart vertical entre deux générations
-MARGIN = 90
+SPACING_X = 132  # écart horizontal entre deux personnes d'une même génération
+ROW_H = 178      # écart vertical entre deux générations
+MARGIN = 100
 
 
 def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: str):
@@ -759,7 +759,7 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
                     f'stroke="#c9bda3" stroke-width="2"/>'
                 )
 
-    # petits traits horizontaux entre frères/sœurs d'une même génération
+    # traits pointillés fins entre frères/sœurs d'une même génération
     by_gen = {}
     for pid, (x, y) in positions.items():
         by_gen.setdefault(y, []).append((x, pid))
@@ -771,13 +771,33 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
             if p2 in fratrie1:
                 svg_parts.append(
                     f'<line x1="{px(x1)+R}" y1="{py(y)}" x2="{px(x2)-R}" y2="{py(y)}" '
-                    f'stroke="#c9bda3" stroke-width="2" stroke-dasharray="3,3"/>'
+                    f'stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/>'
+                )
+
+    # traits en tirets, plus marqués, entre conjoints
+    seen_couples = set()
+    for pid, (x, y) in positions.items():
+        row = idx[pid]
+        conjoint_col = find_col(row, CONJOINT_COLONNES)
+        for spouse_id in split_list(row.get(conjoint_col, "")):
+            if spouse_id in positions and positions[spouse_id][1] == y:
+                couple_key = tuple(sorted((pid, spouse_id)))
+                if couple_key in seen_couples:
+                    continue
+                seen_couples.add(couple_key)
+                x2, y2 = positions[spouse_id]
+                x1s, x2s = sorted((px(x), px(x2)))
+                svg_parts.append(
+                    f'<line x1="{x1s+R}" y1="{py(y)}" x2="{x2s-R}" y2="{py(y)}" '
+                    f'stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/>'
                 )
 
     # noeuds (portrait ou pastille + nom), cliquables
     for pid, (x, y) in positions.items():
         row = idx[pid]
         name = person_display_name(row)
+        prenom = row.get("Prénom(s)", "")
+        nom = row.get("Nom", "")
         branche = branches.get(pid, "")
         color = branch_color(branche, parse_gen(row.get("Génération", ""))) or "#6b5c48"
         photos = split_urls(row.get("Photos (liens Postimage, séparés par ;)", "")) if "Photos (liens Postimage, séparés par ;)" in row.index else []
@@ -796,12 +816,16 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
                 f'<text x="{cx}" y="{cy+6}" text-anchor="middle" font-family="Playfair Display, Georgia, serif" '
                 f'font-size="18" fill="{color}">{initiales}</text>'
             )
+        ligne1 = prenom if not is_blank(prenom) else name
+        ligne2 = nom if not is_blank(nom) else ""
         svg_parts.append(f"""
         <a href="fiches.html#{slug(pid)}">
           <circle cx="{cx}" cy="{cy}" r="{R}" fill="#faf6ec" stroke="{color}" stroke-width="4"/>
           {photo_svg}
           <text x="{cx}" y="{cy+R+18}" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="13" font-weight="700" fill="#3a2e22">{name}</text>
+                font-size="12.5" font-weight="700" fill="#3a2e22">{ligne1}</text>
+          <text x="{cx}" y="{cy+R+34}" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
+                font-size="12.5" font-weight="700" fill="#3a2e22">{ligne2}</text>
         </a>""")
 
     svg = (
