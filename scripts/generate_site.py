@@ -653,6 +653,65 @@ def parse_gen(v):
         return None
 
 
+def order_row_with_clusters(row_pids, idx, raw_x):
+    """Ordonne une génération en gardant chaque fratrie compacte (jamais coupée par
+    quelqu'un d'extérieur), et en collant un conjoint venu d'ailleurs juste à côté
+    de son mari/sa femme, à l'extérieur du bloc de fratrie."""
+    in_row = set(row_pids)
+    parent = {p: p for p in row_pids}
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb
+
+    for p in row_pids:
+        row = idx[p]
+        for sib in split_list(row.get(find_col(row, FRATRIE_COLONNES), "")):
+            if sib in in_row:
+                union(p, sib)
+
+    clusters = {}
+    for p in row_pids:
+        clusters.setdefault(find(p), []).append(p)
+
+    blocks = []
+    singles_with_spouse = []
+    for root, members in clusters.items():
+        if len(members) == 1:
+            p = members[0]
+            row = idx[p]
+            spouses = [s for s in split_list(row.get(find_col(row, CONJOINT_COLONNES), "")) if s in in_row]
+            if spouses and find(spouses[0]) != root:
+                singles_with_spouse.append((p, spouses[0]))
+                continue
+        members_sorted = sorted(members, key=lambda p: raw_x.get(p, 0))
+        avg_x = sum(raw_x.get(p, 0) for p in members) / len(members)
+        blocks.append([avg_x, members_sorted])
+    blocks.sort(key=lambda b: b[0])
+
+    ordered = []
+    for _, members in blocks:
+        ordered.extend(members)
+
+    for p, spouse in singles_with_spouse:
+        if spouse in ordered:
+            i = ordered.index(spouse)
+            if raw_x.get(p, 0) < raw_x.get(spouse, 0):
+                ordered.insert(i, p)
+            else:
+                ordered.insert(i + 1, p)
+        else:
+            ordered.append(p)
+    return ordered
+
+
 R = 34          # rayon des cercles
 SPACING_X = 132  # écart horizontal entre deux personnes d'une même génération
 ROW_H = 178      # écart vertical entre deux générations
@@ -700,33 +759,31 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
     # -- générations ancêtres, du plus proche au plus lointain --
     for g in sorted([g for g in gens if g > base_gen]):
         row = sorted(set(gens[g]))
-        estimated = []
+        row_set = set(row)
+        raw_x = {}
         for pid in row:
-            row_data = idx[pid]
             kids = find_children(pid, personnes)
             kid_xs = [positions[k.get("ID Personne", "").strip()][0]
                       for k in kids if k.get("ID Personne", "").strip() in positions]
-            x = sum(kid_xs) / len(kid_xs) if kid_xs else None
-            estimated.append([pid, x])
-        known = [e for e in estimated if e[1] is not None]
-        unknown = [e for e in estimated if e[1] is None]
-        left_x = min([e[1] for e in known], default=0) - SPACING_X
-        right_x = max([e[1] for e in known], default=0) + SPACING_X
-        for e in unknown:
-            branche = branches.get(e[0], "")
-            if branche == "MEME":
-                e[1] = left_x
-                left_x -= SPACING_X
-            else:
-                e[1] = right_x
-                right_x += SPACING_X
-        estimated.sort(key=lambda e: e[1])
-        prev_x = None
-        for pid, x in estimated:
-            if prev_x is not None and x < prev_x + SPACING_X:
-                x = prev_x + SPACING_X
-            positions[pid] = (x, y_for(g))
-            prev_x = x
+            raw_x[pid] = sum(kid_xs) / len(kid_xs) if kid_xs else None
+        known_vals = [v for v in raw_x.values() if v is not None]
+        left_x = min(known_vals, default=0) - SPACING_X
+        right_x = max(known_vals, default=0) + SPACING_X
+        for pid in row:
+            if raw_x[pid] is None:
+                branche = branches.get(pid, "")
+                if branche == "MEME":
+                    raw_x[pid] = left_x
+                    left_x -= SPACING_X
+                else:
+                    raw_x[pid] = right_x
+                    right_x += SPACING_X
+
+        ordered = order_row_with_clusters(row, idx, raw_x)
+        center = sum(raw_x.values()) / len(raw_x) if raw_x else 0
+        start = center - (len(ordered) - 1) * SPACING_X / 2
+        for i, pid in enumerate(ordered):
+            positions[pid] = (start + i * SPACING_X, y_for(g))
 
     if not positions:
         body = "<p class='empty'>Personne n'a encore de génération renseignée.</p>"
