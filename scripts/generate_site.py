@@ -87,7 +87,8 @@ def mini_stamp(status):
 
 def compute_branches(personnes: pd.DataFrame):
     """Calcule automatiquement, pour chaque personne, si elle est du côté MEME ou du côté
-    PEPE, en remontant/descendant les liens Père/Mère/Fratrie depuis MEME et son conjoint."""
+    PEPE, en remontant/descendant les liens Père/Mère/Fratrie depuis MEME et son conjoint.
+    Renvoie (branch, meme_id, pepe_id)."""
     idx = by_id_index(personnes)
     branch = {}
     meme_id = None
@@ -96,9 +97,11 @@ def compute_branches(personnes: pd.DataFrame):
             meme_id = pid
             break
     if not meme_id:
-        return branch
+        return branch, None, None
     branch[meme_id] = "MEME"
-    pepe_id = str(idx[meme_id].get("Conjoint(s) (ID Personne)", "")).strip()
+    conjoint_col = find_col(idx[meme_id], CONJOINT_COLONNES)
+    pepe_id = str(idx[meme_id].get(conjoint_col, "")).strip()
+    pepe_id = split_list(pepe_id)[0] if split_list(pepe_id) else ""
     if pepe_id and pepe_id in idx:
         branch[pepe_id] = "PEPE"
 
@@ -134,7 +137,7 @@ def compute_branches(personnes: pd.DataFrame):
                     branch[pid] = branch[parent_id]
                     changed = True
                     break
-    return branch
+    return branch, meme_id, pepe_id
 
 
 def load_data():
@@ -214,7 +217,7 @@ def find_documents_for_person(pid, documents: pd.DataFrame):
     return matches
 
 
-def render_documents_block(pid, documents, idx, title="Sources"):
+def render_documents_block(pid, documents, idx, title="Sources", compact=False):
     docs = find_documents_for_person(pid, documents)
     if not docs:
         return ""
@@ -230,13 +233,16 @@ def render_documents_block(pid, documents, idx, title="Sources"):
     chips = []
     for d in docs:
         nom_doc = d.get("Nom du doc") or d.get("Type de document") or d.get("ID Document") or "Document"
+        lien = get_doc_link(d)
+        lien_html = f'<a href="{lien}" target="_blank" rel="noopener">voir</a>' if not is_blank(lien) else "<span class='empty'>pas encore de lien</span>"
+        if compact:
+            chips.append(f"<div class='doc-chip'><strong>{nom_doc}</strong> — {lien_html}</div>")
+            continue
         lieu = d.get("Rangement physique", "")
         autres_ids = set(get_personnes_mentionnees(d))
         autres_ids.discard(str(pid).strip())
         autres = [person_label(a) for a in autres_ids]
         autres = [a for a in autres if a]
-        lien = get_doc_link(d)
-        lien_html = f'<a href="{lien}" target="_blank" rel="noopener">voir</a>' if not is_blank(lien) else "<span class='empty'>pas encore de lien</span>"
         chips.append(f"""
         <div class="doc-chip">
           <strong>{nom_doc}</strong> — {lien_html}
@@ -545,7 +551,7 @@ def render_idcard(row, personnes, branches, idx, link_or_text, depth, documents=
         )
         gallery_html = f"<div class='gallery'>{thumbs}</div>"
 
-    docs_html = render_documents_block(pid, documents, idx, title="Sources") if documents is not None else ""
+    docs_html = render_documents_block(pid, documents, idx, title="Sources", compact=True) if documents is not None else ""
 
     anchor = f'<a name="{slug(pid)}"></a>' if depth == 0 else ""
     return f"""
@@ -640,12 +646,179 @@ def build_fiches(personnes: pd.DataFrame, branches: dict, documents: pd.DataFram
     (DOCS / "fiches.html").write_text(page("Fiches des acteurs", body, active="fiches", depth=0), encoding="utf-8")
 
 
-def build_index(personnes: pd.DataFrame):
+def parse_gen(v):
+    try:
+        return int(float(str(v).strip()))
+    except Exception:
+        return None
+
+
+R = 34          # rayon des cercles
+SPACING_X = 118  # écart horizontal entre deux personnes d'une même génération
+ROW_H = 168      # écart vertical entre deux générations
+MARGIN = 90
+
+
+def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: str):
+    idx = by_id_index(personnes)
+
+    if not meme_id or personnes.empty:
+        body = (
+            "<p class='empty'>L'arbre est encore vide — dès que MEME et PEPE sont dans le "
+            "« Registre des personnes » (avec « MEME » exactement dans la colonne du lien), "
+            "cette page affichera le schéma.</p>"
+        )
+        (DOCS / "index.html").write_text(page("Accueil", body, active="accueil", depth=0), encoding="utf-8")
+        return
+
+    gens = {}
+    for pid, row in idx.items():
+        g = parse_gen(row.get("Génération", ""))
+        if g is not None:
+            gens.setdefault(g, []).append(pid)
+
+    base_gen = parse_gen(idx[meme_id].get("Génération", "")) or 1
+    positions = {}  # pid -> (x, y)
+
+    def y_for(g):
+        return (base_gen - g) * ROW_H
+
+    # -- génération de base : MEME et PEPE --
+    base_row = [p for p in (meme_id, pepe_id) if p]
+    for i, pid in enumerate(base_row):
+        positions[pid] = ((i - (len(base_row) - 1) / 2) * SPACING_X, y_for(base_gen))
+
+    # -- génération des enfants (base_gen - 1), centrée sous le couple --
+    child_gen = base_gen - 1
+    if child_gen in gens:
+        kids = sorted(set(gens[child_gen]))
+        center_x = sum(positions[p][0] for p in base_row) / len(base_row) if base_row else 0
+        start = center_x - (len(kids) - 1) * SPACING_X / 2
+        for i, pid in enumerate(kids):
+            positions[pid] = (start + i * SPACING_X, y_for(child_gen))
+
+    # -- générations ancêtres, du plus proche au plus lointain --
+    for g in sorted([g for g in gens if g > base_gen]):
+        row = sorted(set(gens[g]))
+        estimated = []
+        for pid in row:
+            row_data = idx[pid]
+            kids = find_children(pid, personnes)
+            kid_xs = [positions[k.get("ID Personne", "").strip()][0]
+                      for k in kids if k.get("ID Personne", "").strip() in positions]
+            x = sum(kid_xs) / len(kid_xs) if kid_xs else None
+            estimated.append([pid, x])
+        known = [e for e in estimated if e[1] is not None]
+        unknown = [e for e in estimated if e[1] is None]
+        left_x = min([e[1] for e in known], default=0) - SPACING_X
+        right_x = max([e[1] for e in known], default=0) + SPACING_X
+        for e in unknown:
+            branche = branches.get(e[0], "")
+            if branche == "MEME":
+                e[1] = left_x
+                left_x -= SPACING_X
+            else:
+                e[1] = right_x
+                right_x += SPACING_X
+        estimated.sort(key=lambda e: e[1])
+        prev_x = None
+        for pid, x in estimated:
+            if prev_x is not None and x < prev_x + SPACING_X:
+                x = prev_x + SPACING_X
+            positions[pid] = (x, y_for(g))
+            prev_x = x
+
+    if not positions:
+        body = "<p class='empty'>Personne n'a encore de génération renseignée.</p>"
+        (DOCS / "index.html").write_text(page("Accueil", body, active="accueil", depth=0), encoding="utf-8")
+        return
+
+    xs = [p[0] for p in positions.values()]
+    ys = [p[1] for p in positions.values()]
+    min_x, max_x = min(xs) - MARGIN, max(xs) + MARGIN
+    min_y, max_y = min(ys) - MARGIN, max(ys) + MARGIN
+    width, height = max_x - min_x, max_y - min_y
+
+    def px(x):
+        return x - min_x
+
+    def py(y):
+        return y - min_y
+
+    svg_parts = []
+    # lignes parent -> enfant
+    for pid, (x, y) in positions.items():
+        row = idx[pid]
+        pere_col = find_col(row, PERE_COLONNES)
+        mere_col = find_col(row, MERE_COLONNES)
+        for parent_id in (str(row.get(pere_col, "")).strip(), str(row.get(mere_col, "")).strip()):
+            if parent_id in positions:
+                px1, py1 = positions[parent_id]
+                svg_parts.append(
+                    f'<line x1="{px(x)}" y1="{py(y)}" x2="{px(px1)}" y2="{py(py1)}" '
+                    f'stroke="#c9bda3" stroke-width="2"/>'
+                )
+
+    # petits traits horizontaux entre frères/sœurs d'une même génération
+    by_gen = {}
+    for pid, (x, y) in positions.items():
+        by_gen.setdefault(y, []).append((x, pid))
+    for y, nodes in by_gen.items():
+        nodes.sort()
+        for (x1, p1), (x2, p2) in zip(nodes, nodes[1:]):
+            row1 = idx[p1]
+            fratrie1 = split_list(row1.get(find_col(row1, FRATRIE_COLONNES), ""))
+            if p2 in fratrie1:
+                svg_parts.append(
+                    f'<line x1="{px(x1)+R}" y1="{py(y)}" x2="{px(x2)-R}" y2="{py(y)}" '
+                    f'stroke="#c9bda3" stroke-width="2" stroke-dasharray="3,3"/>'
+                )
+
+    # noeuds (portrait ou pastille + nom), cliquables
+    for pid, (x, y) in positions.items():
+        row = idx[pid]
+        name = person_display_name(row)
+        branche = branches.get(pid, "")
+        color = branch_color(branche, parse_gen(row.get("Génération", ""))) or "#6b5c48"
+        photos = split_urls(row.get("Photos (liens Postimage, séparés par ;)", "")) if "Photos (liens Postimage, séparés par ;)" in row.index else []
+        portrait = photos[0] if photos else None
+        clip_id = f"clip-{slug(pid)}"
+        cx, cy = px(x), py(y)
+        if portrait:
+            photo_svg = (
+                f'<clipPath id="{clip_id}"><circle cx="{cx}" cy="{cy}" r="{R-3}"/></clipPath>'
+                f'<image href="{portrait}" x="{cx-R+3}" y="{cy-R+3}" width="{(R-3)*2}" height="{(R-3)*2}" '
+                f'preserveAspectRatio="xMidYMid slice" clip-path="url(#{clip_id})"/>'
+            )
+        else:
+            initiales = "".join([w[0] for w in name.split() if w])[:2].upper()
+            photo_svg = (
+                f'<text x="{cx}" y="{cy+6}" text-anchor="middle" font-family="Playfair Display, Georgia, serif" '
+                f'font-size="18" fill="{color}">{initiales}</text>'
+            )
+        svg_parts.append(f"""
+        <a href="fiches.html#{slug(pid)}">
+          <circle cx="{cx}" cy="{cy}" r="{R}" fill="#faf6ec" stroke="{color}" stroke-width="4"/>
+          {photo_svg}
+          <text x="{cx}" y="{cy+R+18}" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
+                font-size="13" font-weight="700" fill="#3a2e22">{name}</text>
+        </a>""")
+
+    svg = (
+        f'<svg viewBox="0 0 {width} {height}" width="{width}" height="{height}" '
+        f'xmlns="http://www.w3.org/2000/svg">{"".join(svg_parts)}</svg>'
+    )
+    non_places = len(personnes) - len(positions)
+    note = (
+        f"<p class='meta'>{non_places} personne(s) sans génération renseignée, donc pas encore sur ce schéma.</p>"
+        if non_places > 0 else ""
+    )
     body = f"""
-    <p>L'arbre visuel est encore en chantier — en attendant, retrouvez chaque
-    personne identifiée, avec ce qu'on sait d'elle, sur la page
-    <a href="fiches.html"><strong>Fiches des acteurs</strong></a>.</p>
-    <p class="meta">{len(personnes)} acteur(s) recensé(s) pour l'instant.</p>
+    <p class="meta">Cliquez un portrait pour ouvrir sa fiche.</p>
+    <div style="overflow-x:auto; background:#faf6ec; border:1px solid var(--line); border-radius:4px; padding:1rem;">
+      {svg}
+    </div>
+    {note}
     """
     (DOCS / "index.html").write_text(page("Accueil", body, active="accueil", depth=0), encoding="utf-8")
 
@@ -764,8 +937,8 @@ def main():
     DOCS.mkdir(exist_ok=True)
     personnes = load_data()
     documents = load_documents()
-    branches = compute_branches(personnes)
-    build_index(personnes)
+    branches, meme_id, pepe_id = compute_branches(personnes)
+    build_index(personnes, branches, meme_id, pepe_id)
     build_fiches(personnes, branches, documents)
     build_person_pages(personnes, branches, documents)
     build_pistes(personnes, documents)
