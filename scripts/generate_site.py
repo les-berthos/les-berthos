@@ -434,7 +434,7 @@ FONT_LINKS = (
 )
 
 
-def page(title, body, active="", depth=0):
+def page(title, body, active="", depth=0, full_width=False):
     prefix = "../" * depth
 
     def navlink(href, label, key):
@@ -454,6 +454,7 @@ def page(title, body, active="", depth=0):
         header = f"""<header style="padding:1.6rem 1.5rem; text-align:center; border-bottom:1px solid var(--line);">
                    <a href="{prefix}index.html" style="font-family:'Playfair Display',Georgia,serif; font-size:1.5rem; color:var(--wax); text-decoration:none;">{SITE_TITLE}</a>
                  </header>"""
+    main_style = "max-width:none; margin:0; padding:2.2rem 2rem 4rem;" if full_width else ""
     return f"""<!doctype html>
 <html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -463,7 +464,7 @@ def page(title, body, active="", depth=0):
 </head><body>
 {header}
 {nav}
-<main>{body}</main>
+<main style="{main_style}">{body}</main>
 <footer class="contact">
   <p>Une photo, une lettre, un souvenir, une correction ? Écrivez-nous, ça complète directement l'enquête.</p>
   <a class="btn" href="mailto:{CONTACT_EMAIL}?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">
@@ -712,10 +713,10 @@ def order_row_with_clusters(row_pids, idx, raw_x):
     return ordered
 
 
-R = 34          # rayon des cercles
-SPACING_X = 132  # écart horizontal entre deux personnes d'une même génération
-ROW_H = 178      # écart vertical entre deux générations
-MARGIN = 100
+R = 42          # rayon des cercles
+SPACING_X = 156  # écart horizontal entre deux personnes d'une même génération
+ROW_H = 210      # écart vertical entre deux générations
+MARGIN = 110
 
 
 def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: str):
@@ -794,13 +795,13 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
     ys = [p[1] for p in positions.values()]
     min_x, max_x = min(xs) - MARGIN, max(xs) + MARGIN
     min_y, max_y = min(ys) - MARGIN, max(ys) + MARGIN
-    width, height = max_x - min_x, max_y - min_y
+    width, height = round(max_x - min_x), round(max_y - min_y)
 
     def px(x):
-        return x - min_x
+        return round(x - min_x, 1)
 
     def py(y):
-        return y - min_y
+        return round(y - min_y, 1)
 
     svg_parts = []
     # lignes parent -> enfant
@@ -871,7 +872,7 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
             initiales = "".join([w[0] for w in name.split() if w])[:2].upper()
             photo_svg = (
                 f'<text x="{cx}" y="{cy+6}" text-anchor="middle" font-family="Playfair Display, Georgia, serif" '
-                f'font-size="18" fill="{color}">{initiales}</text>'
+                f'font-size="22" fill="{color}">{initiales}</text>'
             )
         ligne1 = prenom if not is_blank(prenom) else name
         ligne2 = nom if not is_blank(nom) else ""
@@ -880,9 +881,9 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
           <circle cx="{cx}" cy="{cy}" r="{R}" fill="#faf6ec" stroke="{color}" stroke-width="4"/>
           {photo_svg}
           <text x="{cx}" y="{cy+R+18}" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="12.5" font-weight="700" fill="#3a2e22">{ligne1}</text>
+                font-size="14" font-weight="700" fill="#3a2e22">{ligne1}</text>
           <text x="{cx}" y="{cy+R+34}" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="12.5" font-weight="700" fill="#3a2e22">{ligne2}</text>
+                font-size="14" font-weight="700" fill="#3a2e22">{ligne2}</text>
         </a>""")
 
     svg = (
@@ -896,12 +897,12 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
     )
     body = f"""
     <p class="meta">Cliquez un portrait pour ouvrir sa fiche.</p>
-    <div style="overflow-x:auto; background:#faf6ec; border:1px solid var(--line); border-radius:4px; padding:1rem;">
+    <div style="overflow-x:auto;">
       {svg}
     </div>
     {note}
     """
-    (DOCS / "index.html").write_text(page("Accueil", body, active="accueil", depth=0), encoding="utf-8")
+    (DOCS / "index.html").write_text(page("Accueil", body, active="accueil", depth=0, full_width=True), encoding="utf-8")
 
 
 def build_person_pages(personnes: pd.DataFrame, branches: dict, documents: pd.DataFrame):
