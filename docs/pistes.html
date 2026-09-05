@@ -61,6 +61,8 @@ h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1
   font-size:.98rem;
 }
 .piste strong{color:var(--brass)}
+.piste.piste-perso{border-left-color:var(--sage)}
+.piste.piste-perso strong{color:var(--sage)}
 .idcard{
   display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px;
   padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px;
@@ -115,6 +117,11 @@ footer.contact a.btn:hover{background:#732530}
 .back{display:inline-block; margin-bottom:1.2rem; color:var(--ink-soft); text-decoration:none}
 .back:hover{color:var(--wax)}
 .archive-box{background:#faf6ec; border:1px solid var(--line); border-left:4px solid var(--wax); padding:1.2rem 1.4rem; margin:1.2rem 0}
+.noeud{cursor:pointer}
+.noeud circle{transition:transform .15s ease, filter .15s ease}
+.noeud.actif circle{filter:drop-shadow(0 0 7px var(--wax)); transform:scale(1.1); transform-origin:center}
+.lien{transition:stroke .15s ease, stroke-width .15s ease, opacity .15s ease}
+.lien.actif{stroke:var(--wax) !important; stroke-width:3.5 !important; opacity:1 !important}
 @media (max-width:600px){
   .hero h1{font-size:2.1rem} body{font-size:17px} .idcard{flex-direction:column; align-items:center; text-align:center}
   .idcard dl{grid-template-columns:1fr; text-align:center}
@@ -138,7 +145,8 @@ footer.contact a.btn:hover{background:#732530}
     </div><h2>Ce qu'il nous manque encore</h2>
             <div class="card">
               <a class="name" href="fiches.html#P003">Pierre Joannes Antoine BERTHOLON</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>livret individuel de guerre Pierre BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EQ3XYVFNHC#7gfdMxxfAQU4" target="_blank" rel="noopener">voir</a>
@@ -148,7 +156,7 @@ footer.contact a.btn:hover{background:#732530}
         <div class="doc-chip">
           <strong>carte de priorité des méres de famille Elise BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EDTWWRM5Q0#1Ie4R1PZID5U" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P031">Marie BERTHOLON</a>, <a href="#P021">Elise Jeanne Marie BERTHOLON</a></span>
+          <span class='meta'>Avec : <a href="#P021">Elise Jeanne Marie BERTHOLON</a>, <a href="#P031">Marie BERTHOLON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -156,12 +164,13 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P021">Elise Jeanne Marie BERTHOLON</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Que liens avec les autres LAULAGNIER? (n'apparait pas dans l'acte notarié donc peu probable fratrie, reste soeur de Jacques? Et Elise est né en 1889, Jacques est décédé en 1887, </div>
+              
+              <div class='piste piste-perso'><strong>Piste de recherche :</strong> Que liens avec les autres LAULAGNIER? (n'apparait pas dans l'acte notarié donc peu probable fratrie, reste soeur de Jacques? Et Elise est né en 1889, Jacques est décédé en 1887, </div>
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Marc, Tati (Photocopie)</span>
-          <span class='meta'>Avec : <a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P011">Joséphine Claudia SOLY</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P020">Cyprien BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a>, <a href="#P001">Anna Victorine BERTHOLON</a>, <a href="#P010">François GIRAUD</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a></span>
+          <span class='meta'>Avec : <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P010">François GIRAUD</a>, <a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P001">Anna Victorine BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a>, <a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P011">Joséphine Claudia SOLY</a>, <a href="#P020">Cyprien BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a></span>
         </div>
         <div class="doc-chip">
           <strong>carte d'identité Elise LAULAGNIER-BERTHOLON</strong> — <a href="https://drive.proton.me/urls/J16PCHQ944#apeAQw00a5D4" target="_blank" rel="noopener">voir</a>
@@ -171,22 +180,22 @@ footer.contact a.btn:hover{background:#732530}
         <div class="doc-chip">
           <strong>livret individuel de guerre Jean BERTHOLON</strong> — <a href="https://drive.proton.me/urls/59B6AJ1WF8#WVM4UhKO5wwK" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P020">Cyprien BERTHOLON</a></span>
+          <span class='meta'>Avec : <a href="#P020">Cyprien BERTHOLON</a>, <a href="#P002">Jean-Pierre BERTHOLON</a></span>
         </div>
         <div class="doc-chip">
           <strong>livret individuel de guerre Pierre BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EQ3XYVFNHC#7gfdMxxfAQU4" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P003">Pierre Joannes Antoine BERTHOLON</a>, <a href="#P020">Cyprien BERTHOLON</a></span>
+          <span class='meta'>Avec : <a href="#P020">Cyprien BERTHOLON</a>, <a href="#P003">Pierre Joannes Antoine BERTHOLON</a></span>
         </div>
         <div class="doc-chip">
           <strong>livret individuel de guerre Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/SB4Q66QNRG#hjzB9Dg8tzcE" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P032">Marius BERTHOLON</a>, <a href="#P020">Cyprien BERTHOLON</a></span>
+          <span class='meta'>Avec : <a href="#P020">Cyprien BERTHOLON</a>, <a href="#P032">Marius BERTHOLON</a></span>
         </div>
         <div class="doc-chip">
           <strong>carte de priorité des méres de famille Elise BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EDTWWRM5Q0#1Ie4R1PZID5U" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P003">Pierre Joannes Antoine BERTHOLON</a>, <a href="#P031">Marie BERTHOLON</a></span>
+          <span class='meta'>Avec : <a href="#P031">Marie BERTHOLON</a>, <a href="#P003">Pierre Joannes Antoine BERTHOLON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -194,12 +203,13 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P022">Jean-Jacques LAULAGNIER</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Maréchal à Perret commune de ARAULES</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class='piste piste-perso'><strong>Piste de recherche :</strong> Maréchal à Perret commune de ARAULES</div>
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P025">Marie LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -207,12 +217,13 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P023">Elisabeth LAULAGNIER</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> commune d'ANNONAY</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class='piste piste-perso'><strong>Piste de recherche :</strong> commune d'ANNONAY</div>
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P025">Marie LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -220,12 +231,13 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P024">Marguerite LAULAGNIER</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> célibataire pont de l'enceinte commune d'YSSINGEAUX</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class='piste piste-perso'><strong>Piste de recherche :</strong> célibataire pont de l'enceinte commune d'YSSINGEAUX</div>
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P025">Marie LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -233,12 +245,13 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P025">Marie LAULAGNIER</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> chapteuil commune de St JULIEN CHAPTEUIL</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class='piste piste-perso'><strong>Piste de recherche :</strong> chapteuil commune de St JULIEN CHAPTEUIL</div>
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -246,12 +259,13 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P026">Jean-Pierre LAULAGNIER</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> maréchal à Combvieille commune d'ARAULES</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class='piste piste-perso'><strong>Piste de recherche :</strong> maréchal à Combvieille commune d'ARAULES</div>
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P025">Marie LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -259,12 +273,13 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P027">Philomène BESSON</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> assistée autorisé de son époux Pierre BESSON Pont de l'enceinte commune d'YSSINGEAUX</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class='piste piste-perso'><strong>Piste de recherche :</strong> assistée autorisé de son époux Pierre BESSON Pont de l'enceinte commune d'YSSINGEAUX</div>
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P025">Marie LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -272,12 +287,13 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P028">Françoise LAULAGNIER</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> décédé à St JULIEN CHAPTEUIL en 1899</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.</div>
+              <div class='piste piste-perso'><strong>Piste de recherche :</strong> décédé à St JULIEN CHAPTEUIL en 1899</div>
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P025">Marie LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -285,38 +301,41 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P029">Jacques LAULAGNIER</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Père, Mère, Date de naissance, Lieu de naissance, Lieu de décès.</div>
+              
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P025">Marie LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P030">Elisabeth BESSIERES</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
-                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Jacques%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Jacques LAULAGNIER : Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
+                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Jacques%20LAULAGNIER&body=Bonjour,%0D%0A%0D%0AÀ propos de Jacques LAULAGNIER : Champs encore inconnus : Père, Mère, Date de naissance, Lieu de naissance, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P030">Elisabeth BESSIERES</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Père, Mère, Date de naissance, Lieu de naissance, Lieu de décès.</div>
+              
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P025">Marie LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a></span>
+          <span class='meta'>Avec : <a href="#P028">Françoise LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P029">Jacques LAULAGNIER</a>, <a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
-                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Elisabeth%20BESSIERES&body=Bonjour,%0D%0A%0D%0AÀ propos de Elisabeth BESSIERES : Champs encore inconnus : Date de naissance, Lieu de naissance, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
+                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Elisabeth%20BESSIERES&body=Bonjour,%0D%0A%0D%0AÀ propos de Elisabeth BESSIERES : Champs encore inconnus : Père, Mère, Date de naissance, Lieu de naissance, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P031">Marie BERTHOLON</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Lieu de naissance, Date de décès, Lieu de décès.</div>
+              
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>carte de priorité des méres de famille Elise BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EDTWWRM5Q0#1Ie4R1PZID5U" target="_blank" rel="noopener">voir</a>
           <span class='meta'>Chez : Simone</span>
-          <span class='meta'>Avec : <a href="#P003">Pierre Joannes Antoine BERTHOLON</a>, <a href="#P021">Elise Jeanne Marie BERTHOLON</a></span>
+          <span class='meta'>Avec : <a href="#P021">Elise Jeanne Marie BERTHOLON</a>, <a href="#P003">Pierre Joannes Antoine BERTHOLON</a></span>
         </div></div>
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
@@ -324,7 +343,8 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P032">Marius BERTHOLON</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>capture par Allemand de Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/VDDSEQ3WJ4#vVJX5rDAvOyA" target="_blank" rel="noopener">voir</a>
@@ -347,7 +367,8 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P033">Alban Marius Laurens BERTHOLON</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de décès, Lieu de décès.</div>
+              
               <h3>Ce que l'on a déjà</h3><div class='doc-list'>
         <div class="doc-chip">
           <strong>confirmation Alban BERTHOLON</strong> — <a href="https://drive.proton.me/urls/2K3Q7AC8BR#IMDj5ibQphlT" target="_blank" rel="noopener">voir</a>
@@ -365,11 +386,12 @@ footer.contact a.btn:hover{background:#732530}
             </div>
             <div class="card">
               <a class="name" href="fiches.html#P034">Pierre    BESSONS</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              <div class='piste'><strong>Ce qu'il nous manque :</strong> Champs encore inconnus : Père, Mère, Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.</div>
+              
               
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
-                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Pierre%20%20%20%20BESSONS&body=Bonjour,%0D%0A%0D%0AÀ propos de Pierre    BESSONS : Champs encore inconnus : Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
+                 href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20Pierre%20%20%20%20BESSONS&body=Bonjour,%0D%0A%0D%0AÀ propos de Pierre    BESSONS : Champs encore inconnus : Père, Mère, Date de naissance, Lieu de naissance, Date de décès, Lieu de décès.%0D%0A%0D%0AVoici ce que j'ai :">Envoyer un document pour cette piste</a>
             </div></main>
 <footer class="contact">
   <p>Une photo, une lettre, un souvenir, une correction ? Écrivez-nous, ça complète directement l'enquête.</p>
