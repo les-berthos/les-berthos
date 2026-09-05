@@ -292,20 +292,26 @@ def find_children(pid, personnes: pd.DataFrame):
 
 def compute_leads(personnes: pd.DataFrame):
     leads = []
-    key_fields = ["Date de naissance", "Lieu de naissance", "Date de décès", "Lieu de décès"]
+    key_fields = ["Père (ID Personne)", "Mère (ID Personne)", "Date de naissance",
+                  "Lieu de naissance", "Date de décès", "Lieu de décès"]
     for _, row in personnes.iterrows():
         pid = row.get("ID Personne", "")
         name = person_display_name(row)
         piste = row.get("Piste de recherche", "")
-        if not is_blank(piste):
-            leads.append({"id": pid, "name": name, "text": piste})
-        else:
-            manquants = [f for f in key_fields if is_blank(row.get(f, ""))]
-            if manquants and row.get("Statut (confirmé / hypothèse)", "") != "confirmé":
-                leads.append({
-                    "id": pid, "name": name,
-                    "text": f"Champs encore inconnus : {', '.join(manquants)}."
-                })
+        manquants_txt = None
+        if row.get("Statut (confirmé / hypothèse)", "") != "confirmé":
+            pere_col = find_col(row, PERE_COLONNES)
+            mere_col = find_col(row, MERE_COLONNES)
+            champs = [label_from_header(pere_col), label_from_header(mere_col),
+                      "Date de naissance", "Lieu de naissance", "Date de décès", "Lieu de décès"]
+            valeurs = [row.get(pere_col, ""), row.get(mere_col, ""), row.get("Date de naissance", ""),
+                       row.get("Lieu de naissance", ""), row.get("Date de décès", ""), row.get("Lieu de décès", "")]
+            manquants = [c for c, v in zip(champs, valeurs) if is_blank(v)]
+            if manquants:
+                manquants_txt = f"Champs encore inconnus : {', '.join(manquants)}."
+        piste_txt = piste if not is_blank(piste) else None
+        if manquants_txt or piste_txt:
+            leads.append({"id": pid, "name": name, "manquants": manquants_txt, "piste": piste_txt})
     return leads
 
 
@@ -367,6 +373,8 @@ h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1
   font-size:.98rem;
 }
 .piste strong{color:var(--brass)}
+.piste.piste-perso{border-left-color:var(--sage)}
+.piste.piste-perso strong{color:var(--sage)}
 .idcard{
   display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px;
   padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px;
@@ -421,6 +429,11 @@ footer.contact a.btn:hover{background:#732530}
 .back{display:inline-block; margin-bottom:1.2rem; color:var(--ink-soft); text-decoration:none}
 .back:hover{color:var(--wax)}
 .archive-box{background:#faf6ec; border:1px solid var(--line); border-left:4px solid var(--wax); padding:1.2rem 1.4rem; margin:1.2rem 0}
+.noeud{cursor:pointer}
+.noeud circle{transition:transform .15s ease, filter .15s ease}
+.noeud.actif circle{filter:drop-shadow(0 0 7px var(--wax)); transform:scale(1.1); transform-origin:center}
+.lien{transition:stroke .15s ease, stroke-width .15s ease, opacity .15s ease}
+.lien.actif{stroke:var(--wax) !important; stroke-width:3.5 !important; opacity:1 !important}
 @media (max-width:600px){
   .hero h1{font-size:2.1rem} body{font-size:17px} .idcard{flex-direction:column; align-items:center; text-align:center}
   .idcard dl{grid-template-columns:1fr; text-align:center}
@@ -654,10 +667,12 @@ def parse_gen(v):
         return None
 
 
-def order_row_with_clusters(row_pids, idx, raw_x):
+def order_row_with_clusters(row_pids, idx, raw_x, branches=None):
     """Ordonne une génération en gardant chaque fratrie compacte (jamais coupée par
-    quelqu'un d'extérieur), et en collant un conjoint venu d'ailleurs juste à côté
-    de son mari/sa femme, à l'extérieur du bloc de fratrie."""
+    quelqu'un d'extérieur), en collant un conjoint venu d'ailleurs juste à côté
+    de son mari/sa femme, et en regroupant tout le côté MEME à gauche, tout le
+    côté PEPE à droite (les blocs sans branche connue restent au centre)."""
+    branches = branches or {}
     in_row = set(row_pids)
     parent = {p: p for p in row_pids}
 
@@ -682,6 +697,25 @@ def order_row_with_clusters(row_pids, idx, raw_x):
     for p in row_pids:
         clusters.setdefault(find(p), []).append(p)
 
+    # Couples mutuellement isolés (ni l'un ni l'autre n'a de fratrie enregistrée) :
+    # on les unit pour qu'ils forment leur propre petit bloc à leur vraie place,
+    # plutôt que d'être perdus en bout de ligne.
+    paired = set()
+    for p in row_pids:
+        if len(clusters[find(p)]) != 1 or p in paired:
+            continue
+        row = idx[p]
+        for spouse in split_list(row.get(find_col(row, CONJOINT_COLONNES), "")):
+            if (spouse in in_row and spouse not in paired
+                    and len(clusters.get(find(spouse), [])) == 1 and find(spouse) != find(p)):
+                union(p, spouse)
+                paired.add(p)
+                paired.add(spouse)
+                break
+    clusters = {}
+    for p in row_pids:
+        clusters.setdefault(find(p), []).append(p)
+
     blocks = []
     singles_with_spouse = []
     for root, members in clusters.items():
@@ -694,11 +728,18 @@ def order_row_with_clusters(row_pids, idx, raw_x):
                 continue
         members_sorted = sorted(members, key=lambda p: raw_x.get(p, 0))
         avg_x = sum(raw_x.get(p, 0) for p in members) / len(members)
-        blocks.append([avg_x, members_sorted])
-    blocks.sort(key=lambda b: b[0])
+        member_branches = {branches.get(p) for p in members if branches.get(p) in ("MEME", "PEPE")}
+        if member_branches == {"MEME"}:
+            rank = -1
+        elif member_branches == {"PEPE"}:
+            rank = 1
+        else:
+            rank = 0
+        blocks.append([rank, avg_x, members_sorted])
+    blocks.sort(key=lambda b: (b[0], b[1]))
 
     ordered = []
-    for _, members in blocks:
+    for _, _, members in blocks:
         ordered.extend(members)
 
     for p, spouse in singles_with_spouse:
@@ -780,7 +821,7 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
                     raw_x[pid] = right_x
                     right_x += SPACING_X
 
-        ordered = order_row_with_clusters(row, idx, raw_x)
+        ordered = order_row_with_clusters(row, idx, raw_x, branches)
         center = sum(raw_x.values()) / len(raw_x) if raw_x else 0
         start = center - (len(ordered) - 1) * SPACING_X / 2
         for i, pid in enumerate(ordered):
@@ -813,7 +854,8 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
             if parent_id in positions:
                 px1, py1 = positions[parent_id]
                 svg_parts.append(
-                    f'<line x1="{px(x)}" y1="{py(y)}" x2="{px(px1)}" y2="{py(py1)}" '
+                    f'<line class="lien" data-a="{slug(pid)}" data-b="{slug(parent_id)}" '
+                    f'x1="{px(x)}" y1="{py(y)}" x2="{px(px1)}" y2="{py(py1)}" '
                     f'stroke="#c9bda3" stroke-width="2"/>'
                 )
 
@@ -828,7 +870,8 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
             fratrie1 = split_list(row1.get(find_col(row1, FRATRIE_COLONNES), ""))
             if p2 in fratrie1:
                 svg_parts.append(
-                    f'<line x1="{px(x1)+R}" y1="{py(y)}" x2="{px(x2)-R}" y2="{py(y)}" '
+                    f'<line class="lien" data-a="{slug(p1)}" data-b="{slug(p2)}" '
+                    f'x1="{px(x1)+R}" y1="{py(y)}" x2="{px(x2)-R}" y2="{py(y)}" '
                     f'stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/>'
                 )
 
@@ -846,7 +889,8 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
                 x2, y2 = positions[spouse_id]
                 x1s, x2s = sorted((px(x), px(x2)))
                 svg_parts.append(
-                    f'<line x1="{x1s+R}" y1="{py(y)}" x2="{x2s-R}" y2="{py(y)}" '
+                    f'<line class="lien" data-a="{slug(pid)}" data-b="{slug(spouse_id)}" '
+                    f'x1="{x1s+R}" y1="{py(y)}" x2="{x2s-R}" y2="{py(y)}" '
                     f'stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/>'
                 )
 
@@ -877,7 +921,7 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
         ligne1 = prenom if not is_blank(prenom) else name
         ligne2 = nom if not is_blank(nom) else ""
         svg_parts.append(f"""
-        <a href="fiches.html#{slug(pid)}">
+        <a href="fiches.html#{slug(pid)}" class="noeud" data-pid="{slug(pid)}">
           <circle cx="{cx}" cy="{cy}" r="{R}" fill="#faf6ec" stroke="{color}" stroke-width="4"/>
           {photo_svg}
           <text x="{cx}" y="{cy+R+18}" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
@@ -895,12 +939,29 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
         f"<p class='meta'>{non_places} personne(s) sans génération renseignée, donc pas encore sur ce schéma.</p>"
         if non_places > 0 else ""
     )
+    script = """
+    <script>
+    document.querySelectorAll('.noeud').forEach(function(n){
+      var pid = n.getAttribute('data-pid');
+      n.addEventListener('mouseenter', function(){
+        n.classList.add('actif');
+        document.querySelectorAll('[data-a="'+pid+'"], [data-b="'+pid+'"]').forEach(function(l){
+          l.classList.add('actif');
+        });
+      });
+      n.addEventListener('mouseleave', function(){
+        n.classList.remove('actif');
+        document.querySelectorAll('.lien.actif').forEach(function(l){ l.classList.remove('actif'); });
+      });
+    });
+    </script>"""
     body = f"""
-    <p class="meta">Cliquez un portrait pour ouvrir sa fiche.</p>
+    <p class="meta">Cliquez un portrait pour ouvrir sa fiche — survolez-le pour repérer ses liens.</p>
     <div style="overflow-x:auto;">
       {svg}
     </div>
     {note}
+    {script}
     """
     (DOCS / "index.html").write_text(page("Accueil", body, active="accueil", depth=0, full_width=True), encoding="utf-8")
 
@@ -949,14 +1010,24 @@ def build_pistes(personnes: pd.DataFrame, documents: pd.DataFrame):
         cards = []
         for lead in leads:
             link = f"fiches.html#{slug(lead['id'])}"
+            piste_pour_mail = lead['piste'] or lead['manquants']
             subject = f"Une piste pour {lead['name']}"
-            body_txt = f"Bonjour,%0D%0A%0D%0AÀ propos de {lead['name']} : {lead['text']}%0D%0A%0D%0AVoici ce que j'ai :"
+            body_txt = f"Bonjour,%0D%0A%0D%0AÀ propos de {lead['name']} : {piste_pour_mail}%0D%0A%0D%0AVoici ce que j'ai :"
             mailto = f"mailto:{CONTACT_EMAIL}?subject={subject.replace(' ', '%20')}&body={body_txt}"
             docs_html = render_documents_block(lead["id"], documents, idx, title="Ce que l'on a déjà")
+            manquants_html = (
+                f"<div class='piste'><strong>Ce qu'il nous manque :</strong> {lead['manquants']}</div>"
+                if lead['manquants'] else ""
+            )
+            piste_html = (
+                f"<div class='piste piste-perso'><strong>Piste de recherche :</strong> {lead['piste']}</div>"
+                if lead['piste'] else ""
+            )
             cards.append(f"""
             <div class="card">
               <a class="name" href="{link}">{lead['name']}</a>
-              <div class="piste"><strong>Ce qu'il nous manque :</strong> {lead['text']}</div>
+              {manquants_html}
+              {piste_html}
               {docs_html}
               <a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec;
                  text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;"
