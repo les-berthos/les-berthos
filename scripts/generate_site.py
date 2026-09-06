@@ -299,16 +299,15 @@ def compute_leads(personnes: pd.DataFrame):
         name = person_display_name(row)
         piste = row.get("Piste de recherche", "")
         manquants_txt = None
-        if row.get("Statut (confirmé / hypothèse)", "") != "confirmé":
-            pere_col = find_col(row, PERE_COLONNES)
-            mere_col = find_col(row, MERE_COLONNES)
-            champs = [label_from_header(pere_col), label_from_header(mere_col),
-                      "Date de naissance", "Lieu de naissance", "Date de décès", "Lieu de décès"]
-            valeurs = [row.get(pere_col, ""), row.get(mere_col, ""), row.get("Date de naissance", ""),
-                       row.get("Lieu de naissance", ""), row.get("Date de décès", ""), row.get("Lieu de décès", "")]
-            manquants = [c for c, v in zip(champs, valeurs) if is_blank(v)]
-            if manquants:
-                manquants_txt = f"Champs encore inconnus : {', '.join(manquants)}."
+        pere_col = find_col(row, PERE_COLONNES)
+        mere_col = find_col(row, MERE_COLONNES)
+        champs = [label_from_header(pere_col), label_from_header(mere_col),
+                  "Date de naissance", "Lieu de naissance", "Date de décès", "Lieu de décès"]
+        valeurs = [row.get(pere_col, ""), row.get(mere_col, ""), row.get("Date de naissance", ""),
+                   row.get("Lieu de naissance", ""), row.get("Date de décès", ""), row.get("Lieu de décès", "")]
+        manquants = [c for c, v in zip(champs, valeurs) if is_blank(v)]
+        if manquants:
+            manquants_txt = f"Champs encore inconnus : {', '.join(manquants)}."
         piste_txt = piste if not is_blank(piste) else None
         if manquants_txt or piste_txt:
             leads.append({"id": pid, "name": name, "manquants": manquants_txt, "piste": piste_txt})
@@ -430,8 +429,8 @@ footer.contact a.btn:hover{background:#732530}
 .back:hover{color:var(--wax)}
 .archive-box{background:#faf6ec; border:1px solid var(--line); border-left:4px solid var(--wax); padding:1.2rem 1.4rem; margin:1.2rem 0}
 .noeud{cursor:pointer}
-.noeud circle{transition:transform .15s ease, filter .15s ease}
-.noeud.actif circle{filter:drop-shadow(0 0 7px var(--wax)); transform:scale(1.1); transform-origin:center}
+.noeud .photo-wrap{transition:transform .15s ease, filter .15s ease; transform-box:fill-box; transform-origin:center}
+.noeud.actif .photo-wrap{filter:drop-shadow(0 0 6px var(--wax)); transform:scale(1.08)}
 .lien{transition:stroke .15s ease, stroke-width .15s ease, opacity .15s ease}
 .lien.actif{stroke:var(--wax) !important; stroke-width:3.5 !important; opacity:1 !important}
 @media (max-width:600px){
@@ -728,18 +727,11 @@ def order_row_with_clusters(row_pids, idx, raw_x, branches=None):
                 continue
         members_sorted = sorted(members, key=lambda p: raw_x.get(p, 0))
         avg_x = sum(raw_x.get(p, 0) for p in members) / len(members)
-        member_branches = {branches.get(p) for p in members if branches.get(p) in ("MEME", "PEPE")}
-        if member_branches == {"MEME"}:
-            rank = -1
-        elif member_branches == {"PEPE"}:
-            rank = 1
-        else:
-            rank = 0
-        blocks.append([rank, avg_x, members_sorted])
-    blocks.sort(key=lambda b: (b[0], b[1]))
+        blocks.append([avg_x, members_sorted])
+    blocks.sort(key=lambda b: b[0])
 
     ordered = []
-    for _, _, members in blocks:
+    for _, members in blocks:
         ordered.extend(members)
 
     for p, spouse in singles_with_spouse:
@@ -922,8 +914,10 @@ def build_index(personnes: pd.DataFrame, branches: dict, meme_id: str, pepe_id: 
         ligne2 = nom if not is_blank(nom) else ""
         svg_parts.append(f"""
         <a href="fiches.html#{slug(pid)}" class="noeud" data-pid="{slug(pid)}">
-          <circle cx="{cx}" cy="{cy}" r="{R}" fill="#faf6ec" stroke="{color}" stroke-width="4"/>
-          {photo_svg}
+          <g class="photo-wrap">
+            <circle cx="{cx}" cy="{cy}" r="{R}" fill="#faf6ec" stroke="{color}" stroke-width="4"/>
+            {photo_svg}
+          </g>
           <text x="{cx}" y="{cy+R+18}" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
                 font-size="14" font-weight="700" fill="#3a2e22">{ligne1}</text>
           <text x="{cx}" y="{cy+R+34}" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
