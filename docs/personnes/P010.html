@@ -118,8 +118,8 @@ footer.contact a.btn:hover{background:#732530}
 .back:hover{color:var(--wax)}
 .archive-box{background:#faf6ec; border:1px solid var(--line); border-left:4px solid var(--wax); padding:1.2rem 1.4rem; margin:1.2rem 0}
 .noeud{cursor:pointer}
-.noeud circle{transition:transform .15s ease, filter .15s ease}
-.noeud.actif circle{filter:drop-shadow(0 0 7px var(--wax)); transform:scale(1.1); transform-origin:center}
+.noeud .photo-wrap{transition:transform .15s ease, filter .15s ease; transform-box:fill-box; transform-origin:center}
+.noeud.actif .photo-wrap{filter:drop-shadow(0 0 6px var(--wax)); transform:scale(1.08)}
 .lien{transition:stroke .15s ease, stroke-width .15s ease, opacity .15s ease}
 .lien.actif{stroke:var(--wax) !important; stroke-width:3.5 !important; opacity:1 !important}
 @media (max-width:600px){
