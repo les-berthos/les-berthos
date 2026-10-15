@@ -10,498 +10,222 @@
   --meme:#a8455c; --pepe:#3f6a78;
 }
 *{box-sizing:border-box}
-body{
-  margin:0; color:var(--ink);
-  font-family:'Public Sans', Arial, sans-serif; font-size:18px; line-height:1.55;
+body{margin:0; color:var(--ink); font-family:'Public Sans', Arial, sans-serif; font-size:18px; line-height:1.55;
   background-image:
     radial-gradient(var(--paper-dark) 0.6px, transparent 0.6px),
     linear-gradient(rgba(239,231,216,.87), rgba(239,231,216,.87)),
     url('https://i.postimg.cc/vmTKF4ZQ/arriere-plan-Bertho.png');
-  background-size: 14px 14px, cover, cover;
-  background-position: 0 0, center, center;
-  background-repeat: repeat, no-repeat, no-repeat;
-  background-attachment: scroll, fixed, fixed;
-}
-.hero{
-  position:relative;
-  background-image: linear-gradient(180deg, rgba(20,14,8,.4) 0%, rgba(20,14,8,.68) 100%);
-  padding:4.5rem 1.5rem 2.2rem; text-align:center;
-}
-.hero h1{
-  font-family:'Playfair Display', Georgia, serif; font-size:3rem; margin:0 0 .4rem;
-  color:var(--cream); letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.5);
-}
+  background-size: 14px 14px, cover, cover; background-position: 0 0, center, center;
+  background-repeat: repeat, no-repeat, no-repeat; background-attachment: scroll, fixed, fixed;}
+.hero{background-image: linear-gradient(180deg, rgba(20,14,8,.4) 0%, rgba(20,14,8,.68) 100%); padding:4.5rem 1.5rem 2.2rem; text-align:center}
+.hero h1{font-family:'Playfair Display', Georgia, serif; font-size:3rem; margin:0 0 .4rem; color:var(--cream); letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.5)}
 .hero p{margin:0; color:var(--cream); opacity:.9; font-size:1.05rem; text-shadow:0 1px 6px rgba(0,0,0,.5)}
-nav.site{
-  display:flex; justify-content:center; gap:1.6rem; padding:.9rem 0; background:var(--paper-dark);
-  border-bottom:1px solid var(--line); font-weight:600; letter-spacing:.3px; flex-wrap:wrap;
-}
+nav.site{display:flex; justify-content:center; gap:1.6rem; padding:.9rem 0; background:var(--paper-dark); border-bottom:1px solid var(--line); font-weight:600; letter-spacing:.3px; flex-wrap:wrap}
 nav.site a{color:var(--ink); text-decoration:none; border-bottom:2px solid transparent; padding-bottom:2px}
 nav.site a:hover, nav.site a:focus{border-bottom-color:var(--wax)}
 main{max-width:880px; margin:0 auto; padding:2.2rem 1.5rem 4rem}
 h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1.7rem; margin-top:2.2rem}
-.card{
-  background:#faf6ec; border:1px solid var(--line); border-radius:3px;
-  padding:1.4rem 1.6rem; margin:1.1rem 0; box-shadow:0 1px 0 var(--line);
-}
+.card{background:#faf6ec; border:1px solid var(--line); border-radius:3px; padding:1.4rem 1.6rem; margin:1.1rem 0; box-shadow:0 1px 0 var(--line)}
 .card a.name{font-family:'Playfair Display', Georgia, serif; font-size:1.3rem; color:var(--ink); text-decoration:none}
 .card a.name:hover{color:var(--wax)}
-.stamp{
-  display:inline-block; font-family:'Special Elite', 'Courier New', monospace; font-size:.72rem;
-  text-transform:uppercase; letter-spacing:1.5px; padding:.25rem .55rem; border:2px solid; border-radius:2px;
-  transform:rotate(-3deg); margin-left:.6rem; vertical-align:middle;
-}
+.stamp{display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:1.5px; padding:.25rem .55rem; border:2px solid; border-radius:2px; transform:rotate(-3deg); margin-left:.6rem; vertical-align:middle}
 .stamp.confirme{color:var(--sage); border-color:var(--sage)}
 .stamp.hypothese{color:var(--brass); border-color:var(--brass)}
-.stamp.inconnu{color:var(--wax); border-color:var(--wax)}
+.stamp.manque{color:var(--wax); border-color:var(--wax)}
 .meta{color:var(--ink-soft); font-size:.95rem; margin:.3rem 0 0}
-.histoire{margin-top:.7rem}
-.piste{
-  background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin-top:.8rem;
-  font-size:.98rem;
-}
+.piste{background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin-top:.8rem; font-size:.98rem}
 .piste strong{color:var(--brass)}
-.piste.piste-perso{border-left-color:var(--sage)}
-.piste.piste-perso strong{color:var(--sage)}
-.idcard{
-  display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px;
-  padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px;
-}
-.idcard.branche-meme{border-left-color:var(--meme)}
-.idcard.branche-pepe{border-left-color:var(--pepe)}
+.idcard{display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px; padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px}
 .legend{display:flex; gap:1.4rem; align-items:center; font-size:.9rem; color:var(--ink-soft); margin:.6rem 0 1.4rem; flex-wrap:wrap}
 .legend .dot{display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:.4rem; vertical-align:middle}
 .legend .dot.meme{background:var(--meme)} .legend .dot.pepe{background:var(--pepe)}
-.field-stamp{
-  display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.62rem;
-  text-transform:uppercase; letter-spacing:1px; padding:.1rem .4rem; border-radius:2px; margin-left:.5rem;
-  border:1px solid;
-}
+.field-stamp{display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.62rem; text-transform:uppercase; letter-spacing:1px; padding:.1rem .4rem; border-radius:2px; margin-left:.5rem; border:1px solid}
 .field-stamp.confirme{color:var(--sage); border-color:var(--sage)}
 .field-stamp.verifier{color:var(--brass); border-color:var(--brass)}
 .field-stamp.manque{color:var(--wax); border-color:var(--wax)}
-.idcard .photo{
-  width:140px; height:170px; flex-shrink:0; background:var(--paper-dark); border:1px solid var(--ink-soft);
-  object-fit:cover; display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
-  font-size:.8rem; text-align:center; padding:.5rem;
-}
+.idcard .photo{width:140px; height:170px; flex-shrink:0; background:var(--paper-dark); border:1px solid var(--ink-soft); object-fit:cover; display:flex; align-items:center; justify-content:center; color:var(--ink-soft); font-size:.8rem; text-align:center; padding:.5rem}
 .idcard .infos{flex:1; min-width:220px}
-.idcard .infos h2{margin:0 0 .2rem; font-size:1.5rem}
-.idcard .infos .eyebrow{
-  font-family:'Special Elite','Courier New',monospace; font-size:.7rem; letter-spacing:2px;
-  color:var(--ink-soft); text-transform:uppercase; margin-bottom:.4rem;
-}
+.idcard .infos h2{margin:0 0 .2rem; font-size:1.5rem; font-family:'Playfair Display', Georgia, serif}
+.idcard .infos .eyebrow{font-family:'Special Elite','Courier New',monospace; font-size:.7rem; letter-spacing:2px; color:var(--ink-soft); text-transform:uppercase; margin-bottom:.4rem}
 .idcard dl{display:grid; grid-template-columns:auto 1fr; gap:.25rem .8rem; margin:.7rem 0 0; font-size:.95rem}
 .idcard dt{color:var(--ink-soft)}
 .idcard dd{margin:0}
 .gallery{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.9rem}
-.gallery a{display:block; width:90px; height:90px; overflow:hidden; border:1px solid var(--line); border-radius:3px}
-.gallery img{width:100%; height:100%; object-fit:cover; display:block}
+.gallery img{width:90px; height:90px; object-fit:cover; display:block; border:1px solid var(--line); border-radius:3px}
 h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1.05rem; margin:1rem 0 .4rem}
 .doc-list{display:flex; flex-direction:column; gap:.5rem}
-.doc-chip{
-  background:var(--paper-dark); border:1px solid var(--line); border-radius:3px;
-  padding:.6rem .9rem; font-size:.9rem;
-}
+.doc-chip{background:var(--paper-dark); border:1px solid var(--line); border-radius:3px; padding:.6rem .9rem; font-size:.9rem}
 .doc-chip .meta{display:block; margin-top:.15rem}
-footer.contact{
-  margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark);
-  border-top:1px solid var(--line);
-}
-footer.contact a.btn{
-  display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none;
-  padding:.7rem 1.4rem; border-radius:3px; font-weight:700;
-}
+footer.contact{margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark); border-top:1px solid var(--line)}
+footer.contact a.btn{display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none; padding:.7rem 1.4rem; border-radius:3px; font-weight:700}
 footer.contact a.btn:hover{background:#732530}
-.empty{color:var(--ink-soft); font-style:italic}
 .back{display:inline-block; margin-bottom:1.2rem; color:var(--ink-soft); text-decoration:none}
 .back:hover{color:var(--wax)}
-.archive-box{background:#faf6ec; border:1px solid var(--line); border-left:4px solid var(--wax); padding:1.2rem 1.4rem; margin:1.2rem 0}
-.noeud{cursor:pointer}
-.noeud .photo-wrap{transition:transform .15s ease, filter .15s ease; transform-box:fill-box; transform-origin:center}
-.noeud.actif .photo-wrap{filter:drop-shadow(0 0 6px var(--wax)); transform:scale(1.08)}
-.lien{transition:stroke .15s ease, stroke-width .15s ease, opacity .15s ease}
-.lien.actif{stroke:var(--wax) !important; stroke-width:3.5 !important; opacity:1 !important}
+.liste-fiches{display:flex; flex-direction:column; gap:.6rem}
+.avert-demo{background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin:0 0 1.2rem; font-size:.95rem}
 @media (max-width:600px){
   .hero h1{font-size:2.1rem} body{font-size:17px} .idcard{flex-direction:column; align-items:center; text-align:center}
   .idcard dl{grid-template-columns:1fr; text-align:center}
 }
 </style>
 </head><body>
-<header style="padding:1.6rem 1.5rem; text-align:center; border-bottom:1px solid var(--line);">
-                   <a href="index.html" style="font-family:'Playfair Display',Georgia,serif; font-size:1.5rem; color:var(--wax); text-decoration:none;">Les Berthos</a>
-                 </header>
-
-    <nav class="site">
-      <a href="index.html">Accueil</a>
-      <a href="fiches.html" style="border-bottom-color:var(--wax)">Fiches des acteurs</a>
-      <a href="pistes.html">Pistes de recherche</a>
-      <a href="archives-privees.html">Archives</a>
-    </nav>
-<main style=""><h2>Les acteurs de l'histoire, jusqu'ici</h2>
-    <a name="P001"></a>
-    <div class="idcard" style="border-left-color:#ca4969">
-      <img class="photo" src="https://i.postimg.cc/gkvkD0fy/Photo-MEME.png" alt="Portrait de Anna Victorine BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">MEME</div>
-        <h2><span style="font-weight:400">Anna Victorine GIRAUD</span> <span style="font-weight:800">épouse BERTHOLON</span> <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>16 juin 1913 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Châtillon d'Azergues (Rhône)</dd><dt>Décédée/décédé le</dt><dd>12 mars 1994 <span class="field-stamp confirme">confirmé</span></dd><dt>Conjoint</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Père</dt><dd><a href="#P010">François GIRAUD</a></dd><dt>Mère</dt><dd><a href="#P011">Joséphine Claudia SOLY</a></dd><dt>Enfants</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>permis de conduire MEME</strong> — <a href="https://drive.proton.me/urls/B77MT581KR#FrKKriLs4aP6" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>carte d'identité MEME</strong> — <a href="https://drive.proton.me/urls/FM767X08T4#TvsLDZGbmpfO" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P002"></a>
-    <div class="idcard" style="border-left-color:#4994ca">
-      <img class="photo" src="https://i.postimg.cc/TPQYPpXc/Photo-PEPE.png" alt="Portrait de Jean-Pierre BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">PEPE</div>
-        <h2>Jean-Pierre BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>8 novembre 1910 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Le Puy en Velay (Haute-Loire)</dd><dt>Décédée/décédé le</dt><dd>14 juillet 1971 <span class="field-stamp confirme">confirmé</span></dd><dt>Conjoint</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Père</dt><dd><a href="#P020">Cyprien BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P021">Elise Jeanne Marie BERTHOLON</a></dd><dt>Enfants</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P003">Pierre Joannes Antoine BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>livret individuel de guerre Jean BERTHOLON</strong> — <a href="https://drive.proton.me/urls/59B6AJ1WF8#WVM4UhKO5wwK" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>discours aux obséques du PEPE</strong> — <a href="https://drive.proton.me/urls/YHM2Q44D64#nDNdqqcX1dKE" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P003"></a>
-    <div class="idcard" style="border-left-color:#4994ca">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Pierre Joannes Antoine BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Fraterie du PEPE</div>
-        <h2>Pierre Joannes Antoine BERTHOLON <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>17 juin 1933 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Saint-Etienne (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P020">Cyprien BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P021">Elise Jeanne Marie BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P031">Marie BERTHOLON</a>, <a href="#P032">Marius BERTHOLON</a>, <a href="#P033">Alban Marius Laurens BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>livret individuel de guerre Pierre BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EQ3XYVFNHC#7gfdMxxfAQU4" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>carte de priorité des méres de famille Elise BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EDTWWRM5Q0#1Ie4R1PZID5U" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P010"></a>
-    <div class="idcard" style="border-left-color:#bd3758">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de François GIRAUD">
-      <div class="infos">
-        <div class="eyebrow">Parent de MEME</div>
-        <h2>François GIRAUD <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Conjoint</dt><dd><a href="#P011">Joséphine Claudia SOLY</a></dd><dt>Enfants</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P011"></a>
-    <div class="idcard" style="border-left-color:#bd3758">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Joséphine Claudia SOLY">
-      <div class="infos">
-        <div class="eyebrow">Parent de MEME</div>
-        <h2>Joséphine Claudia SOLY <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Conjoint</dt><dd><a href="#P010">François GIRAUD</a></dd><dt>Enfants</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P012"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Elise Françoise Claudia BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Enfant de PEPE et MEME</div>
-        <h2>Elise Françoise Claudia BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>6 janvier 1935 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Saint-Etienne (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P013"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Simone Cyprienne Victoria BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Enfant de PEPE et MEME</div>
-        <h2>Simone Cyprienne Victoria BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>28 juillet 1936 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>La Fouillouse (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P014"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Renée Marie  BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Enfant de PEPE et MEME</div>
-        <h2>Renée Marie  BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>17 novembre 1937 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>La Fouillouse (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P015"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Lucien Marie BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Enfant de PEPE et MEME</div>
-        <h2>Lucien Marie BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>19 août 1940 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Unias (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P016"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Joseph Marius Elise BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Enfant de PEPE et MEME</div>
-        <h2>Joseph Marius Elise BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>19 mars 1944 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Unias (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P017"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Andrée Louise BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Enfant de PEPE et MEME</div>
-        <h2>Andrée Louise BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>10 octobre 1945 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Unias (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a>, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P018"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Marc Antoine ?? BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Enfant de PEPE et MEME</div>
-        <h2>Marc Antoine ?? BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>26 avril 1947 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Unias (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, P017x, <a href="#P019">Gérard Henri Simone BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P019"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Gérard Henri Simone BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Enfant de PEPE et MEME</div>
-        <h2>Gérard Henri Simone BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>13 août 1950 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Unias (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P001">Anna Victorine BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P012">Elise Françoise Claudia BERTHOLON</a>, <a href="#P013">Simone Cyprienne Victoria BERTHOLON</a>, <a href="#P014">Renée Marie  BERTHOLON</a>, <a href="#P015">Lucien Marie BERTHOLON</a>, <a href="#P016">Joseph Marius Elise BERTHOLON</a>, <a href="#P017">Andrée Louise BERTHOLON</a>, <a href="#P018">Marc Antoine ?? BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P020"></a>
-    <div class="idcard" style="border-left-color:#3785bd">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Cyprien BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Parent du PEPE</div>
-        <h2>Cyprien BERTHOLON <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>10 septembre 1882 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Saint-Etienne (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Conjoint</dt><dd><a href="#P021">Elise Jeanne Marie BERTHOLON</a></dd><dt>Enfants</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P003">Pierre Joannes Antoine BERTHOLON</a>, <a href="#P031">Marie BERTHOLON</a>, <a href="#P032">Marius BERTHOLON</a>, <a href="#P033">Alban Marius Laurens BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>livret individuel de guerre Jean BERTHOLON</strong> — <a href="https://drive.proton.me/urls/59B6AJ1WF8#WVM4UhKO5wwK" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>certificat bonne conduite Cyprien BERTHOLON</strong> — <a href="https://drive.proton.me/urls/VK2M1FP4AM#tttOniW6msj7" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>permis travail des enfants Cyprien BERTHOLON</strong> — <a href="https://drive.proton.me/urls/G20HVRVKJW#7dTghvDIVagm" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>livret individuel de guerre Pierre BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EQ3XYVFNHC#7gfdMxxfAQU4" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>livret individuel de guerre Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/SB4Q66QNRG#hjzB9Dg8tzcE" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>carte electeur Cyprien BERTHOLON</strong> — <a href="https://drive.proton.me/urls/PY5MYVG39R#sxCEYvIrRpIi" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P021"></a>
-    <div class="idcard" style="border-left-color:#3785bd">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Elise Jeanne Marie BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">Parent du PEPE</div>
-        <h2><span style="font-weight:400">Elise Jeanne Marie LAULAGNIER</span> <span style="font-weight:800">épouse BERTHOLON</span> <span class="stamp confirme">confirmé</span></h2>
-        <dl><dt>Née/né le</dt><dd>22 avril 1889 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Saint Jeures (Haute-Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Conjoint</dt><dd><a href="#P020">Cyprien BERTHOLON</a></dd><dt>Père</dt><dd><a href="#P035">Pierre LAULAGNIER</a></dd><dt>Mère</dt><dd><a href="#P036">Rose LAULAGNIER</a></dd><dt>Enfants</dt><dd><a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P003">Pierre Joannes Antoine BERTHOLON</a>, <a href="#P031">Marie BERTHOLON</a>, <a href="#P032">Marius BERTHOLON</a>, <a href="#P033">Alban Marius Laurens BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Livret de famille PEPE-MEME</strong> — <a href="https://drive.proton.me/urls/33YEJ7WG18#VB4EHFSB4IQM" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>carte d'identité Elise LAULAGNIER-BERTHOLON</strong> — <a href="https://drive.proton.me/urls/J16PCHQ944#apeAQw00a5D4" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>livret individuel de guerre Jean BERTHOLON</strong> — <a href="https://drive.proton.me/urls/59B6AJ1WF8#WVM4UhKO5wwK" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>livret individuel de guerre Pierre BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EQ3XYVFNHC#7gfdMxxfAQU4" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>livret individuel de guerre Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/SB4Q66QNRG#hjzB9Dg8tzcE" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>carte de priorité des méres de famille Elise BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EDTWWRM5Q0#1Ie4R1PZID5U" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>act naissance Elise LAULAGNIER</strong> — <a href="https://drive.proton.me/urls/FWBRHMG8W4#53VrjWQ9mcMr" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P022"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Jean-Jacques LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Tonton du PEPE</div>
-        <h2>Jean-Jacques LAULAGNIER <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P029">Jacques LAULAGNIER</a></dd><dt>Mère</dt><dd><a href="#P030">Elisabeth BESSIERES</a></dd><dt>Fratrie</dt><dd><a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P023"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Elisabeth LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Tatan du PEPE</div>
-        <h2>Elisabeth LAULAGNIER <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P029">Jacques LAULAGNIER</a></dd><dt>Mère</dt><dd><a href="#P030">Elisabeth BESSIERES</a></dd><dt>Fratrie</dt><dd><a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P024"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Marguerite LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Tatan du PEPE  </div>
-        <h2>Marguerite LAULAGNIER <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P029">Jacques LAULAGNIER</a></dd><dt>Mère</dt><dd><a href="#P030">Elisabeth BESSIERES</a></dd><dt>Fratrie</dt><dd><a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P025"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Marie LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Tatan du PEPE  </div>
-        <h2>Marie LAULAGNIER <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P029">Jacques LAULAGNIER</a></dd><dt>Mère</dt><dd><a href="#P030">Elisabeth BESSIERES</a></dd><dt>Fratrie</dt><dd><a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P026"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Jean-Pierre LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Tonton du PEPE</div>
-        <h2>Jean-Pierre LAULAGNIER <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P029">Jacques LAULAGNIER</a></dd><dt>Mère</dt><dd><a href="#P030">Elisabeth BESSIERES</a></dd><dt>Fratrie</dt><dd><a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P027"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Philomène BESSON">
-      <div class="infos">
-        <div class="eyebrow">Tatan du PEPE</div>
-        <h2><span style="font-weight:400">Philomène LAULAGNIER</span> <span style="font-weight:800">épouse BESSON</span> <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Conjoint</dt><dd><a href="#P034">Pierre    BESSONS</a></dd><dt>Père</dt><dd><a href="#P029">Jacques LAULAGNIER</a></dd><dt>Mère</dt><dd><a href="#P030">Elisabeth BESSIERES</a></dd><dt>Fratrie</dt><dd><a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P028">Françoise LAULAGNIER</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P028"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Françoise LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Tatan du PEPE</div>
-        <h2>Françoise LAULAGNIER <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>novembre 1899 <span class="field-stamp confirme">confirmé</span></dd><dt>Père</dt><dd><a href="#P029">Jacques LAULAGNIER</a></dd><dt>Mère</dt><dd><a href="#P030">Elisabeth BESSIERES</a></dd><dt>Fratrie</dt><dd><a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P029"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Jacques LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Père des tantes et oncles du PEPE</div>
-        <h2>Jacques LAULAGNIER <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>30 avril 1887 <span class="field-stamp confirme">confirmé</span></dd><dt>Conjoint</dt><dd><a href="#P030">Elisabeth BESSIERES</a></dd><dt>Enfants</dt><dd><a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P030"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Elisabeth BESSIERES">
-      <div class="infos">
-        <div class="eyebrow">Mère des tantes et oncles du PEPE</div>
-        <h2>Elisabeth BESSIERES <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>janvier 1890 <span class="field-stamp confirme">confirmé</span></dd><dt>Conjoint</dt><dd><a href="#P029">Jacques LAULAGNIER</a></dd><dt>Enfants</dt><dd><a href="#P022">Jean-Jacques LAULAGNIER</a>, <a href="#P023">Elisabeth LAULAGNIER</a>, <a href="#P024">Marguerite LAULAGNIER</a>, <a href="#P025">Marie LAULAGNIER</a>, <a href="#P026">Jean-Pierre LAULAGNIER</a>, <a href="#P027">Philomène BESSON</a>, <a href="#P028">Françoise LAULAGNIER</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>Notaire Heritage P LAULAGNIER </strong> — <a href="https://drive.proton.me/urls/QK47AVTBE0#sYRXRYgNouVv" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P031"></a>
-    <div class="idcard" style="border-left-color:#4994ca">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Marie BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">fraterie du PEPE</div>
-        <h2>Marie BERTHOLON <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>?? 1914 <span class="field-stamp confirme">confirmé</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P020">Cyprien BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P021">Elise Jeanne Marie BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P003">Pierre Joannes Antoine BERTHOLON</a>, <a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P032">Marius BERTHOLON</a>, <a href="#P033">Alban Marius Laurens BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>carte de priorité des méres de famille Elise BERTHOLON</strong> — <a href="https://drive.proton.me/urls/EDTWWRM5Q0#1Ie4R1PZID5U" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P032"></a>
-    <div class="idcard" style="border-left-color:#4994ca">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Marius BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">fraterie du PEPE</div>
-        <h2>Marius BERTHOLON <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>16 octobre 1925 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Saint-Etienne (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P020">Cyprien BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P021">Elise Jeanne Marie BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P003">Pierre Joannes Antoine BERTHOLON</a>, <a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P031">Marie BERTHOLON</a>, <a href="#P033">Alban Marius Laurens BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>capture par Allemand de Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/VDDSEQ3WJ4#vVJX5rDAvOyA" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>autorisation travail à Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/19HF811QK4#rGIEaSDUA0xQ" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>livret individuel de guerre Marius BERTHOLON</strong> — <a href="https://drive.proton.me/urls/SB4Q66QNRG#hjzB9Dg8tzcE" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P033"></a>
-    <div class="idcard" style="border-left-color:#4994ca">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Alban Marius Laurens BERTHOLON">
-      <div class="infos">
-        <div class="eyebrow">fraterie du PEPE</div>
-        <h2>Alban Marius Laurens BERTHOLON <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>3 juillet 1913 <span class="field-stamp confirme">confirmé</span></dd><dt>Lieu de naissance</dt><dd>Saint-Etienne (Loire)</dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Père</dt><dd><a href="#P020">Cyprien BERTHOLON</a></dd><dt>Mère</dt><dd><a href="#P021">Elise Jeanne Marie BERTHOLON</a></dd><dt>Fratrie</dt><dd><a href="#P003">Pierre Joannes Antoine BERTHOLON</a>, <a href="#P002">Jean-Pierre BERTHOLON</a>, <a href="#P031">Marie BERTHOLON</a>, <a href="#P032">Marius BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>confirmation Alban BERTHOLON</strong> — <a href="https://drive.proton.me/urls/2K3Q7AC8BR#IMDj5ibQphlT" target="_blank" rel="noopener">voir</a></div><div class='doc-chip'><strong>certificat etude primaire Alban Marius Laurens BERTHOLON</strong> — <a href="https://drive.proton.me/urls/84ZXTY9RKM#kyX0Ln9BiuMD" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P034"></a>
-    <div class="idcard">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Pierre    BESSONS">
-      <div class="infos">
-        <div class="eyebrow">époux d'une tatan du PEPE</div>
-        <h2>Pierre    BESSONS <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Conjoint</dt><dd><a href="#P027">Philomène BESSON</a></dd></dl>
-        
-        
-      </div>
-    </div>
-    
-    <a name="P035"></a>
-    <div class="idcard" style="border-left-color:#3074a6">
-      <img class="photo" src="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" alt="Portrait de Pierre LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Grand parent Maternel du PEPE</div>
-        <h2>Pierre LAULAGNIER <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>en 1853 <span class="field-stamp confirme">confirmé</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Conjoint</dt><dd><a href="#P036">Rose LAULAGNIER</a></dd><dt>Enfants</dt><dd><a href="#P021">Elise Jeanne Marie BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>act naissance Elise LAULAGNIER</strong> — <a href="https://drive.proton.me/urls/FWBRHMG8W4#53VrjWQ9mcMr" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    
-    <a name="P036"></a>
-    <div class="idcard" style="border-left-color:#3074a6">
-      <img class="photo" src="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" alt="Portrait de Rose LAULAGNIER">
-      <div class="infos">
-        <div class="eyebrow">Grand parent Maternel du PEPE</div>
-        <h2><span style="font-weight:400">Rose PEYRACHON</span> <span style="font-weight:800">épouse LAULAGNIER</span> <span class="stamp hypothese">à confirmer</span></h2>
-        <dl><dt>Née/né le</dt><dd>en 1855 <span class="field-stamp confirme">confirmé</span></dd><dt>Décédée/décédé le</dt><dd>— <span class="field-stamp manque">à enquêter</span></dd><dt>Conjoint</dt><dd><a href="#P035">Pierre LAULAGNIER</a></dd><dt>Enfants</dt><dd><a href="#P021">Elise Jeanne Marie BERTHOLON</a></dd></dl>
-        
-        <h3>Sources</h3><div class='doc-list'><div class='doc-chip'><strong>act naissance Elise LAULAGNIER</strong> — <a href="https://drive.proton.me/urls/FWBRHMG8W4#53VrjWQ9mcMr" target="_blank" rel="noopener">voir</a></div></div>
-      </div>
-    </div>
-    </main>
+<header class="hero"><h1>Les Berthos</h1><p>Fiches des acteurs de l'enquête — générées depuis le tableau Excel.</p></header>
+<nav class="site">
+  <a href="index.html">Accueil</a>
+  <a href="fiches.html" style="border-bottom-color:var(--wax)">Fiches des acteurs</a>
+  <a href="pistes.html">Pistes de recherche</a>
+  <a href="archives-privees.html">Archives</a>
+</nav>
+<main>
+  <div class="avert-demo" id="avert-demo" style="display:none">⚠️ Aperçu hors ligne : les données affichées sont celles intégrées au <em>15/10/2026</em>. Sur GitHub Pages avec le xlsx à côté, cette page se met à jour automatiquement.</div>
+  <div id="app"></div>
+</main>
 <footer class="contact">
   <p>Une photo, une lettre, un souvenir, une correction ? Écrivez-nous, ça complète directement l'enquête.</p>
-  <a class="btn" href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">
-    Envoyer une piste par mail</a>
+  <a class="btn" href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">Envoyer une piste par mail</a>
 </footer>
+<script>
+/* ===== Lecture du xlsx ===== */
+function chargerScript(src){return new Promise(function(ok,ko){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=ko;document.head.appendChild(s);});}
+function col(r,mot){var k=Object.keys(r);for(var i=0;i<k.length;i++){if(k[i].toLowerCase().indexOf(mot)>-1)return r[k[i]];}return '';}
+function parsePersonnes(rows){
+  var P=[],seen={};
+  rows.forEach(function(r){
+    var id=(''+col(r,'id personne')).trim();
+    if(!id||seen[id])return; seen[id]=1;
+    var nom='';
+    Object.keys(r).forEach(function(k){var kl=k.trim().toLowerCase(); if((kl==='nom'||kl.indexOf('nom ')===0)&&kl.indexOf('naissance')===-1){nom=(''+r[k]).trim();}});
+    P.push({id:id,prenom:(''+col(r,'prénom')).trim(),nom:nom.toUpperCase(),sexe:(''+col(r,'sexe')).trim().toUpperCase(),
+      naissance:(''+col(r,'date de naissance')).trim(),lieu:(''+col(r,'lieu de naissance')).trim(),deces:(''+col(r,'date de décès')).trim(),
+      pere:(''+col(r,'père')).trim(),mere:(''+col(r,'mère')).trim(),conjoint:(''+col(r,'conjoint')).trim(),
+      fratrie:(''+col(r,'fratrie')).trim(),lien:(''+col(r,'lien avec')).trim(),statut:(''+col(r,'statut')).trim(),
+      piste:(''+col(r,'piste de recherche')).trim(),photos:(''+col(r,'photo')).split(';').map(function(s){return s.trim();}).filter(Boolean)});
+  });
+  return P;
+}
+function parseDocuments(rows){
+  return rows.map(function(r){
+    var id=(''+col(r,'id document')).trim();
+    var pers=(''+col(r,'mentionn')).split(/[;,]/).map(function(s){return s.trim().toUpperCase();}).filter(Boolean);
+    var lien=''; Object.keys(r).forEach(function(k){var kl=k.trim().toLowerCase(); if(kl.indexOf('lien')>-1||kl.indexOf('url')>-1||kl.indexOf('http')>-1){var v=(''+r[k]).trim(); if(v.indexOf('http')===0)lien=v;}});
+    return {id:id,nom:(''+col(r,'nom du doc')).trim(),date:(''+col(r,'date du document')).trim(),pers:pers,
+      rangement:(''+col(r,'rangement')).trim(),lien:lien};
+  }).filter(function(d){return d.id||d.nom;});
+}
+async function chargerDonnees(){
+  try{
+    var rep=await fetch('Genealogie_MEME.xlsx',{cache:'no-store'});
+    if(!rep.ok) throw 0;
+    await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
+    var wb=XLSX.read(await rep.arrayBuffer());
+    var np=wb.SheetNames.find(function(n){return /personne/i.test(n);});
+    var nd=wb.SheetNames.find(function(n){return /document/i.test(n);});
+    var P=parsePersonnes(XLSX.utils.sheet_to_json(wb.Sheets[np],{defval:''}));
+    if(!P.length) throw 0;
+    var D=nd?parseDocuments(XLSX.utils.sheet_to_json(wb.Sheets[nd],{defval:''})):[];
+    return {P:P,D:D,demo:false};
+  }catch(e){ return {P:DEMO_P,D:DEMO_D,demo:true}; }
+}
+
+/* ===== Données intégrées (aperçu, état du 15/10/2026) ===== */
+var DEMO_P=parsePersonnes([
+{"ID Personne":"P001","Prénom(s)":"Anna Victorine","Nom":"BERTHOLON","Sexe":"F","Date de naissance":"16 juin 1913","Lieu de naissance":"Châtillon d'Azergues (Rhône)","Date de décès":"12 mars 1994","Père":"P010","Mère":"P011","Conjoint(s)":"P002","Lien avec PEPE ou MEME":"MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/gkvkD0fy/Photo-MEME.png"},
+{"ID Personne":"P002","Prénom(s)":"Jean-Pierre","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"8 novembre 1910","Lieu de naissance":"Le Puy en Velay (Haute-Loire)","Date de décès":"14 juillet 1971","Père":"P020","Mère":"P021","Conjoint(s)":"P001","Lien avec PEPE ou MEME":"PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/TPQYPpXc/Photo-PEPE.png"},
+{"ID Personne":"P010","Prénom(s)":"François","Nom":"GIRAUD","Sexe":"M","Conjoint(s)":"P011","Lien avec PEPE ou MEME":"Parent de MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P011","Prénom(s)":"Joséphine Claudia","Nom":"SOLY","Sexe":"F","Conjoint(s)":"P010","Lien avec PEPE ou MEME":"Parent de MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P020","Prénom(s)":"Cyprien","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"10 septembre 1882","Lieu de naissance":"Saint-Etienne (Loire)","Date de décès":"1971","Conjoint(s)":"P021","Lien avec PEPE ou MEME":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P021","Prénom(s)":"Elise Jeanne Marie","Nom":"BERTHOLON","Sexe":"F","Date de naissance":"22 avril 1889","Lieu de naissance":"Saint Jeures (Haute-Loire)","Date de décès":"1971","Père":"P035","Mère":"P036","Conjoint(s)":"P020","Lien avec PEPE ou MEME":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P012","Prénom(s)":"Elise Françoise Claudia","Nom":"PERRET","Sexe":"F","Date de naissance":"6 janvier 1935","Lieu de naissance":"Saint-Etienne (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P013","Prénom(s)":"Simone Cyprienne Victoria","Nom":"PAILLEUX","Sexe":"F","Date de naissance":"28 juillet 1936","Lieu de naissance":"La Fouillouse (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P014","Prénom(s)":"Renée Marie","Nom":"CROZIER","Sexe":"F","Date de naissance":"17 novembre 1937","Lieu de naissance":"La Fouillouse (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P015","Prénom(s)":"Lucien Marie","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"19 août 1940","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P016","Prénom(s)":"Joseph Marius Elise","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"19 mars 1944","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P017","Prénom(s)":"Andrée Louise","Nom":"AUDOUARD","Sexe":"F","Date de naissance":"10 octobre 1945","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P018","Prénom(s)":"Marc Antoine Abel","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"26 avril 1947","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P019","Prénom(s)":"Gérard Henri Simone","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"13 août 1950","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P022","Prénom(s)":"Jean-Jacques","Nom":"LAULAGNIER","Sexe":"M","Père":"P029","Mère":"P030","Génération":"2","Lien avec PEPE ou MEME":"Tonton du PEPE","Statut":"à confirmer","Piste de recherche":"Maréchal à Perret commune d'ARAULES","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P029","Prénom(s)":"Jacques","Nom":"LAULAGNIER","Sexe":"M","Date de décès":"30 avril 1887","Conjoint(s)":"P030","Lien avec PEPE ou MEME":"Père des tantes et oncles du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P030","Prénom(s)":"Elisabeth","Nom":"BESSIERES","Sexe":"F","Date de décès":"janvier 1890","Conjoint(s)":"P029","Lien avec PEPE ou MEME":"Mère des tantes et oncles du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P035","Prénom(s)":"Pierre","Nom":"LAULAGNIER","Sexe":"M","Date de naissance":"en 1853","Date de décès":"en 1930","Conjoint(s)":"P036","Lien avec PEPE ou MEME":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P036","Prénom(s)":"Rose","Nom":"LAULAGNIER","Sexe":"F","Date de naissance":"en 1855","Date de décès":"en 1927","Conjoint(s)":"P035","Lien avec PEPE ou MEME":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"}
+]);
+var DEMO_D=parseDocuments([
+{"ID Document":"D001","Nom du doc":"Livret de famille PEPE-MEME","Date du document":"6 avril 1934","Personnes mentionnées":"P001;P002;P012;P013;P014;P015;P016;P017;P018;P019;P010;P011;P020;P021","Rangement physique":"Marc, Tati (Photocopie)"},
+{"ID Document":"D002","Nom du doc":"carte d'identité Elise LAULAGNIER-BERTHOLON","Date du document":"25 janvier 1940","Personnes mentionnées":"P021","Rangement physique":"Simone"},
+{"ID Document":"D003","Nom du doc":"livret individuel de guerre Jean BERTHOLON","Date du document":"4 septembre 1931","Personnes mentionnées":"P002;P020;P021","Rangement physique":"Simone"},
+{"ID Document":"D005","Nom du doc":"Notaire Heritage P LAULAGNIER","Date du document":"2 avril 1902","Personnes mentionnées":"P022;P029;P030","Rangement physique":"Simone"}
+]);
+
+/* ===== Rendu ===== */
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function stamp(statut){
+  var cls=statut.indexOf('confirm')>-1?'confirme':(statut?'hypothese':'manque');
+  var txt=statut.indexOf('confirm')>-1?'confirmé':(statut||'inconnu');
+  return '<span class="stamp '+cls+'">'+esc(txt)+'</span>';
+}
+function afficher(P,D){
+  var map={};P.forEach(function(p){map[p.id.toUpperCase()]=p;});
+  var hash=(location.hash||'').replace('#','').toUpperCase();
+  var app=document.getElementById('app');
+  if(hash&&map[hash]){ renderFiche(map[hash],P,D,map,app); }
+  else{ renderListe(P,map,app); }
+}
+function nomComplet(p){return ((p.prenom||'?')+' '+(p.nom||'')).trim();}
+function lienPers(p){return '<a href="#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>';}
+function renderFiche(p,P,D,map,app){
+  document.title=nomComplet(p)+' — Les Berthos';
+  var l=(p.lien||'').toUpperCase();
+  var bord = l.indexOf('MEME')>-1 ? 'var(--meme)' : (l.indexOf('PEPE')>-1 ? 'var(--pepe)' : 'var(--ink)');
+  var ph=p.photos[0]||(p.sexe==='F'?'https://i.postimg.cc/5tFdhyNh/femme-inconnue.png':'https://i.postimg.cc/k5t30GXk/homme-inconnu.png');
+  var dl='';
+  function champ(dt,dd,st){ if(dd) dl+='<dt>'+dt+'</dt><dd>'+dd+(st?' <span class="field-stamp '+st[0]+'">'+st[1]+'</span>':'')+'</dd>'; }
+  champ('Née/né le',esc(p.naissance),p.naissance?['confirme','confirmé']:null);
+  champ('Lieu de naissance',esc(p.lieu));
+  champ('Décédée/décédé le',esc(p.deces));
+  if(map[p.conjoint.toUpperCase()]) champ('Conjoint',lienPers(map[p.conjoint.toUpperCase()]));
+  if(map[p.pere.toUpperCase()]) champ('Père',lienPers(map[p.pere.toUpperCase()]));
+  if(map[p.mere.toUpperCase()]) champ('Mère',lienPers(map[p.mere.toUpperCase()]));
+  var enfants=P.filter(function(e){return e.pere.toUpperCase()===p.id||e.mere.toUpperCase()===p.id;});
+  if(enfants.length) champ('Enfants',enfants.map(lienPers).join(', '));
+  var frat=[];
+  (p.fratrie||'').split(/[;,]/).forEach(function(id){id=id.trim().toUpperCase(); if(map[id]) frat.push(map[id]);});
+  if(frat.length) champ('Fratrie',frat.map(lienPers).join(', '));
+  var docs=D.filter(function(d){return d.pers.indexOf(p.id.toUpperCase())>-1;});
+  var docsHtml=docs.map(function(d){
+    var voir=d.lien?' — <a href="'+esc(d.lien)+'" target="_blank" rel="noopener">voir</a>':'';
+    var rg=d.rangement?'<span class="meta">Rangement : '+esc(d.rangement)+'</span>':'';
+    return '<div class="doc-chip"><strong>'+esc(d.nom||d.id)+'</strong> — '+esc(d.date)+voir+rg+'</div>';
+  }).join('');
+  var galerie=p.photos.map(function(u){return '<img src="'+esc(u)+'" alt="Photo de '+esc(nomComplet(p))+'">';}).join('');
+  var piste=p.piste?'<div class="piste"><strong>Piste de recherche :</strong> '+esc(p.piste)+'</div>':'';
+  app.innerHTML='<a class="back" href="fiches.html">&larr; Retour aux fiches</a>'
+    +'<div class="idcard" style="border-left-color:'+bord+'">'
+    +'<img class="photo" src="'+esc(ph)+'" alt="Portrait de '+esc(nomComplet(p))+'">'
+    +'<div class="infos">'
+    +'<div class="eyebrow">'+esc(p.id+' · '+(p.lien||'lien à préciser'))+'</div>'
+    +'<h2>'+esc(nomComplet(p))+' '+stamp(p.statut)+'</h2>'
+    +'<dl>'+dl+'</dl>'
+    +(galerie?'<div class="gallery">'+galerie+'</div>':'')
+    +(piste)
+    +(docs.length?'<h3>Sources ('+docs.length+')</h3><div class="doc-list">'+docsHtml+'</div>':'<h3>Sources</h3><p class="meta">Aucun document ne mentionne encore cette personne dans le registre.</p>')
+    +'</div></div>';
+  window.scrollTo(0,0);
+}
+function renderListe(P,map,app){
+  document.title='Fiches des acteurs — Les Berthos';
+  var cards=P.map(function(p){
+    var l=(p.lien||'').toUpperCase();
+    var bord=l.indexOf('MEME')>-1&&l.indexOf('PEPE')>-1?'var(--wax)':(l.indexOf('MEME')>-1?'var(--meme)':(l.indexOf('PEPE')>-1?'var(--pepe)':'transparent'));
+    var info=[p.naissance?'née/né '+p.naissance:'',p.deces?'décès '+p.deces:'',p.lien].filter(Boolean).join(' · ');
+    return '<div class="card" style="border-left:4px solid '+bord+'"><a class="name" href="#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>'+stamp(p.statut)
+      +'<p class="meta">'+esc(p.id+' — '+info)+'</p></div>';
+  }).join('');
+  app.innerHTML='<h2>Toutes les fiches ('+P.length+')</h2><div class="liste-fiches">'+cards+'</div>';
+}
+chargerDonnees().then(function(d){
+  if(d.demo) document.getElementById('avert-demo').style.display='block';
+  afficher(d.P,d.D);
+  window.addEventListener('hashchange',function(){afficher(d.P,d.D);});
+});
+</script>
 </body></html>
