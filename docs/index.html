@@ -23,405 +23,309 @@ body{
   background-attachment: scroll, fixed, fixed;
 }
 .hero{
-  position:relative;
   background-image: linear-gradient(180deg, rgba(20,14,8,.4) 0%, rgba(20,14,8,.68) 100%);
   padding:4.5rem 1.5rem 2.2rem; text-align:center;
 }
-.hero h1{
-  font-family:'Playfair Display', Georgia, serif; font-size:3rem; margin:0 0 .4rem;
-  color:var(--cream); letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.5);
-}
+.hero h1{font-family:'Playfair Display', Georgia, serif; font-size:3rem; margin:0 0 .4rem; color:var(--cream); letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.5)}
 .hero p{margin:0; color:var(--cream); opacity:.9; font-size:1.05rem; text-shadow:0 1px 6px rgba(0,0,0,.5)}
-nav.site{
-  display:flex; justify-content:center; gap:1.6rem; padding:.9rem 0; background:var(--paper-dark);
-  border-bottom:1px solid var(--line); font-weight:600; letter-spacing:.3px; flex-wrap:wrap;
-}
+nav.site{display:flex; justify-content:center; gap:1.6rem; padding:.9rem 0; background:var(--paper-dark); border-bottom:1px solid var(--line); font-weight:600; letter-spacing:.3px; flex-wrap:wrap}
 nav.site a{color:var(--ink); text-decoration:none; border-bottom:2px solid transparent; padding-bottom:2px}
 nav.site a:hover, nav.site a:focus{border-bottom-color:var(--wax)}
-main{max-width:880px; margin:0 auto; padding:2.2rem 1.5rem 4rem}
-h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1.7rem; margin-top:2.2rem}
-.card{
-  background:#faf6ec; border:1px solid var(--line); border-radius:3px;
-  padding:1.4rem 1.6rem; margin:1.1rem 0; box-shadow:0 1px 0 var(--line);
-}
-.card a.name{font-family:'Playfair Display', Georgia, serif; font-size:1.3rem; color:var(--ink); text-decoration:none}
-.card a.name:hover{color:var(--wax)}
-.stamp{
-  display:inline-block; font-family:'Special Elite', 'Courier New', monospace; font-size:.72rem;
-  text-transform:uppercase; letter-spacing:1.5px; padding:.25rem .55rem; border:2px solid; border-radius:2px;
-  transform:rotate(-3deg); margin-left:.6rem; vertical-align:middle;
-}
-.stamp.confirme{color:var(--sage); border-color:var(--sage)}
-.stamp.hypothese{color:var(--brass); border-color:var(--brass)}
-.stamp.inconnu{color:var(--wax); border-color:var(--wax)}
-.meta{color:var(--ink-soft); font-size:.95rem; margin:.3rem 0 0}
-.histoire{margin-top:.7rem}
-.piste{
-  background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin-top:.8rem;
-  font-size:.98rem;
-}
-.piste strong{color:var(--brass)}
-.piste.piste-perso{border-left-color:var(--sage)}
-.piste.piste-perso strong{color:var(--sage)}
-.idcard{
-  display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px;
-  padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px;
-}
-.idcard.branche-meme{border-left-color:var(--meme)}
-.idcard.branche-pepe{border-left-color:var(--pepe)}
+main{max-width:none; margin:0; padding:2.2rem 2rem 4rem}
+.meta{color:var(--ink-soft); font-size:.95rem}
+#avert-demo{display:none; background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin:0 0 1.2rem; font-size:.95rem}
 .legend{display:flex; gap:1.4rem; align-items:center; font-size:.9rem; color:var(--ink-soft); margin:.6rem 0 1.4rem; flex-wrap:wrap}
 .legend .dot{display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:.4rem; vertical-align:middle}
-.legend .dot.meme{background:var(--meme)} .legend .dot.pepe{background:var(--pepe)}
-.field-stamp{
-  display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.62rem;
-  text-transform:uppercase; letter-spacing:1px; padding:.1rem .4rem; border-radius:2px; margin-left:.5rem;
-  border:1px solid;
-}
-.field-stamp.confirme{color:var(--sage); border-color:var(--sage)}
-.field-stamp.verifier{color:var(--brass); border-color:var(--brass)}
-.field-stamp.manque{color:var(--wax); border-color:var(--wax)}
-.idcard .photo{
-  width:140px; height:170px; flex-shrink:0; background:var(--paper-dark); border:1px solid var(--ink-soft);
-  object-fit:cover; display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
-  font-size:.8rem; text-align:center; padding:.5rem;
-}
-.idcard .infos{flex:1; min-width:220px}
-.idcard .infos h2{margin:0 0 .2rem; font-size:1.5rem}
-.idcard .infos .eyebrow{
-  font-family:'Special Elite','Courier New',monospace; font-size:.7rem; letter-spacing:2px;
-  color:var(--ink-soft); text-transform:uppercase; margin-bottom:.4rem;
-}
-.idcard dl{display:grid; grid-template-columns:auto 1fr; gap:.25rem .8rem; margin:.7rem 0 0; font-size:.95rem}
-.idcard dt{color:var(--ink-soft)}
-.idcard dd{margin:0}
-.gallery{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.9rem}
-.gallery a{display:block; width:90px; height:90px; overflow:hidden; border:1px solid var(--line); border-radius:3px}
-.gallery img{width:100%; height:100%; object-fit:cover; display:block}
-h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1.05rem; margin:1rem 0 .4rem}
-.doc-list{display:flex; flex-direction:column; gap:.5rem}
-.doc-chip{
-  background:var(--paper-dark); border:1px solid var(--line); border-radius:3px;
-  padding:.6rem .9rem; font-size:.9rem;
-}
-.doc-chip .meta{display:block; margin-top:.15rem}
-footer.contact{
-  margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark);
-  border-top:1px solid var(--line);
-}
-footer.contact a.btn{
-  display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none;
-  padding:.7rem 1.4rem; border-radius:3px; font-weight:700;
-}
-footer.contact a.btn:hover{background:#732530}
-.empty{color:var(--ink-soft); font-style:italic}
-.back{display:inline-block; margin-bottom:1.2rem; color:var(--ink-soft); text-decoration:none}
-.back:hover{color:var(--wax)}
-.archive-box{background:#faf6ec; border:1px solid var(--line); border-left:4px solid var(--wax); padding:1.2rem 1.4rem; margin:1.2rem 0}
+.legend .dot.meme{background:var(--meme)} .legend .dot.pepe{background:var(--pepe)} .legend .dot.both{background:var(--wax)} .legend .dot.neutre{background:var(--ink-soft)}
+#conteneur{overflow-x:auto}
 .noeud{cursor:pointer}
 .noeud .photo-wrap{transition:transform .15s ease, filter .15s ease; transform-box:fill-box; transform-origin:center}
 .noeud.actif .photo-wrap{filter:drop-shadow(0 0 6px var(--wax)); transform:scale(1.08)}
 .lien{transition:stroke .15s ease, stroke-width .15s ease, opacity .15s ease}
 .lien.actif{stroke:var(--wax) !important; stroke-width:3.5 !important; opacity:1 !important}
-@media (max-width:600px){
-  .hero h1{font-size:2.1rem} body{font-size:17px} .idcard{flex-direction:column; align-items:center; text-align:center}
-  .idcard dl{grid-template-columns:1fr; text-align:center}
-}
+.hors-schema{margin-top:1.6rem}
+.hors-schema h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1.3rem; margin:0 0 .5rem}
+.chips{display:flex; flex-wrap:wrap; gap:.5rem}
+.chip{background:var(--paper-dark); border:1px solid var(--line); border-radius:3px; padding:.35rem .7rem; font-size:.85rem; text-decoration:none; color:var(--ink)}
+footer.contact{margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark); border-top:1px solid var(--line)}
+footer.contact a.btn{display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none; padding:.7rem 1.4rem; border-radius:3px; font-weight:700}
+footer.contact a.btn:hover{background:#732530}
+#erreur{display:none; background:#f6dede; border-left:4px solid var(--wax); padding:.8rem 1rem; margin-bottom:1rem}
 </style>
 </head><body>
 <header class="hero"><h1>Les Berthos</h1><p>Une enquête de famille, page après page — mise à jour au fil des découvertes.</p></header>
-
-    <nav class="site">
-      <a href="index.html" style="border-bottom-color:var(--wax)">Accueil</a>
-      <a href="fiches.html">Fiches des acteurs</a>
-      <a href="pistes.html">Pistes de recherche</a>
-      <a href="archives-privees.html">Archives</a>
-    </nav>
-<main style="max-width:none; margin:0; padding:2.2rem 2rem 4rem;">
-    <p class="meta">Cliquez un portrait pour ouvrir sa fiche — survolez-le pour repérer ses liens.</p>
-    <div style="overflow-x:auto;">
-      <svg viewBox="0 0 2144 850" width="2144" height="850" xmlns="http://www.w3.org/2000/svg"><line class="lien" data-a="P001" data-b="P010" x1="578.0" y1="530" x2="318.0" y2="320" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P001" data-b="P011" x1="578.0" y1="530" x2="474.0" y2="320" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P002" data-b="P020" x1="734.0" y1="530" x2="630.0" y2="320" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P002" data-b="P021" x1="734.0" y1="530" x2="786.0" y2="320" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P012" data-b="P002" x1="110.0" y1="740" x2="734.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P012" data-b="P001" x1="110.0" y1="740" x2="578.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P013" data-b="P002" x1="266.0" y1="740" x2="734.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P013" data-b="P001" x1="266.0" y1="740" x2="578.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P014" data-b="P002" x1="422.0" y1="740" x2="734.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P014" data-b="P001" x1="422.0" y1="740" x2="578.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P015" data-b="P002" x1="578.0" y1="740" x2="734.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P015" data-b="P001" x1="578.0" y1="740" x2="578.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P016" data-b="P002" x1="734.0" y1="740" x2="734.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P016" data-b="P001" x1="734.0" y1="740" x2="578.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P017" data-b="P002" x1="890.0" y1="740" x2="734.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P017" data-b="P001" x1="890.0" y1="740" x2="578.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P018" data-b="P002" x1="1046.0" y1="740" x2="734.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P018" data-b="P001" x1="1046.0" y1="740" x2="578.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P019" data-b="P002" x1="1202.0" y1="740" x2="734.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P019" data-b="P001" x1="1202.0" y1="740" x2="578.0" y2="530" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P021" data-b="P035" x1="786.0" y1="320" x2="875.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P021" data-b="P036" x1="786.0" y1="320" x2="1031.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P022" data-b="P029" x1="942.0" y1="320" x2="1187.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P022" data-b="P030" x1="942.0" y1="320" x2="1343.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P023" data-b="P029" x1="1098.0" y1="320" x2="1187.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P023" data-b="P030" x1="1098.0" y1="320" x2="1343.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P024" data-b="P029" x1="1254.0" y1="320" x2="1187.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P024" data-b="P030" x1="1254.0" y1="320" x2="1343.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P025" data-b="P029" x1="1410.0" y1="320" x2="1187.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P025" data-b="P030" x1="1410.0" y1="320" x2="1343.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P026" data-b="P029" x1="1566.0" y1="320" x2="1187.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P026" data-b="P030" x1="1566.0" y1="320" x2="1343.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P027" data-b="P029" x1="1722.0" y1="320" x2="1187.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P027" data-b="P030" x1="1722.0" y1="320" x2="1343.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P028" data-b="P029" x1="2034.0" y1="320" x2="1187.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P028" data-b="P030" x1="2034.0" y1="320" x2="1343.1" y2="110" stroke="#c9bda3" stroke-width="2"/><line class="lien" data-a="P012" data-b="P013" x1="152.0" y1="740" x2="224.0" y2="740" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P013" data-b="P014" x1="308.0" y1="740" x2="380.0" y2="740" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P014" data-b="P015" x1="464.0" y1="740" x2="536.0" y2="740" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P015" data-b="P016" x1="620.0" y1="740" x2="692.0" y2="740" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P016" data-b="P017" x1="776.0" y1="740" x2="848.0" y2="740" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P017" data-b="P018" x1="932.0" y1="740" x2="1004.0" y2="740" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P018" data-b="P019" x1="1088.0" y1="740" x2="1160.0" y2="740" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P022" data-b="P023" x1="984.0" y1="320" x2="1056.0" y2="320" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P023" data-b="P024" x1="1140.0" y1="320" x2="1212.0" y2="320" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P024" data-b="P025" x1="1296.0" y1="320" x2="1368.0" y2="320" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P025" data-b="P026" x1="1452.0" y1="320" x2="1524.0" y2="320" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P026" data-b="P027" x1="1608.0" y1="320" x2="1680.0" y2="320" stroke="#c9bda3" stroke-width="1.5" stroke-dasharray="2,3"/><line class="lien" data-a="P001" data-b="P002" x1="620.0" y1="530" x2="692.0" y2="530" stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/><line class="lien" data-a="P010" data-b="P011" x1="360.0" y1="320" x2="432.0" y2="320" stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/><line class="lien" data-a="P020" data-b="P021" x1="672.0" y1="320" x2="744.0" y2="320" stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/><line class="lien" data-a="P027" data-b="P034" x1="1764.0" y1="320" x2="1836.0" y2="320" stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/><line class="lien" data-a="P035" data-b="P036" x1="917.1" y1="110" x2="989.0999999999999" y2="110" stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/><line class="lien" data-a="P029" data-b="P030" x1="1229.1" y1="110" x2="1301.1" y2="110" stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/>
-        <a href="fiches.html#P001" class="noeud" data-pid="P001">
-          <g class="photo-wrap">
-            <circle cx="578.0" cy="530" r="42" fill="#faf6ec" stroke="#ca4969" stroke-width="4"/>
-            <clipPath id="clip-P001"><circle cx="578.0" cy="530" r="39"/></clipPath><image href="https://i.postimg.cc/gkvkD0fy/Photo-MEME.png" x="539.0" y="491" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P001)"/>
-          </g>
-          <text x="578.0" y="590" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Anna Victorine</text>
-          <text x="578.0" y="606" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P002" class="noeud" data-pid="P002">
-          <g class="photo-wrap">
-            <circle cx="734.0" cy="530" r="42" fill="#faf6ec" stroke="#4994ca" stroke-width="4"/>
-            <clipPath id="clip-P002"><circle cx="734.0" cy="530" r="39"/></clipPath><image href="https://i.postimg.cc/TPQYPpXc/Photo-PEPE.png" x="695.0" y="491" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P002)"/>
-          </g>
-          <text x="734.0" y="590" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Jean-Pierre</text>
-          <text x="734.0" y="606" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P012" class="noeud" data-pid="P012">
-          <g class="photo-wrap">
-            <circle cx="110.0" cy="740" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P012"><circle cx="110.0" cy="740" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="71.0" y="701" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P012)"/>
-          </g>
-          <text x="110.0" y="800" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Elise Françoise Claudia</text>
-          <text x="110.0" y="816" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P013" class="noeud" data-pid="P013">
-          <g class="photo-wrap">
-            <circle cx="266.0" cy="740" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P013"><circle cx="266.0" cy="740" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="227.0" y="701" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P013)"/>
-          </g>
-          <text x="266.0" y="800" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Simone Cyprienne Victoria</text>
-          <text x="266.0" y="816" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P014" class="noeud" data-pid="P014">
-          <g class="photo-wrap">
-            <circle cx="422.0" cy="740" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P014"><circle cx="422.0" cy="740" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="383.0" y="701" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P014)"/>
-          </g>
-          <text x="422.0" y="800" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Renée Marie </text>
-          <text x="422.0" y="816" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P015" class="noeud" data-pid="P015">
-          <g class="photo-wrap">
-            <circle cx="578.0" cy="740" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P015"><circle cx="578.0" cy="740" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="539.0" y="701" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P015)"/>
-          </g>
-          <text x="578.0" y="800" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Lucien Marie</text>
-          <text x="578.0" y="816" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P016" class="noeud" data-pid="P016">
-          <g class="photo-wrap">
-            <circle cx="734.0" cy="740" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P016"><circle cx="734.0" cy="740" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="695.0" y="701" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P016)"/>
-          </g>
-          <text x="734.0" y="800" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Joseph Marius Elise</text>
-          <text x="734.0" y="816" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P017" class="noeud" data-pid="P017">
-          <g class="photo-wrap">
-            <circle cx="890.0" cy="740" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P017"><circle cx="890.0" cy="740" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="851.0" y="701" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P017)"/>
-          </g>
-          <text x="890.0" y="800" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Andrée Louise</text>
-          <text x="890.0" y="816" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P018" class="noeud" data-pid="P018">
-          <g class="photo-wrap">
-            <circle cx="1046.0" cy="740" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P018"><circle cx="1046.0" cy="740" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="1007.0" y="701" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P018)"/>
-          </g>
-          <text x="1046.0" y="800" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Marc Antoine ??</text>
-          <text x="1046.0" y="816" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P019" class="noeud" data-pid="P019">
-          <g class="photo-wrap">
-            <circle cx="1202.0" cy="740" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P019"><circle cx="1202.0" cy="740" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="1163.0" y="701" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P019)"/>
-          </g>
-          <text x="1202.0" y="800" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Gérard Henri Simone</text>
-          <text x="1202.0" y="816" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P010" class="noeud" data-pid="P010">
-          <g class="photo-wrap">
-            <circle cx="318.0" cy="320" r="42" fill="#faf6ec" stroke="#bd3758" stroke-width="4"/>
-            <clipPath id="clip-P010"><circle cx="318.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="279.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P010)"/>
-          </g>
-          <text x="318.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">François</text>
-          <text x="318.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">GIRAUD</text>
-        </a>
-        <a href="fiches.html#P011" class="noeud" data-pid="P011">
-          <g class="photo-wrap">
-            <circle cx="474.0" cy="320" r="42" fill="#faf6ec" stroke="#bd3758" stroke-width="4"/>
-            <clipPath id="clip-P011"><circle cx="474.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="435.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P011)"/>
-          </g>
-          <text x="474.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Joséphine Claudia</text>
-          <text x="474.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">SOLY</text>
-        </a>
-        <a href="fiches.html#P020" class="noeud" data-pid="P020">
-          <g class="photo-wrap">
-            <circle cx="630.0" cy="320" r="42" fill="#faf6ec" stroke="#3785bd" stroke-width="4"/>
-            <clipPath id="clip-P020"><circle cx="630.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="591.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P020)"/>
-          </g>
-          <text x="630.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Cyprien</text>
-          <text x="630.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P021" class="noeud" data-pid="P021">
-          <g class="photo-wrap">
-            <circle cx="786.0" cy="320" r="42" fill="#faf6ec" stroke="#3785bd" stroke-width="4"/>
-            <clipPath id="clip-P021"><circle cx="786.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="747.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P021)"/>
-          </g>
-          <text x="786.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Elise Jeanne Marie</text>
-          <text x="786.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BERTHOLON</text>
-        </a>
-        <a href="fiches.html#P022" class="noeud" data-pid="P022">
-          <g class="photo-wrap">
-            <circle cx="942.0" cy="320" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P022"><circle cx="942.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="903.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P022)"/>
-          </g>
-          <text x="942.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Jean-Jacques</text>
-          <text x="942.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P023" class="noeud" data-pid="P023">
-          <g class="photo-wrap">
-            <circle cx="1098.0" cy="320" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P023"><circle cx="1098.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="1059.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P023)"/>
-          </g>
-          <text x="1098.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Elisabeth</text>
-          <text x="1098.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P024" class="noeud" data-pid="P024">
-          <g class="photo-wrap">
-            <circle cx="1254.0" cy="320" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P024"><circle cx="1254.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="1215.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P024)"/>
-          </g>
-          <text x="1254.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Marguerite</text>
-          <text x="1254.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P025" class="noeud" data-pid="P025">
-          <g class="photo-wrap">
-            <circle cx="1410.0" cy="320" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P025"><circle cx="1410.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="1371.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P025)"/>
-          </g>
-          <text x="1410.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Marie</text>
-          <text x="1410.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P026" class="noeud" data-pid="P026">
-          <g class="photo-wrap">
-            <circle cx="1566.0" cy="320" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P026"><circle cx="1566.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="1527.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P026)"/>
-          </g>
-          <text x="1566.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Jean-Pierre</text>
-          <text x="1566.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P027" class="noeud" data-pid="P027">
-          <g class="photo-wrap">
-            <circle cx="1722.0" cy="320" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P027"><circle cx="1722.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="1683.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P027)"/>
-          </g>
-          <text x="1722.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Philomène</text>
-          <text x="1722.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BESSON</text>
-        </a>
-        <a href="fiches.html#P034" class="noeud" data-pid="P034">
-          <g class="photo-wrap">
-            <circle cx="1878.0" cy="320" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P034"><circle cx="1878.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="1839.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P034)"/>
-          </g>
-          <text x="1878.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Pierre   </text>
-          <text x="1878.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BESSONS</text>
-        </a>
-        <a href="fiches.html#P028" class="noeud" data-pid="P028">
-          <g class="photo-wrap">
-            <circle cx="2034.0" cy="320" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P028"><circle cx="2034.0" cy="320" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="1995.0" y="281" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P028)"/>
-          </g>
-          <text x="2034.0" y="380" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Françoise</text>
-          <text x="2034.0" y="396" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P035" class="noeud" data-pid="P035">
-          <g class="photo-wrap">
-            <circle cx="875.1" cy="110" r="42" fill="#faf6ec" stroke="#3074a6" stroke-width="4"/>
-            <clipPath id="clip-P035"><circle cx="875.1" cy="110" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="836.1" y="71" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P035)"/>
-          </g>
-          <text x="875.1" y="170" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Pierre</text>
-          <text x="875.1" y="186" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P036" class="noeud" data-pid="P036">
-          <g class="photo-wrap">
-            <circle cx="1031.1" cy="110" r="42" fill="#faf6ec" stroke="#3074a6" stroke-width="4"/>
-            <clipPath id="clip-P036"><circle cx="1031.1" cy="110" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="992.0999999999999" y="71" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P036)"/>
-          </g>
-          <text x="1031.1" y="170" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Rose</text>
-          <text x="1031.1" y="186" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P029" class="noeud" data-pid="P029">
-          <g class="photo-wrap">
-            <circle cx="1187.1" cy="110" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P029"><circle cx="1187.1" cy="110" r="39"/></clipPath><image href="https://i.postimg.cc/k5t30GXk/homme-inconnu.png" x="1148.1" y="71" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P029)"/>
-          </g>
-          <text x="1187.1" y="170" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Jacques</text>
-          <text x="1187.1" y="186" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">LAULAGNIER</text>
-        </a>
-        <a href="fiches.html#P030" class="noeud" data-pid="P030">
-          <g class="photo-wrap">
-            <circle cx="1343.1" cy="110" r="42" fill="#faf6ec" stroke="#6b5c48" stroke-width="4"/>
-            <clipPath id="clip-P030"><circle cx="1343.1" cy="110" r="39"/></clipPath><image href="https://i.postimg.cc/5tFdhyNh/femme-inconnue.png" x="1304.1" y="71" width="78" height="78" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-P030)"/>
-          </g>
-          <text x="1343.1" y="170" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">Elisabeth</text>
-          <text x="1343.1" y="186" text-anchor="middle" font-family="Public Sans, Arial, sans-serif"
-                font-size="14" font-weight="700" fill="#3a2e22">BESSIERES</text>
-        </a></svg>
-    </div>
-    <p class='meta'>4 personne(s) sans génération renseignée, donc pas encore sur ce schéma.</p>
-    
-    <script>
-    document.querySelectorAll('.noeud').forEach(function(n){
-      var pid = n.getAttribute('data-pid');
-      n.addEventListener('mouseenter', function(){
-        n.classList.add('actif');
-        document.querySelectorAll('[data-a="'+pid+'"], [data-b="'+pid+'"]').forEach(function(l){
-          l.classList.add('actif');
-        });
-      });
-      n.addEventListener('mouseleave', function(){
-        n.classList.remove('actif');
-        document.querySelectorAll('.lien.actif').forEach(function(l){ l.classList.remove('actif'); });
-      });
-    });
-    </script>
-    </main>
+<nav class="site">
+  <a href="index.html" style="border-bottom-color:var(--wax)">Accueil</a>
+  <a href="fiches.html">Fiches des acteurs</a>
+  <a href="pistes.html">Pistes de recherche</a>
+  <a href="archives-privees.html">Archives</a>
+</nav>
+<main>
+  <p class="meta">Arbre généré automatiquement à partir de <strong>Genealogie_MEME.xlsx</strong> — modifiez le tableau, remplacez le fichier sur GitHub, rechargez : l'arbre se met à jour tout seul. Survolez un portrait pour repérer ses liens, cliquez pour ouvrir sa fiche.</p>
+  <div id="avert-demo">⚠️ Aperçu : le fichier xlsx n'a pas pu être chargé (normal hors GitHub Pages ou en local). L'arbre ci-dessous utilise les données intégrées du <em>15/10/2026</em>. Une fois en ligne avec le xlsx à côté de ce fichier, il se mettra à jour automatiquement.</div>
+  <div id="erreur">Impossible de lire <strong>Genealogie_MEME.xlsx</strong>. Vérifiez que le fichier est bien présent à côté de cette page dans le dépôt GitHub.</div>
+  <div class="legend">
+    <span><span class="dot meme"></span>Côté MÉMÉ</span>
+    <span><span class="dot pepe"></span>Côté PÉPÉ</span>
+    <span><span class="dot both"></span>Enfants de MÉMÉ + PÉPÉ</span>
+    <span><span class="dot neutre"></span>Autres liens</span>
+    <span style="margin-left:auto">— – – conjoints</span>
+  </div>
+  <div id="conteneur"></div>
+  <div class="hors-schema" id="hors-schema" style="display:none">
+    <h2>Personnes sans génération renseignée</h2>
+    <p class="meta">Elles n'apparaissent pas encore sur le schéma : renseignez leur « Génération » (ou reliez-les à des parents) dans le xlsx.</p>
+    <div class="chips" id="chips"></div>
+  </div>
+</main>
 <footer class="contact">
   <p>Une photo, une lettre, un souvenir, une correction ? Écrivez-nous, ça complète directement l'enquête.</p>
-  <a class="btn" href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">
-    Envoyer une piste par mail</a>
+  <a class="btn" href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">Envoyer une piste par mail</a>
 </footer>
+
+<script>
+/* ============ 1. Lecture du xlsx (SheetJS) ============ */
+function chargerScript(src){
+  return new Promise((ok, ko)=>{ var s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=ko; document.head.appendChild(s); });
+}
+function colonnesVersPersonnes(rows){
+  var P=[]; var seen=new Set();
+  rows.forEach(function(r){
+    var keys=Object.keys(r);
+    function col(mot){ for(var i=0;i<keys.length;i++){ if(keys[i].toLowerCase().indexOf(mot)>-1) return r[keys[i]]; } return ''; }
+    var id=(''+col('id personne')).trim();
+    if(!id || seen.has(id)) return; seen.add(id);
+    var nom='';
+    for(var j=0;j<keys.length;j++){
+      var kl=keys[j].trim().toLowerCase();
+      if(kl==='nom' || kl.slice(0,4)==='nom ' && kl.indexOf('naissance')===-1){ nom=(''+r[keys[j]]).trim(); break; }
+    }
+    P.push({
+      id:id, prenom:(''+col('prénom')).trim(), nom:(''+col('nom')).trim().toUpperCase(),
+      sexe:(''+col('sexe')).trim().toUpperCase(),
+      naissance:(''+col('date de naissance')).trim(), deces:(''+col('date de décès')).trim(),
+      pere:(''+col('père')).trim(), mere:(''+col('mère')).trim(),
+      conjoint:(''+col('conjoint')).trim(), gen:(''+col('génération')).trim(),
+      lien:(''+col('lien avec')).trim(), statut:(''+col('statut')).trim(),
+      photo:(''+col('photo')).trim()
+    });
+  });
+  return P;
+}
+async function chargerDonnees(){
+  try{
+    var rep = await fetch('Genealogie_MEME.xlsx', {cache:'no-store'});
+    if(!rep.ok) throw new Error('404');
+    await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
+    var wb = XLSX.read(await rep.arrayBuffer());
+    var nom = wb.SheetNames.find(function(n){ return /personnes/i.test(n); }) || wb.SheetNames[0];
+    var rows = XLSX.utils.sheet_to_json(wb.Sheets[nom], {defval:''});
+    var P = colonnesVersPersonnes(rows);
+    if(!P.length) throw new Error('vide');
+    return {source:'xlsx', personnes:P};
+  }catch(e){
+    return {source:'demo', personnes: DONNEES_DEMO};
+  }
+}
+
+/* ============ 2. Données de secours (aperçu hors ligne, état du 15/10/2026) ============ */
+var DONNEES_DEMO = colonnesVersPersonnes([
+{"ID Personne":"P001","Prénom(s)":"Anna Victorine","Nom":"BERTHOLON","Sexe":"F","Date de naissance":"16 juin 1913","Date de décès":"12 mars 1994","Père":"P010","Mère":"P011","Conjoint(s)":"P002","Génération":"1","Lien":"MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/gkvkD0fy/Photo-MEME.png"},
+{"ID Personne":"P002","Prénom(s)":"Jean-Pierre","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"8 novembre 1910","Date de décès":"14 juillet 1971","Père":"P020","Mère":"P021","Conjoint(s)":"P001","Génération":"1","Lien":"PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/TPQYPpXc/Photo-PEPE.png"},
+{"ID Personne":"P003","Prénom(s)":"Pierre Joannes Antoine","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"17 juin 1933","Père":"P020","Mère":"P021","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/VNVD72C0/pierre-Bertholon.png"},
+{"ID Personne":"P004","Prénom(s)":"Marie","Nom":"CRESPY","Sexe":"F","Date de naissance":"en 1914","Date de décès":"en 1963","Père":"P020","Mère":"P021","Conjoint(s)":"P037","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P005","Prénom(s)":"Marius","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"16 octobre 1925","Père":"P020","Mère":"P021","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P006","Prénom(s)":"Alban Marius Laurens","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"3 juillet 1913","Date de décès":"en 1988","Père":"P020","Mère":"P021","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P007","Prénom(s)":"Victoria","Nom":"JACQUEMETTON","Sexe":"F","Père":"P010","Mère":"P011","Génération":"1","Lien":"fraterie MEME","Statut":"à confirmer"},
+{"ID Personne":"P008","Prénom(s)":"Gaby","Nom":"BERNARD","Sexe":"F","Père":"P010","Mère":"P011","Génération":"1","Lien":"fraterie MEME","Statut":"à confirmer"},
+{"ID Personne":"P010","Prénom(s)":"François","Nom":"GIRAUD","Sexe":"M","Conjoint(s)":"P011","Génération":"2","Lien":"Parent de MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P011","Prénom(s)":"Joséphine Claudia","Nom":"SOLY","Sexe":"F","Conjoint(s)":"P010","Génération":"2","Lien":"Parent de MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P020","Prénom(s)":"Cyprien","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"10 septembre 1882","Date de décès":"1971","Conjoint(s)":"P021","Génération":"2","Lien":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P021","Prénom(s)":"Elise Jeanne Marie","Nom":"BERTHOLON","Sexe":"F","Date de naissance":"22 avril 1889","Date de décès":"1971","Père":"P035","Mère":"P036","Conjoint(s)":"P020","Génération":"2","Lien":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P012","Prénom(s)":"Elise Françoise Claudia","Nom":"PERRET","Sexe":"F","Date de naissance":"6 janvier 1935","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P013","Prénom(s)":"Simone Cyprienne Victoria","Nom":"PAILLEUX","Sexe":"F","Date de naissance":"28 juillet 1936","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P014","Prénom(s)":"Renée Marie","Nom":"CROZIER","Sexe":"F","Date de naissance":"17 novembre 1937","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P015","Prénom(s)":"Lucien Marie","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"19 août 1940","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P016","Prénom(s)":"Joseph Marius Elise","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"19 mars 1944","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P017","Prénom(s)":"Andrée Louise","Nom":"AUDOUARD","Sexe":"F","Date de naissance":"10 octobre 1945","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P018","Prénom(s)":"Marc Antoine Abel","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"26 avril 1947","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P019","Prénom(s)":"Gérard Henri Simone","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"13 août 1950","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P022","Prénom(s)":"Jean-Jacques","Nom":"LAULAGNIER","Sexe":"M","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tonton du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P023","Prénom(s)":"Elisabeth","Nom":"LAULAGNIER","Sexe":"F","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P024","Prénom(s)":"Marguerite","Nom":"LAULAGNIER","Sexe":"F","Date de naissance":"en 1892","Date de décès":"en 1920","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P025","Prénom(s)":"Marie","Nom":"LAULAGNIER","Sexe":"F","Date de naissance":"en 1882","Date de décès":"en 1913","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P026","Prénom(s)":"Jean-Pierre","Nom":"LAULAGNIER","Sexe":"M","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tonton du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P027","Prénom(s)":"Philomène","Nom":"BESSON","Sexe":"F","Père":"P029","Mère":"P030","Conjoint(s)":"P034","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P028","Prénom(s)":"Françoise","Nom":"LAULAGNIER","Sexe":"F","Date de décès":"novembre 1899","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P029","Prénom(s)":"Jacques","Nom":"LAULAGNIER","Sexe":"M","Date de décès":"30 avril 1887","Conjoint(s)":"P030","Génération":"3","Lien":"Père des tantes et oncles du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P030","Prénom(s)":"Elisabeth","Nom":"BESSIERES","Sexe":"F","Date de décès":"janvier 1890","Conjoint(s)":"P029","Génération":"3","Lien":"Mère des tantes et oncles du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P034","Prénom(s)":"Pierre","Nom":"BESSONS","Sexe":"M","Conjoint(s)":"P027","Lien":"époux d'une tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P035","Prénom(s)":"Pierre","Nom":"LAULAGNIER","Sexe":"M","Date de naissance":"en 1853","Date de décès":"en 1930","Conjoint(s)":"P036","Génération":"3","Lien":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P036","Prénom(s)":"Rose","Nom":"LAULAGNIER","Sexe":"F","Date de naissance":"en 1855","Date de décès":"en 1927","Conjoint(s)":"P035","Génération":"3","Lien":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P037","Prénom(s)":"Louis Henri","Nom":"CRESPY","Sexe":"M","Date de naissance":"en 1913","Date de décès":"en 1972","Conjoint(s)":"P004","Lien":"","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
+{"ID Personne":"P038","Prénom(s)":"Rosalie","Nom":"PEYRACHON","Sexe":"F","Statut":"à confirmer"},
+{"ID Personne":"P039","Prénom(s)":"Marie","Nom":"PEYRACHON","Sexe":"F","Statut":"à confirmer"},
+{"ID Personne":"P040","Prénom(s)":"Joseph","Nom":"LAULAGNIER","Sexe":"M","Statut":"à confirmer"},
+{"ID Personne":"P041","Prénom(s)":"Marie","Nom":"LAULAGNIER","Sexe":"F","Statut":"à confirmer"},
+{"ID Personne":"P042","Prénom(s)":"Gérard","Nom":"CRESPY","Sexe":"M","Père":"P037","Mère":"P004","Statut":"à confirmer"},
+{"ID Personne":"P043","Sexe":"F","Statut":"à confirmer"},
+{"ID Personne":"P050","Prénom(s)":"Alain","Nom":"BERTHOLON","Sexe":"M","Père":"P005","Mère":"P052","Statut":"à confirmer"},
+{"ID Personne":"P051","Prénom(s)":"Jean-Pierre","Nom":"BERTHOLON","Sexe":"M","Père":"P005","Mère":"P052","Statut":"à confirmer"},
+{"ID Personne":"P052","Prénom(s)":"Ginette","Nom":"BERTHOLON","Sexe":"F","Conjoint(s)":"P005","Statut":"à confirmer"}
+]);
+
+/* ============ 3. Calcul des générations et du placement ============ */
+function calculerGenerations(P){
+  var map={}; P.forEach(function(p){ map[p.id]=p; });
+  P.forEach(function(p){
+    var g=parseInt(p.gen,10); p.g = isNaN(g)?null:g;
+  });
+  for(var tour=0;tour<6;tour++){
+    P.forEach(function(p){
+      if(p.g!==null) return;
+      var gs=[];
+      if(map[p.pere] && map[p.pere].g!==null) gs.push(map[p.pere].g);
+      if(map[p.mere] && map[p.mere].g!==null) gs.push(map[p.mere].g);
+      if(gs.length){ p.g=Math.min.apply(null,gs)-1; return; }
+      var c=map[p.conjoint];
+      if(c && c.g!==null) p.g=c.g;
+    });
+  }
+  return map;
+}
+function couleur(p){
+  var l=(p.lien||'').toUpperCase();
+  var meme=l.indexOf('MEME')>-1, pepe=l.indexOf('PEPE')>-1;
+  if(meme&&pepe) return '#8c2f39';
+  if(meme) return '#ca4969';
+  if(pepe) return '#4994ca';
+  return '#6b5c48';
+}
+function photoParDefaut(p){
+  if(p.photo) return p.photo;
+  return p.sexe==='F' ? 'https://i.postimg.cc/5tFdhyNh/femme-inconnue.png' : 'https://i.postimg.cc/k5t30GXk/homme-inconnu.png';
+}
+function construireArbre(P){
+  var map=calculerGenerations(P);
+  var placees=P.filter(function(p){return p.g!==null;});
+  var hors=P.filter(function(p){return p.g===null;});
+  var gMin=Math.min.apply(null, placees.map(function(p){return p.g;}));
+  var parGen={};
+  placees.forEach(function(p){ var g=p.g-gMin; (parGen[g]=parGen[g]||[]).push(p); });
+  var gens=Object.keys(parGen).map(Number).sort(function(a,b){return b-a;}); // anciens en haut
+
+  var R=42, ESP=156, Y0=110, DY=210, X0=90;
+  var positions={}; // id -> {x,y}
+  var lignes=[], ordreLignes=[];
+
+  gens.forEach(function(g){
+    var liste=parGen[g].slice();
+    // tri : sous les parents (moyenne x), sinon après, ordre du tableau sinon
+    liste.forEach(function(p){
+      var px=[];
+      if(positions[p.pere]) px.push(positions[p.pere].x);
+      if(positions[p.mere]) px.push(positions[p.mere].x);
+      if(!px.length && positions[p.conjoint]) px.push(positions[p.conjoint].x);
+      p._cle = px.length ? px.reduce(function(a,b){return a+b;},0)/px.length : Infinity;
+    });
+    liste.sort(function(a,b){ return a._cle-b._cle; });
+    // conjoints côte à côte
+    var fin=[];
+    liste.forEach(function(p){
+      if(fin.indexOf(p)>-1) return;
+      fin.push(p);
+      var c=map[p.conjoint];
+      if(c && c.g!==null && (c.g-gMin)===g && liste.indexOf(c)>-1 && fin.indexOf(c)===-1){
+        fin.push(c);
+      }
+    });
+    fin.forEach(function(p,i){ positions[p.id]={x:X0+i*ESP, y:0}; });
+  });
+  // y par génération : g décroissant vers le bas
+  gens.forEach(function(g){
+    var y=Y0+( (gens[0]-g) )*DY;
+    parGen[g].forEach(function(p){ positions[p.id].y=y; });
+  });
+
+  // liens parents-enfants
+  placees.forEach(function(p){
+    [p.pere,p.mere].forEach(function(pid){
+      if(map[pid] && positions[pid]){
+        var a=positions[pid], b=positions[p.id];
+        lignes.push({a:pid,b:p.id,x1:a.x,y1:a.y,x2:b.x,y2:b.y,classe:'parent'});
+      }
+    });
+  });
+  // liens conjoints (traits rouges)
+  var faits={};
+  placees.forEach(function(p){
+    var c=map[p.conjoint];
+    if(!c || !positions[p.id] || !positions[c.id]) return;
+    var k=[p.id,c.id].sort().join('|');
+    if(faits[k]) return; faits[k]=1;
+    lignes.push({a:p.id,b:c.id,x1:positions[p.id].x,y1:positions[p.id].y,x2:positions[c.id].x,y2:positions[c.id].y,classe:'couple'});
+  });
+  return {positions:positions, lignes:lignes, hors:hors, gens:gens, parGen:parGen};
+}
+
+/* ============ 4. Rendu SVG ============ */
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function afficher(P){
+  var t=construireArbre(P);
+  var map={}; P.forEach(function(p){map[p.id]=p;});
+  var R=42, W=0, H=0;
+  Object.values(t.positions).forEach(function(q){ W=Math.max(W,q.x+R); H=Math.max(H,q.y+R+70); });
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">';
+  t.lignes.forEach(function(l){
+    if(l.classe==='couple'){
+      svg+='<line class="lien" data-a="'+l.a+'" data-b="'+l.b+'" x1="'+l.x1+'" y1="'+l.y1+'" x2="'+l.x2+'" y2="'+l.y2+'" stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/>';
+    }else{
+      svg+='<line class="lien" data-a="'+l.a+'" data-b="'+l.b+'" x1="'+l.x1+'" y1="'+l.y1+'" x2="'+l.x2+'" y2="'+l.y2+'" stroke="#c9bda3" stroke-width="2"/>';
+    }
+  });
+  P.forEach(function(p){
+    var q=t.positions[p.id]; if(!q) return;
+    var col=couleur(p), ph=photoParDefaut(p);
+    var nom=(p.nom||'?').toUpperCase();
+    var info=[p.naissance?'née le '+p.naissance:'', p.deces?'décès : '+p.deces:'', p.statut].filter(Boolean).join(' — ');
+    svg+='<a href="fiches.html#'+p.id+'" class="noeud" data-pid="'+p.id+'">'
+      +'<g class="photo-wrap">'
+      +'<circle cx="'+q.x+'" cy="'+q.y+'" r="'+R+'" fill="#faf6ec" stroke="'+col+'" stroke-width="4"/>'
+      +'<clipPath id="clip-'+p.id+'"><circle cx="'+q.x+'" cy="'+q.y+'" r="'+(R-3)+'"/></clipPath>'
+      +'<image href="'+esc(ph)+'" xlink:href="'+esc(ph)+'" x="'+(q.x-R+3)+'" y="'+(q.y-R+3)+'" width="'+(2*R-6)+'" height="'+(2*R-6)+'" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-'+p.id+')"/>'
+      +'</g>'
+      +'<text x="'+q.x+'" y="'+(q.y+60)+'" text-anchor="middle" font-family="Public Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#3a2e22">'+esc(p.prenom||'?')+'</text>'
+      +'<text x="'+q.x+'" y="'+(q.y+76)+'" text-anchor="middle" font-family="Public Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#3a2e22">'+esc(nom)+'</text>'
+      +'<title>'+esc(p.id+' — '+info)+'</title>'
+      +'</a>';
+  });
+  svg+='</svg>';
+  document.getElementById('conteneur').innerHTML=svg;
+
+  if(t.hors.length){
+    document.getElementById('hors-schema').style.display='block';
+    document.getElementById('chips').innerHTML=t.hors.map(function(p){
+      return '<a class="chip" href="fiches.html#'+p.id+'">'+esc(p.prenom+' '+p.nom)+'</a>';
+    }).join('');
+  }
+  // survol
+  document.querySelectorAll('.noeud').forEach(function(n){
+    var pid=n.getAttribute('data-pid');
+    n.addEventListener('mouseenter',function(){
+      n.classList.add('actif');
+      document.querySelectorAll('[data-a="'+pid+'"], [data-b="'+pid+'"]').forEach(function(l){ l.classList.add('actif'); });
+    });
+    n.addEventListener('mouseleave',function(){
+      n.classList.remove('actif');
+      document.querySelectorAll('.lien.actif').forEach(function(l){ l.classList.remove('actif'); });
+    });
+  });
+}
+
+/* ============ 5. Démarrage ============ */
+chargerDonnees().then(function(d){
+  if(d.source==='demo'){ document.getElementById('avert-demo').style.display='block'; }
+  afficher(d.personnes);
+});
+</script>
 </body></html>
