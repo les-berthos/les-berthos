@@ -330,6 +330,26 @@ function afficher(P){
   var R=42, W=0, H=0;
   Object.values(t.positions).forEach(function(q){ W=Math.max(W,q.x+R); H=Math.max(H,q.y+R+70); });
   var svg='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">';
+  // encadrés par branche : MEME (gauche), enfants (centre), PEPE (droite)
+  var zones={};
+  P.forEach(function(p){
+    var q=t.positions[p.id]; if(!q) return;
+    var b=p._br===undefined?1.5:p._br;
+    var cle=(b===0)?'meme':(b===2)?'pepe':(b===1)?'enfants':'autres';
+    var z=zones[cle]=zones[cle]||{minX:1e9,maxX:-1e9,minY:1e9,maxY:-1e9,n:0};
+    z.minX=Math.min(z.minX,q.x); z.maxX=Math.max(z.maxX,q.x);
+    z.minY=Math.min(z.minY,q.y); z.maxY=Math.max(z.maxY,q.y); z.n++;
+  });
+  var titres={meme:['CÔTÉ MÉMÉ','#a8455c'],pepe:['CÔTÉ PÉPÉ','#3f6a78'],enfants:['ENFANTS DE MÉMÉ & PÉPÉ','#8c2f39'],autres:['AUTRES PISTES','#6b5c48']};
+  Object.keys(zones).forEach(function(cle){
+    var z=zones[cle]; if(z.n<2) return;
+    var x1=z.minX-72, x2=z.maxX+72, y1=z.minY-86, y2=z.maxY+96;
+    var titre=titres[cle][0], coul=titres[cle][1];
+    svg+='<rect x="'+x1+'" y="'+y1+'" width="'+(x2-x1)+'" height="'+(y2-y1)+'" rx="18" fill="rgba(250,246,236,.55)" stroke="'+coul+'" stroke-width="2.5" stroke-dasharray="10,6" opacity=".9"/>';
+    var cx=(x1+x2)/2;
+    svg+='<rect x="'+(cx-118)+'" y="'+(y1-16)+'" width="236" height="32" rx="6" fill="'+coul+'" opacity=".92"/>';
+    svg+='<text x="'+cx+'" y="'+(y1+6)+'" text-anchor="middle" font-family="Special Elite, Courier New, monospace" font-size="16" letter-spacing="2" fill="#f6efdd">'+titre+'</text>';
+  });
   t.lignes.forEach(function(l){
     if(l.classe==='couple'){
       svg+='<line class="lien" data-a="'+l.a+'" data-b="'+l.b+'" x1="'+l.x1+'" y1="'+l.y1+'" x2="'+l.x2+'" y2="'+l.y2+'" stroke="#8c2f39" stroke-width="2" stroke-dasharray="7,4"/>';
