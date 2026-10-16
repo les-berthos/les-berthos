@@ -95,7 +95,7 @@ function parsePersonnes(rows){
     if(!id||seen[id])return; seen[id]=1;
     var nom='';
     Object.keys(r).forEach(function(k){var kl=k.trim().toLowerCase(); if((kl==='nom'||kl.indexOf('nom ')===0)&&kl.indexOf('naissance')===-1){nom=(''+r[k]).trim();}});
-    P.push({id:id,prenom:(''+col(r,'prénom')).trim(),nom:nom.toUpperCase(),sexe:(''+col(r,'sexe')).trim().toUpperCase(),
+    P.push({id:id,prenom:(''+col(r,'prénom')).trim(),nom:nom.toUpperCase(),nomNaissance:(''+col(r,'nom de naissance')).trim().toUpperCase(),sexe:(''+col(r,'sexe')).trim().toUpperCase(),
       naissance:(''+col(r,'date de naissance')).trim(),lieu:(''+col(r,'lieu de naissance')).trim(),deces:(''+col(r,'date de décès')).trim(),
       pere:(''+col(r,'père')).trim(),mere:(''+col(r,'mère')).trim(),conjoint:(''+col(r,'conjoint')).trim(),
       fratrie:(''+col(r,'fratrie')).trim(),lien:(''+col(r,'lien avec')).trim(),statut:(''+col(r,'statut')).trim(),
@@ -152,25 +152,25 @@ var DEMO_P=parsePersonnes([
 {"ID Personne":"P050","Prénom(s)":"Alain","Nom":"BERTHOLON","Sexe":"M","Père":"P005","Mère":"P052","Fratrie":"P051","Lien avec PEPE ou MEME":"","Statut":"à confirmer","Piste de recherche":"Portrait de ALAIN BERTHOLON (un frère du PEPE ???)"},
 {"ID Personne":"P051","Prénom(s)":"Jean-Pierre","Nom":"BERTHOLON","Sexe":"M","Père":"P005","Mère":"P052","Fratrie":"P052","Lien avec PEPE ou MEME":"","Statut":"à confirmer","Piste de recherche":"photo de tante Marie avec Joseph (est ce P040 et P041??)"},
 {"ID Personne":"P052","Prénom(s)":"Ginette","Nom":"BERTHOLON","Sexe":"F","Conjoint(s)":"P005","Lien avec PEPE ou MEME":"","Statut":"à confirmer"},
-{"ID Personne":"P001","Prénom(s)":"Anna Victorine","Nom":"BERTHOLON","Sexe":"F","Date de naissance":"16 juin 1913","Lieu de naissance":"Châtillon d'Azergues (Rhône)","Date de décès":"12 mars 1994","Père":"P010","Mère":"P011","Conjoint(s)":"P002","Fratrie":"P007;P008","Lien avec PEPE ou MEME":"MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/gkvkD0fy/Photo-MEME.png"},
+{"ID Personne":"P001","Prénom(s)":"Anna Victorine","Nom":"BERTHOLON","Nom de naissance":"GIRAUD","Sexe":"F","Date de naissance":"16 juin 1913","Lieu de naissance":"Châtillon d'Azergues (Rhône)","Date de décès":"12 mars 1994","Père":"P010","Mère":"P011","Conjoint(s)":"P002","Fratrie":"P007;P008","Lien avec PEPE ou MEME":"MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/gkvkD0fy/Photo-MEME.png"},
 {"ID Personne":"P002","Prénom(s)":"Jean-Pierre","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"8 novembre 1910","Lieu de naissance":"Le Puy en Velay (Haute-Loire)","Date de décès":"14 juillet 1971","Père":"P020","Mère":"P021","Conjoint(s)":"P001","Lien avec PEPE ou MEME":"PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/TPQYPpXc/Photo-PEPE.png"},
 {"ID Personne":"P010","Prénom(s)":"François","Nom":"GIRAUD","Sexe":"M","Conjoint(s)":"P011","Lien avec PEPE ou MEME":"Parent de MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P011","Prénom(s)":"Joséphine Claudia","Nom":"SOLY","Sexe":"F","Conjoint(s)":"P010","Lien avec PEPE ou MEME":"Parent de MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P020","Prénom(s)":"Cyprien","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"10 septembre 1882","Lieu de naissance":"Saint-Etienne (Loire)","Date de décès":"1971","Conjoint(s)":"P021","Lien avec PEPE ou MEME":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
-{"ID Personne":"P021","Prénom(s)":"Elise Jeanne Marie","Nom":"BERTHOLON","Sexe":"F","Date de naissance":"22 avril 1889","Lieu de naissance":"Saint Jeures (Haute-Loire)","Date de décès":"1971","Père":"P035","Mère":"P036","Conjoint(s)":"P020","Lien avec PEPE ou MEME":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
-{"ID Personne":"P012","Prénom(s)":"Elise Françoise Claudia","Nom":"PERRET","Sexe":"F","Date de naissance":"6 janvier 1935","Lieu de naissance":"Saint-Etienne (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
-{"ID Personne":"P013","Prénom(s)":"Simone Cyprienne Victoria","Nom":"PAILLEUX","Sexe":"F","Date de naissance":"28 juillet 1936","Lieu de naissance":"La Fouillouse (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
-{"ID Personne":"P014","Prénom(s)":"Renée Marie","Nom":"CROZIER","Sexe":"F","Date de naissance":"17 novembre 1937","Lieu de naissance":"La Fouillouse (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P021","Prénom(s)":"Elise Jeanne Marie","Nom":"BERTHOLON","Nom de naissance":"LAULAGNIER","Sexe":"F","Date de naissance":"22 avril 1889","Lieu de naissance":"Saint Jeures (Haute-Loire)","Date de décès":"1971","Père":"P035","Mère":"P036","Conjoint(s)":"P020","Lien avec PEPE ou MEME":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P012","Prénom(s)":"Elise Françoise Claudia","Nom":"PERRET","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"6 janvier 1935","Lieu de naissance":"Saint-Etienne (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P013","Prénom(s)":"Simone Cyprienne Victoria","Nom":"PAILLEUX","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"28 juillet 1936","Lieu de naissance":"La Fouillouse (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P014","Prénom(s)":"Renée Marie","Nom":"CROZIER","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"17 novembre 1937","Lieu de naissance":"La Fouillouse (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P015","Prénom(s)":"Lucien Marie","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"19 août 1940","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P016","Prénom(s)":"Joseph Marius Elise","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"19 mars 1944","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
-{"ID Personne":"P017","Prénom(s)":"Andrée Louise","Nom":"AUDOUARD","Sexe":"F","Date de naissance":"10 octobre 1945","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P017","Prénom(s)":"Andrée Louise","Nom":"AUDOUARD","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"10 octobre 1945","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P018","Prénom(s)":"Marc Antoine Abel","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"26 avril 1947","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P019","Prénom(s)":"Gérard Henri Simone","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"13 août 1950","Lieu de naissance":"Unias (Loire)","Père":"P002","Mère":"P001","Lien avec PEPE ou MEME":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P022","Prénom(s)":"Jean-Jacques","Nom":"LAULAGNIER","Sexe":"M","Père":"P029","Mère":"P030","Génération":"2","Lien avec PEPE ou MEME":"Tonton du PEPE","Statut":"à confirmer","Piste de recherche":"Maréchal à Perret commune d'ARAULES","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P029","Prénom(s)":"Jacques","Nom":"LAULAGNIER","Sexe":"M","Date de décès":"30 avril 1887","Conjoint(s)":"P030","Lien avec PEPE ou MEME":"Père des tantes et oncles du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P030","Prénom(s)":"Elisabeth","Nom":"BESSIERES","Sexe":"F","Date de décès":"janvier 1890","Conjoint(s)":"P029","Lien avec PEPE ou MEME":"Mère des tantes et oncles du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P035","Prénom(s)":"Pierre","Nom":"LAULAGNIER","Sexe":"M","Date de naissance":"en 1853","Date de décès":"en 1930","Conjoint(s)":"P036","Lien avec PEPE ou MEME":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
-{"ID Personne":"P036","Prénom(s)":"Rose","Nom":"LAULAGNIER","Sexe":"F","Date de naissance":"en 1855","Date de décès":"en 1927","Conjoint(s)":"P035","Lien avec PEPE ou MEME":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"}
+{"ID Personne":"P036","Prénom(s)":"Rose","Nom":"LAULAGNIER","Nom de naissance":"PEYRACHON","Sexe":"F","Date de naissance":"en 1855","Date de décès":"en 1927","Conjoint(s)":"P035","Lien avec PEPE ou MEME":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"}
 ]);
 var DEMO_D=parseDocuments([
 {"ID Document":"D004","Nom du doc":"certificat bonne conduite Cyprien BERTHOLON","Date du document":"17 septembre 1906","Personnes mentionnées":"P020","Rangement physique":"Simone"},
@@ -207,7 +207,12 @@ function afficher(P,D){
   if(hash&&map[hash]){ renderFiche(map[hash],P,D,map,app); }
   else{ renderListe(P,map,app); }
 }
-function nomComplet(p){return ((p.prenom||'?')+' '+(p.nom||'')).trim();}
+function nomComplet(p){
+  var j=p.nomNaissance||p.nom||'?';
+  var n=(p.prenom||'')+' '+j;
+  if(p.sexe==='F'&&p.nom&&j&&p.nom!==j) n+=' épouse '+p.nom;
+  return n.trim();
+}
 function lienPers(p){return '<a href="#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>';}
 function renderFiche(p,P,D,map,app){
   document.title=nomComplet(p)+' — Les Berthos';

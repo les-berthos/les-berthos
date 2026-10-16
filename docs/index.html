@@ -102,6 +102,7 @@ function colonnesVersPersonnes(rows){
     }
     P.push({
       id:id, prenom:(''+col('prénom')).trim(), nom:(''+col('nom')).trim().toUpperCase(),
+      nomNaissance:(''+col('nom de naissance')).trim().toUpperCase(),
       sexe:(''+col('sexe')).trim().toUpperCase(),
       naissance:(''+col('date de naissance')).trim(), deces:(''+col('date de décès')).trim(),
       pere:(''+col('père')).trim(), mere:(''+col('mère')).trim(),
@@ -130,24 +131,24 @@ async function chargerDonnees(){
 
 /* ============ 2. Données de secours (aperçu hors ligne, état du 15/10/2026) ============ */
 var DONNEES_DEMO = colonnesVersPersonnes([
-{"ID Personne":"P001","Prénom(s)":"Anna Victorine","Nom":"BERTHOLON","Sexe":"F","Date de naissance":"16 juin 1913","Date de décès":"12 mars 1994","Père":"P010","Mère":"P011","Conjoint(s)":"P002","Génération":"1","Lien":"MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/gkvkD0fy/Photo-MEME.png"},
+{"ID Personne":"P001","Prénom(s)":"Anna Victorine","Nom":"BERTHOLON","Nom de naissance":"GIRAUD","Sexe":"F","Date de naissance":"16 juin 1913","Date de décès":"12 mars 1994","Père":"P010","Mère":"P011","Conjoint(s)":"P002","Génération":"1","Lien":"MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/gkvkD0fy/Photo-MEME.png"},
 {"ID Personne":"P002","Prénom(s)":"Jean-Pierre","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"8 novembre 1910","Date de décès":"14 juillet 1971","Père":"P020","Mère":"P021","Conjoint(s)":"P001","Génération":"1","Lien":"PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/TPQYPpXc/Photo-PEPE.png"},
 {"ID Personne":"P003","Prénom(s)":"Pierre Joannes Antoine","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"17 juin 1933","Père":"P020","Mère":"P021","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/VNVD72C0/pierre-Bertholon.png"},
-{"ID Personne":"P004","Prénom(s)":"Marie","Nom":"CRESPY","Sexe":"F","Date de naissance":"en 1914","Date de décès":"en 1963","Père":"P020","Mère":"P021","Conjoint(s)":"P037","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P004","Prénom(s)":"Marie","Nom":"CRESPY","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"en 1914","Date de décès":"en 1963","Père":"P020","Mère":"P021","Conjoint(s)":"P037","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P005","Prénom(s)":"Marius","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"16 octobre 1925","Père":"P020","Mère":"P021","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P006","Prénom(s)":"Alban Marius Laurens","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"3 juillet 1913","Date de décès":"en 1988","Père":"P020","Mère":"P021","Génération":"1","Lien":"fraterie du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
-{"ID Personne":"P007","Prénom(s)":"Victoria","Nom":"JACQUEMETTON","Sexe":"F","Père":"P010","Mère":"P011","Génération":"1","Lien":"fraterie MEME","Statut":"à confirmer"},
-{"ID Personne":"P008","Prénom(s)":"Gaby","Nom":"BERNARD","Sexe":"F","Père":"P010","Mère":"P011","Génération":"1","Lien":"fraterie MEME","Statut":"à confirmer"},
+{"ID Personne":"P007","Prénom(s)":"Victoria","Nom":"JACQUEMETTON","Nom de naissance":"GIRAUD","Sexe":"F","Père":"P010","Mère":"P011","Génération":"1","Lien":"fraterie MEME","Statut":"à confirmer"},
+{"ID Personne":"P008","Prénom(s)":"Gaby","Nom":"BERNARD","Nom de naissance":"GIRAUD","Sexe":"F","Père":"P010","Mère":"P011","Génération":"1","Lien":"fraterie MEME","Statut":"à confirmer"},
 {"ID Personne":"P010","Prénom(s)":"François","Nom":"GIRAUD","Sexe":"M","Conjoint(s)":"P011","Génération":"2","Lien":"Parent de MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P011","Prénom(s)":"Joséphine Claudia","Nom":"SOLY","Sexe":"F","Conjoint(s)":"P010","Génération":"2","Lien":"Parent de MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P020","Prénom(s)":"Cyprien","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"10 septembre 1882","Date de décès":"1971","Conjoint(s)":"P021","Génération":"2","Lien":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
-{"ID Personne":"P021","Prénom(s)":"Elise Jeanne Marie","Nom":"BERTHOLON","Sexe":"F","Date de naissance":"22 avril 1889","Date de décès":"1971","Père":"P035","Mère":"P036","Conjoint(s)":"P020","Génération":"2","Lien":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
-{"ID Personne":"P012","Prénom(s)":"Elise Françoise Claudia","Nom":"PERRET","Sexe":"F","Date de naissance":"6 janvier 1935","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
-{"ID Personne":"P013","Prénom(s)":"Simone Cyprienne Victoria","Nom":"PAILLEUX","Sexe":"F","Date de naissance":"28 juillet 1936","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
-{"ID Personne":"P014","Prénom(s)":"Renée Marie","Nom":"CROZIER","Sexe":"F","Date de naissance":"17 novembre 1937","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P021","Prénom(s)":"Elise Jeanne Marie","Nom":"BERTHOLON","Nom de naissance":"LAULAGNIER","Sexe":"F","Date de naissance":"22 avril 1889","Date de décès":"1971","Père":"P035","Mère":"P036","Conjoint(s)":"P020","Génération":"2","Lien":"Parent du PEPE","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P012","Prénom(s)":"Elise Françoise Claudia","Nom":"PERRET","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"6 janvier 1935","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P013","Prénom(s)":"Simone Cyprienne Victoria","Nom":"PAILLEUX","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"28 juillet 1936","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P014","Prénom(s)":"Renée Marie","Nom":"CROZIER","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"17 novembre 1937","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P015","Prénom(s)":"Lucien Marie","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"19 août 1940","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P016","Prénom(s)":"Joseph Marius Elise","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"19 mars 1944","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
-{"ID Personne":"P017","Prénom(s)":"Andrée Louise","Nom":"AUDOUARD","Sexe":"F","Date de naissance":"10 octobre 1945","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P017","Prénom(s)":"Andrée Louise","Nom":"AUDOUARD","Nom de naissance":"BERTHOLON","Sexe":"F","Date de naissance":"10 octobre 1945","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P018","Prénom(s)":"Marc Antoine Abel","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"26 avril 1947","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P019","Prénom(s)":"Gérard Henri Simone","Nom":"BERTHOLON","Sexe":"M","Date de naissance":"13 août 1950","Père":"P002","Mère":"P001","Lien":"Enfant de PEPE et MEME","Statut":"confirmé","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P022","Prénom(s)":"Jean-Jacques","Nom":"LAULAGNIER","Sexe":"M","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tonton du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
@@ -155,13 +156,13 @@ var DONNEES_DEMO = colonnesVersPersonnes([
 {"ID Personne":"P024","Prénom(s)":"Marguerite","Nom":"LAULAGNIER","Sexe":"F","Date de naissance":"en 1892","Date de décès":"en 1920","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P025","Prénom(s)":"Marie","Nom":"LAULAGNIER","Sexe":"F","Date de naissance":"en 1882","Date de décès":"en 1913","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P026","Prénom(s)":"Jean-Pierre","Nom":"LAULAGNIER","Sexe":"M","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tonton du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
-{"ID Personne":"P027","Prénom(s)":"Philomène","Nom":"BESSON","Sexe":"F","Père":"P029","Mère":"P030","Conjoint(s)":"P034","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P027","Prénom(s)":"Philomène","Nom":"BESSON","Nom de naissance":"LAULAGNIER","Sexe":"F","Père":"P029","Mère":"P030","Conjoint(s)":"P034","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P028","Prénom(s)":"Françoise","Nom":"LAULAGNIER","Sexe":"F","Date de décès":"novembre 1899","Père":"P029","Mère":"P030","Génération":"2","Lien":"Tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P029","Prénom(s)":"Jacques","Nom":"LAULAGNIER","Sexe":"M","Date de décès":"30 avril 1887","Conjoint(s)":"P030","Génération":"3","Lien":"Père des tantes et oncles du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P030","Prénom(s)":"Elisabeth","Nom":"BESSIERES","Sexe":"F","Date de décès":"janvier 1890","Conjoint(s)":"P029","Génération":"3","Lien":"Mère des tantes et oncles du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P034","Prénom(s)":"Pierre","Nom":"BESSONS","Sexe":"M","Conjoint(s)":"P027","Lien":"époux d'une tatan du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P035","Prénom(s)":"Pierre","Nom":"LAULAGNIER","Sexe":"M","Date de naissance":"en 1853","Date de décès":"en 1930","Conjoint(s)":"P036","Génération":"3","Lien":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
-{"ID Personne":"P036","Prénom(s)":"Rose","Nom":"LAULAGNIER","Sexe":"F","Date de naissance":"en 1855","Date de décès":"en 1927","Conjoint(s)":"P035","Génération":"3","Lien":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
+{"ID Personne":"P036","Prénom(s)":"Rose","Nom":"LAULAGNIER","Nom de naissance":"PEYRACHON","Sexe":"F","Date de naissance":"en 1855","Date de décès":"en 1927","Conjoint(s)":"P035","Génération":"3","Lien":"Grand parent Maternel du PEPE","Statut":"à confirmer","Photos":"https://i.postimg.cc/5tFdhyNh/femme-inconnue.png"},
 {"ID Personne":"P037","Prénom(s)":"Louis Henri","Nom":"CRESPY","Sexe":"M","Date de naissance":"en 1913","Date de décès":"en 1972","Conjoint(s)":"P004","Lien":"","Statut":"à confirmer","Photos":"https://i.postimg.cc/k5t30GXk/homme-inconnu.png"},
 {"ID Personne":"P038","Prénom(s)":"Rosalie","Nom":"PEYRACHON","Sexe":"F","Statut":"à confirmer"},
 {"ID Personne":"P039","Prénom(s)":"Marie","Nom":"PEYRACHON","Sexe":"F","Statut":"à confirmer"},
@@ -176,8 +177,7 @@ var DONNEES_DEMO = colonnesVersPersonnes([
 
 /* ============ 3. Calcul des générations et du placement ============ */
 function calculerGenerations(P){
-  var map={}; P.forEach(function(p){ map[p.id]=p; });
-  P.forEach(function(p){
+  var map={}; P.forEach(function(p){ map[p.id]=p; });  P.forEach(function(p){
     var g=parseInt(p.gen,10); p.g = isNaN(g)?null:g;
   });
   for(var tour=0;tour<6;tour++){
@@ -192,6 +192,22 @@ function calculerGenerations(P){
     });
   }
   return map;
+}
+function branche(p,map){
+  if(p._br!==undefined) return p._br;
+  var l=(p.lien||'').toUpperCase();
+  var m=l.indexOf('MEME')>-1, pe=l.indexOf('PEPE')>-1;
+  var r;
+  if(m&&pe) r=1; else if(m) r=0; else if(pe) r=2;
+  else {
+    var bs=[];
+    if(map[p.pere]) bs.push(branche(map[p.pere],map));
+    if(map[p.mere]) bs.push(branche(map[p.mere],map));
+    if(bs.length) r=Math.min.apply(null,bs);
+    else if(map[p.conjoint]) r=branche(map[p.conjoint],map);
+    else r=1.5;
+  }
+  p._br=r; return r;
 }
 function couleur(p){
   var l=(p.lien||'').toUpperCase();
@@ -220,15 +236,21 @@ function construireArbre(P){
 
   gens.forEach(function(g){
     var liste=parGen[g].slice();
-    // tri : sous les parents (moyenne x), sinon après, ordre du tableau sinon
-    liste.forEach(function(p){
+    // branche : 0 = côté MEME, 1 = enfants du couple, 2 = côté PEPE, 1.5 = autres
+    placees.forEach(function(p){ if(p._br===undefined) branche(p,map); });
+    liste.forEach(function(p,i){
+      p._idx=i;
       var px=[];
       if(positions[p.pere]) px.push(positions[p.pere].x);
       if(positions[p.mere]) px.push(positions[p.mere].x);
       if(!px.length && positions[p.conjoint]) px.push(positions[p.conjoint].x);
       p._cle = px.length ? px.reduce(function(a,b){return a+b;},0)/px.length : Infinity;
     });
-    liste.sort(function(a,b){ return a._cle-b._cle; });
+    liste.sort(function(a,b){
+      if(a._br!==b._br) return a._br-b._br;
+      if(a._cle!==b._cle) return a._cle-b._cle;
+      return a._idx-b._idx;
+    });
     // conjoints côte à côte
     var fin=[];
     liste.forEach(function(p){
@@ -286,7 +308,8 @@ function afficher(P){
   P.forEach(function(p){
     var q=t.positions[p.id]; if(!q) return;
     var col=couleur(p), ph=photoParDefaut(p);
-    var nom=(p.nom||'?').toUpperCase();
+    var nomJ=p.nomNaissance||p.nom||'?';
+    var epouse=(p.sexe==='F'&&p.nom&&nomJ&&p.nom!==nomJ)?'épouse '+p.nom:'';
     var info=[p.naissance?'née le '+p.naissance:'', p.deces?'décès : '+p.deces:'', p.statut].filter(Boolean).join(' — ');
     svg+='<a href="fiches.html#'+p.id+'" class="noeud" data-pid="'+p.id+'">'
       +'<g class="photo-wrap">'
@@ -295,7 +318,8 @@ function afficher(P){
       +'<image href="'+esc(ph)+'" xlink:href="'+esc(ph)+'" x="'+(q.x-R+3)+'" y="'+(q.y-R+3)+'" width="'+(2*R-6)+'" height="'+(2*R-6)+'" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-'+p.id+')"/>'
       +'</g>'
       +'<text x="'+q.x+'" y="'+(q.y+60)+'" text-anchor="middle" font-family="Public Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#3a2e22">'+esc(p.prenom||'?')+'</text>'
-      +'<text x="'+q.x+'" y="'+(q.y+76)+'" text-anchor="middle" font-family="Public Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#3a2e22">'+esc(nom)+'</text>'
+      +'<text x="'+q.x+'" y="'+(q.y+76)+'" text-anchor="middle" font-family="Public Sans, Arial, sans-serif" font-size="14" font-weight="700" fill="#3a2e22">'+esc(nomJ)+'</text>'
+      +(epouse?'<text x="'+q.x+'" y="'+(q.y+92)+'" text-anchor="middle" font-family="Public Sans, Arial, sans-serif" font-size="11" fill="#6b5c48" font-style="italic">'+esc(epouse)+'</text>':'')
       +'<title>'+esc(p.id+' — '+info)+'</title>'
       +'</a>';
   });
