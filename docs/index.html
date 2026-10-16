@@ -195,6 +195,8 @@ function calculerGenerations(P){
 }
 function branche(p,map){
   if(p._br!==undefined) return p._br;
+  if(p._visite) return 1.5; // conjoints qui se référencent mutuellement : on stoppe la boucle
+  p._visite=true;
   var l=(p.lien||'').toUpperCase();
   var m=l.indexOf('MEME')>-1, pe=l.indexOf('PEPE')>-1;
   var r;
@@ -207,6 +209,7 @@ function branche(p,map){
     else if(map[p.conjoint]) r=branche(map[p.conjoint],map);
     else r=1.5;
   }
+  delete p._visite;
   p._br=r; return r;
 }
 function couleur(p){
