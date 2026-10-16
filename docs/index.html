@@ -92,7 +92,12 @@ function colonnesVersPersonnes(rows){
   var P=[]; var seen=new Set();
   rows.forEach(function(r){
     var keys=Object.keys(r);
-    function col(mot){ for(var i=0;i<keys.length;i++){ if(keys[i].toLowerCase().indexOf(mot)>-1) return r[keys[i]]; } return ''; }
+    function col(mot){
+      var kl=mot.trim().toLowerCase();
+      for(var i=0;i<keys.length;i++){ if(keys[i].trim().toLowerCase()===kl) return r[keys[i]]; }
+      for(var i=0;i<keys.length;i++){ if(keys[i].toLowerCase().indexOf(mot)>-1) return r[keys[i]]; }
+      return '';
+    }
     var id=(''+col('id personne')).trim();
     if(!id || seen.has(id)) return; seen.add(id);
     var nom='';
@@ -233,7 +238,7 @@ function construireArbre(P){
   placees.forEach(function(p){ var g=p.g-gMin; (parGen[g]=parGen[g]||[]).push(p); });
   var gens=Object.keys(parGen).map(Number).sort(function(a,b){return b-a;}); // anciens en haut
 
-  var R=42, ESP=156, Y0=110, DY=210, X0=90;
+  var R=42, ESP=156, GAP=320, Y0=110, DY=210, X0=90;
   var positions={}; // id -> {x,y}
   var lignes=[], ordreLignes=[];
 
@@ -254,17 +259,41 @@ function construireArbre(P){
       if(a._cle!==b._cle) return a._cle-b._cle;
       return a._idx-b._idx;
     });
-    // conjoints côte à côte
+    // conjoints côte à côte (seulement s'ils sont de la même branche/colonne)
     var fin=[];
     liste.forEach(function(p){
       if(fin.indexOf(p)>-1) return;
       fin.push(p);
       var c=map[p.conjoint];
-      if(c && c.g!==null && (c.g-gMin)===g && liste.indexOf(c)>-1 && fin.indexOf(c)===-1){
+      if(c && c._br===p._br && c.g!==null && (c.g-gMin)===g && liste.indexOf(c)>-1 && fin.indexOf(c)===-1){
         fin.push(c);
       }
     });
-    fin.forEach(function(p,i){ positions[p.id]={x:X0+i*ESP, y:0}; });
+    // placement avec vraies colonnes : grand espace entre zone MEME / enfants / zone PEPE
+    var x=X0, prevBr=null;
+    fin.forEach(function(p){
+      if(prevBr!==null && p._br>prevBr) x+=GAP;
+      positions[p.id]={x:x, y:0};
+      x+=ESP;
+      prevBr=p._br;
+    });
+    // si toute la rangée est d'une seule branche (ex: les enfants), on la centre sous les parents
+    var tousMemeBranche = fin.every(function(p){ return p._br===fin[0]._br; });
+    if(tousMemeBranche && fin.length>0){
+      var cibles=[], valide=false;
+      fin.forEach(function(p){
+        var px=[];
+        if(positions[p.pere]) px.push(positions[p.pere].x);
+        if(positions[p.mere]) px.push(positions[p.mere].x);
+        if(px.length){ cibles.push(px.reduce(function(a,b){return a+b;},0)/px.length); valide=true; }
+      });
+      if(valide){
+        var cible=cibles.reduce(function(a,b){return a+b;},0)/cibles.length;
+        var centre=(positions[fin[0].id].x + positions[fin[fin.length-1].id].x)/2;
+        var decal=Math.round(cible-centre);
+        if(decal>0) fin.forEach(function(p){ positions[p.id].x+=decal; });
+      }
+    }
   });
   // y par génération : g décroissant vers le bas
   gens.forEach(function(g){
