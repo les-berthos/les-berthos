@@ -127,14 +127,17 @@ async function chargerDonnees(){
     await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
     var wb = XLSX.read(buf);
     var nom = wb.SheetNames.find(function(n){ return /personnes/i.test(n); }) || wb.SheetNames[0];
-    // retrouve la ligne d'en-tête même si elle n'est pas en première ligne
+    // retrouve la ligne d'en-tête n'importe où dans l'onglet
     var ws = wb.Sheets[nom];
     var tab = XLSX.utils.sheet_to_json(ws, {defval:'', header:1});
-    var iEntete=0;
-    for(var i=0;i<Math.min(tab.length,10);i++){
+    var iEntete=-1;
+    for(var i=0;i<tab.length;i++){
       var cells=(tab[i]||[]).map(normaliser);
-      if(cells.some(function(c){return c.indexOf('id')>-1&&c.indexOf('personne')>-1;})){ iEntete=i; break; }
+      var okId=cells.some(function(c){return c.indexOf('id')>-1&&c.indexOf('personne')>-1;});
+      var okPrenom=cells.some(function(c){return c.indexOf('prénom')>-1||c.indexOf('prenom')>-1;});
+      if(okId||okPrenom){ iEntete=i; break; }
     }
+    if(iEntete===-1) throw new Error('aucune ligne d\'en-tête trouvée (cherche « ID Personne »). Lignes lues : '+tab.length);
     var rows = XLSX.utils.sheet_to_json(ws, {defval:'', range:iEntete});
     var P = colonnesVersPersonnes(rows);
     if(!P.length) throw new Error('xlsx lu mais aucune personne trouvée. Colonnes détectées : '+Object.keys(rows[0]||{}).join(' | '));
