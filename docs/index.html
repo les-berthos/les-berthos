@@ -127,9 +127,9 @@ async function chargerDonnees(){
     await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
     var wb = XLSX.read(buf);
     var nom = wb.SheetNames.find(function(n){ return /personnes/i.test(n); }) || wb.SheetNames[0];
-    // retrouve la ligne d'en-tête n'importe où dans l'onglet
+    // retrouve la ligne d'en-tête n'importe où dans l'onglet — lecture en texte brut
     var ws = wb.Sheets[nom];
-    var tab = XLSX.utils.sheet_to_json(ws, {defval:'', header:1});
+    var tab = XLSX.utils.sheet_to_json(ws, {defval:'', header:1, raw:false});
     var iEntete=-1;
     for(var i=0;i<tab.length;i++){
       var cells=(tab[i]||[]).map(normaliser);
@@ -140,13 +140,13 @@ async function chargerDonnees(){
     if(iEntete===-1){
       var echantillon='';
       var n=0;
-      for(var j=0;j<tab.length&&n<3;j++){
+      for(var j=0;j<tab.length&&n<5;j++){
         var ligne=(tab[j]||[]).filter(function(c){return (''+c).trim()!=='';});
-        if(ligne.length){ echantillon+=' ➤ Ligne '+(j+1)+' : '+ligne.slice(0,8).join(' | '); n++; }
+        if(ligne.length){ echantillon+=' ➤ L'+(j+1)+' : '+ligne.slice(0,10).join(' | '); n++; }
       }
-      throw new Error('aucune ligne d\'en-tête trouvée. Premières lignes du tableau : '+echantillon.slice(0,400));
+      throw new Error('aucune ligne d\'en-tête trouvée. Premières lignes : '+echantillon.slice(0,500));
     }
-    var rows = XLSX.utils.sheet_to_json(ws, {defval:'', range:iEntete});
+    var rows = XLSX.utils.sheet_to_json(ws, {defval:'', range:iEntete, raw:false});
     var P = colonnesVersPersonnes(rows);
     if(!P.length) throw new Error('xlsx lu mais aucune personne trouvée. Colonnes détectées : '+Object.keys(rows[0]||{}).join(' | '));
     return {source:'xlsx', personnes:P};
