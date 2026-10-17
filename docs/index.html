@@ -88,22 +88,23 @@ footer.contact a.btn:hover{background:#732530}
 function chargerScript(src){
   return new Promise((ok, ko)=>{ var s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=ko; document.head.appendChild(s); });
 }
+function normaliser(t){ return (''+(t||'')).toLowerCase().replace(/[\s\u00a0\u202f\n\r]+/g,' ').trim(); }
 function colonnesVersPersonnes(rows){
   var P=[]; var seen=new Set();
   rows.forEach(function(r){
     var keys=Object.keys(r);
     function col(mot){
-      var kl=mot.trim().toLowerCase();
-      for(var i=0;i<keys.length;i++){ if(keys[i].trim().toLowerCase()===kl) return r[keys[i]]; }
-      for(var i=0;i<keys.length;i++){ if(keys[i].toLowerCase().indexOf(mot)>-1) return r[keys[i]]; }
+      var m=normaliser(mot);
+      for(var i=0;i<keys.length;i++){ if(normaliser(keys[i])===m) return r[keys[i]]; }
+      for(var i=0;i<keys.length;i++){ if(normaliser(keys[i]).indexOf(m)>-1) return r[keys[i]]; }
       return '';
     }
     var id=(''+col('id personne')).trim();
     if(!id || seen.has(id)) return; seen.add(id);
     var nom='';
     for(var j=0;j<keys.length;j++){
-      var kl=keys[j].trim().toLowerCase();
-      if(kl==='nom' || kl.slice(0,4)==='nom ' && kl.indexOf('naissance')===-1){ nom=(''+r[keys[j]]).trim(); break; }
+      var kl=normaliser(keys[j]);
+      if((kl==='nom' || kl.slice(0,4)==='nom ') && kl.indexOf('naissance')===-1){ nom=(''+r[keys[j]]).trim(); break; }
     }
     P.push({
       id:id, prenom:(''+col('prénom')).trim(), nom:(''+col('nom')).trim().toUpperCase(),
@@ -126,9 +127,17 @@ async function chargerDonnees(){
     await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
     var wb = XLSX.read(buf);
     var nom = wb.SheetNames.find(function(n){ return /personnes/i.test(n); }) || wb.SheetNames[0];
-    var rows = XLSX.utils.sheet_to_json(wb.Sheets[nom], {defval:''});
+    // retrouve la ligne d'en-tête même si elle n'est pas en première ligne
+    var ws = wb.Sheets[nom];
+    var tab = XLSX.utils.sheet_to_json(ws, {defval:'', header:1});
+    var iEntete=0;
+    for(var i=0;i<Math.min(tab.length,10);i++){
+      var cells=(tab[i]||[]).map(normaliser);
+      if(cells.some(function(c){return c.indexOf('id')>-1&&c.indexOf('personne')>-1;})){ iEntete=i; break; }
+    }
+    var rows = XLSX.utils.sheet_to_json(ws, {defval:'', range:iEntete});
     var P = colonnesVersPersonnes(rows);
-    if(!P.length) throw new Error('xlsx lu mais aucune personne trouvée (onglets : '+wb.SheetNames.join(', ')+')');
+    if(!P.length) throw new Error('xlsx lu mais aucune personne trouvée. Colonnes détectées : '+Object.keys(rows[0]||{}).join(' | '));
     return {source:'xlsx', personnes:P};
   }catch(e){
     try{

@@ -87,14 +87,20 @@ footer.contact a.btn:hover{background:#732530}
 <script>
 /* ===== Lecture du xlsx ===== */
 function chargerScript(src){return new Promise(function(ok,ko){var s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=ko;document.head.appendChild(s);});}
-function col(r,mot){var k=Object.keys(r);for(var i=0;i<k.length;i++){if(k[i].toLowerCase().indexOf(mot)>-1)return r[k[i]];}return '';}
+function normaliser(t){ return (''+(t||'')).toLowerCase().replace(/[\s\u00a0\u202f\n\r]+/g,' ').trim(); }
+function col(r,mot){
+  var k=Object.keys(r), m=normaliser(mot);
+  for(var i=0;i<k.length;i++){ if(normaliser(k[i])===m) return r[k[i]]; }
+  for(var i=0;i<k.length;i++){ if(normaliser(k[i]).indexOf(m)>-1) return r[k[i]]; }
+  return '';
+}
 function parsePersonnes(rows){
   var P=[],seen={};
   rows.forEach(function(r){
     var id=(''+col(r,'id personne')).trim();
     if(!id||seen[id])return; seen[id]=1;
     var nom='';
-    Object.keys(r).forEach(function(k){var kl=k.trim().toLowerCase(); if((kl==='nom'||kl.indexOf('nom ')===0)&&kl.indexOf('naissance')===-1){nom=(''+r[k]).trim();}});
+    Object.keys(r).forEach(function(k){var kl=normaliser(k); if((kl==='nom'||kl.indexOf('nom ')===0)&&kl.indexOf('naissance')===-1){nom=(''+r[k]).trim();}});
     P.push({id:id,prenom:(''+col(r,'prénom')).trim(),nom:nom.toUpperCase(),nomNaissance:(''+col(r,'nom de naissance')).trim().toUpperCase(),sexe:(''+col(r,'sexe')).trim().toUpperCase(),
       naissance:(''+col(r,'date de naissance')).trim(),lieu:(''+col(r,'lieu de naissance')).trim(),deces:(''+col(r,'date de décès')).trim(),
       pere:(''+col(r,'père')).trim(),mere:(''+col(r,'mère')).trim(),conjoint:(''+col(r,'conjoint')).trim(),
