@@ -121,15 +121,20 @@ function colonnesVersPersonnes(rows){
 async function chargerDonnees(){
   try{
     var rep = await fetch('Genealogie_MEME.xlsx', {cache:'no-store'});
-    if(!rep.ok) throw new Error('404');
+    if(!rep.ok) throw new Error('HTTP '+rep.status+' pour Genealogie_MEME.xlsx');
+    var buf = await rep.arrayBuffer();
     await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
-    var wb = XLSX.read(await rep.arrayBuffer());
+    var wb = XLSX.read(buf);
     var nom = wb.SheetNames.find(function(n){ return /personnes/i.test(n); }) || wb.SheetNames[0];
     var rows = XLSX.utils.sheet_to_json(wb.Sheets[nom], {defval:''});
     var P = colonnesVersPersonnes(rows);
-    if(!P.length) throw new Error('vide');
+    if(!P.length) throw new Error('xlsx lu mais aucune personne trouvée (onglets : '+wb.SheetNames.join(', ')+')');
     return {source:'xlsx', personnes:P};
   }catch(e){
+    try{
+      document.getElementById('erreur').style.display='block';
+      document.getElementById('erreur').innerHTML='Diagnostic : '+e.message;
+    }catch(e2){}
     return {source:'demo', personnes: DONNEES_DEMO};
   }
 }
