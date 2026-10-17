@@ -137,7 +137,15 @@ async function chargerDonnees(){
       var okPrenom=cells.some(function(c){return c.indexOf('prénom')>-1||c.indexOf('prenom')>-1;});
       if(okId||okPrenom){ iEntete=i; break; }
     }
-    if(iEntete===-1) throw new Error('aucune ligne d\'en-tête trouvée (cherche « ID Personne »). Lignes lues : '+tab.length);
+    if(iEntete===-1){
+      var echantillon='';
+      var n=0;
+      for(var j=0;j<tab.length&&n<3;j++){
+        var ligne=(tab[j]||[]).filter(function(c){return (''+c).trim()!=='';});
+        if(ligne.length){ echantillon+=' ➤ Ligne '+(j+1)+' : '+ligne.slice(0,8).join(' | '); n++; }
+      }
+      throw new Error('aucune ligne d\'en-tête trouvée. Premières lignes du tableau : '+echantillon.slice(0,400));
+    }
     var rows = XLSX.utils.sheet_to_json(ws, {defval:'', range:iEntete});
     var P = colonnesVersPersonnes(rows);
     if(!P.length) throw new Error('xlsx lu mais aucune personne trouvée. Colonnes détectées : '+Object.keys(rows[0]||{}).join(' | '));
