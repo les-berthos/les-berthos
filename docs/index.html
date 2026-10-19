@@ -398,70 +398,112 @@ function construireArbre(P){
   var cP   = stP + ((maxB[2]-1)*ESP)/2;                    // axe de la zone PÉPÉ (droite)
   var coupleIds=null;
 
-  gens.forEach(function(g){
+  // ---- trouver le couple pivot (conjoint de branches opposées : MÉMÉ + PÉPÉ) ----
+  var pivot=null;
+  placees.forEach(function(p){
+    if(pivot) return;
+    var c=map[p.conjoint];
+    if(c && ((p._br===0&&c._br===2)||(p._br===2&&c._br===0))) pivot={g:(p._br===0)?p:c, d:(p._br===0)?c:p};
+  });
+  coupleIds = pivot ? [pivot.g.id, pivot.d.id] : null;
+  // ancêtres directs du couple (chaînes père/mère)
+  function ancetresDe(pid, acc){
+    acc=acc||{};
+    var q=map[pid];
+    if(!q) return acc;
+    [q.pere,q.mere].forEach(function(aid){
+      if(aid && map[aid] && !acc[aid]){ acc[aid]=1; ancetresDe(aid, acc); }
+    });
+    return acc;
+  }
+  var ancM=pivot?ancetresDe(pivot.g.id):{};
+  var ancP=pivot?ancetresDe(pivot.d.id):{};
+  // ordre de traitement : la génération du couple d'abord, puis vers le bas, puis vers le haut
+  var idxPivot = pivot ? gens.indexOf(pivot.g.g-gMin) : 0;
+  var ordre=[];
+  for(var oi=idxPivot; oi>=0; oi--) ordre.push(oi);   // couple puis plus jeunes
+  for(var oi2=idxPivot+1; oi2<gens.length; oi2++) ordre.push(oi2); // plus vieux ensuite
+
+  ordre.forEach(function(oi){
+    var g=gens[oi];
     var liste=parGen[g].slice();
-    liste.forEach(function(p,i){
-      p._idx=i;
-      var px=[];
-      if(positions[p.pere]) px.push(positions[p.pere].x);
-      if(positions[p.mere]) px.push(positions[p.mere].x);
-      p._cle = px.length ? px.reduce(function(a,b){return a+b;},0)/px.length : Infinity;
-    });
-    liste.sort(function(a,b){
-      if(a._cle!==b._cle) return a._cle-b._cle;
-      return a._idx-b._idx;
-    });
-    // répartition par branche
+    liste.forEach(function(p,i){ p._idx=i; });
     var b0=[], b1=[], b2=[];
     liste.forEach(function(p){
       if(p._br===0) b0.push(p); else if(p._br===2) b2.push(p); else b1.push(p);
     });
-    // couple pivot : conjoints de branches opposées (MÉMÉ + PÉPÉ) centrés sur l'axe central
-    var pivot=null;
-    for(var pi=0;pi<b0.length && !pivot;pi++){
-      var c=map[b0[pi].conjoint];
-      if(c && c._br===2 && liste.indexOf(c)>-1) pivot={g:b0[pi], d:c};
+    // trier selon la position des enfants déjà placés (rangée du dessous)
+    function trier(arr){
+      arr.forEach(function(p){
+        var xs=[];
+        placees.forEach(function(q){ if((q.pere===p.id||q.mere===p.id)&&positions[q.id]) xs.push(positions[q.id].x); });
+        p._xs = xs.length ? xs.reduce(function(a,b){return a+b;},0)/xs.length : Infinity;
+      });
+      arr.sort(function(a,b){ return a._xs-b._xs; });
+      return arr;
     }
-    if(pivot){
+    // groupe avec conjoints de la même branche côte à côte
+    function avecConjoints(arr){
+      var fin=[];
+      arr.forEach(function(p){
+        if(fin.indexOf(p)>-1) return;
+        fin.push(p);
+        var c=map[p.conjoint];
+        if(c && c._br===p._br && c.g!==null && (c.g-gMin)===g && liste.indexOf(c)>-1 && fin.indexOf(c)===-1) fin.push(c);
+      });
+      return fin;
+    }
+    function placerSuite(arr, x0, sens){
+      var fin=avecConjoints(arr);
+      if(sens<0){ // ordre décroissant en x : le premier élément (plus proche du centre) sera le plus à droite
+        fin.reverse();
+        fin.forEach(function(p,i){ positions[p.id]={x:x0-i*ESP, y:0}; });
+      }else{
+        fin.forEach(function(p,i){ positions[p.id]={x:x0+i*ESP, y:0}; });
+      }
+    }
+    if(pivot && (pivot.g.g-gMin)===g){
+      // rangée du couple : MÉMÉ+PÉPÉ au centre, fratries autour
       positions[pivot.g.id]={x:cE-ESP/2, y:0};
       positions[pivot.d.id]={x:cE+ESP/2, y:0};
-      coupleIds=[pivot.g.id, pivot.d.id];
       b0.splice(b0.indexOf(pivot.g),1);
       b2.splice(b2.indexOf(pivot.d),1);
+      placerSuite(trier(b0), cE-ESP/2-ESP, -1);
+      placerSuite(trier(b2), cE+ESP/2+ESP, +1);
+      placerSuite(b1, cE-ESP/2-ESP-b0.length*ESP, -1); // personnes hors-branches : à l'extrême gauche
+      return;
     }
-    // placer un groupe : centré sur un axe, conjoints de la même branche côte à côte
-    function placerCentre(arr, axe){
-      var fin=[];
-      arr.forEach(function(p){
-        if(fin.indexOf(p)>-1) return;
-        fin.push(p);
-        var c=map[p.conjoint];
-        if(c && c._br===p._br && c.g!==null && (c.g-gMin)===g && arr.indexOf(c)>-1 && fin.indexOf(c)===-1) fin.push(c);
-      });
-      var n=fin.length, debut=axe-((n-1)*ESP)/2;
-      fin.forEach(function(p,i){ positions[p.id]={x:debut+i*ESP, y:0}; });
+    if(oi<idxPivot){
+      // rangées plus jeunes (enfants, descendants) : centrées sous les parents
+      var fin=avecConjoints(trier(b1));
+      if(fin.length){
+        var cible=0, nb=0;
+        fin.forEach(function(p){
+          var xs=[];
+          if(positions[p.pere]) xs.push(positions[p.pere].x);
+          if(positions[p.mere]) xs.push(positions[p.mere].x);
+          if(xs.length){ cible+=xs.reduce(function(a,b){return a+b;},0)/xs.length; nb++; }
+        });
+        if(nb){ cible/=nb; }
+        else { cible=cE; }
+        var debut=cible-((fin.length-1)*ESP)/2;
+        fin.forEach(function(p,i){ positions[p.id]={x:debut+i*ESP, y:0}; });
+      }
+      placerSuite(trier(b0), cE-ESP/2-ESP, -1);
+      placerSuite(trier(b2), cE+ESP/2+ESP, +1);
+      return;
     }
-    // aligner un groupe depuis un point de départ (pour encadrer le couple)
-    function aligner(arr, x0, sens){
-      var fin=[];
-      arr.forEach(function(p){
-        if(fin.indexOf(p)>-1) return;
-        fin.push(p);
-        var c=map[p.conjoint];
-        if(c && c._br===p._br && c.g!==null && (c.g-gMin)===g && arr.indexOf(c)>-1 && fin.indexOf(c)===-1) fin.push(c);
-      });
-      if(sens<0) fin.reverse();
-      var x=x0;
-      fin.forEach(function(p){ positions[p.id]={x:x, y:0}; x+=sens*ESP; });
-    }
-    placerCentre(b1, cE);                                   // enfants centrés sous le couple
+    // rangées plus anciennes : ancêtres directs collés au couple, les autres (oncles/tantes) plus loin
     if(pivot){
-      aligner(b0, cE-ESP/2-ESP, -1);                        // fratrie MÉMÉ à gauche d'elle
-      aligner(b2, cE+ESP/2+ESP, +1);                         // fratrie PÉPÉ à droite de lui
+      var d0=b0.filter(function(p){return ancM[p.id];}), a0=b0.filter(function(p){return !ancM[p.id];});
+      var d2=b2.filter(function(p){return ancP[p.id];}), a2=b2.filter(function(p){return !ancP[p.id];});
+      placerSuite(trier(d0).concat(trier(a0)), cE-ESP/2-ESP, -1);
+      placerSuite(trier(d2).concat(trier(a2)), cE+ESP/2+ESP, +1);
     }else{
-      placerCentre(b0, cM);                                  // ancêtres MÉMÉ dans leur bande
-      placerCentre(b2, cP);                                  // ancêtres PÉPÉ dans leur bande
+      placerSuite(trier(b0), cM, -1);
+      placerSuite(trier(b2), cP, +1);
     }
+    placerSuite(b1, cE, +1);
   });
   // y par génération : g décroissant vers le bas
   gens.forEach(function(g){
