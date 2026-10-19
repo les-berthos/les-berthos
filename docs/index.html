@@ -127,16 +127,23 @@ async function chargerDonnees(){
     await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
     var wb = XLSX.read(buf);
     var nom = wb.SheetNames.find(function(n){ return /personnes/i.test(n); }) || wb.SheetNames[0];
-    // lecture via CSV (texte brut affiché) — robuste face aux formats de cellules
-    var ws = wb.Sheets[nom];
-    var csv = XLSX.utils.sheet_to_csv(ws, {FS:'\u0001'});
-    var lignesCsv = csv.split('\n').filter(function(l){ return l.replace(/\u0001/g,'').trim()!==''; });
-    var iEntete=-1;
-    for(var i=0;i<lignesCsv.length;i++){
-      var c=normaliser(lignesCsv[i]);
-      if((c.indexOf('id')>-1&&c.indexOf('personne')>-1)||(c.indexOf('prénom')>-1||c.indexOf('prenom')>-1)){ iEntete=i; break; }
+    // lecture via CSV (texte brut affiché) — scanne TOUS les onglets pour trouver le registre
+    var ws=null, infos=[];
+    for(var s=0;s<wb.SheetNames.length;s++){
+      var nomS=wb.SheetNames[s];
+      var csvS=XLSX.utils.sheet_to_csv(wb.Sheets[nomS],{FS:'\u0001'});
+      var lsS=csvS.split('\n').filter(function(l){return l.replace(/\u0001/g,'').trim()!=='';});
+      infos.push(nomS+' ('+lsS.length+' lignes, début : '+lsS.slice(0,2).join(' / ').replace(/\u0001/g,'|').slice(0,120)+')');
+      for(var i=0;i<lsS.length;i++){
+        var cS=normaliser(lsS[i]);
+        if((cS.indexOf('id')>-1&&cS.indexOf('personne')>-1)||cS.indexOf('prénom')>-1||cS.indexOf('prenom')>-1){
+          ws={csv:csvS, ls:lsS, iEntete:i}; break;
+        }
+      }
+      if(ws) break;
     }
-    if(iEntete===-1) throw new Error('en-tête introuvable. Lignes : '+lignesCsv.slice(0,5).join(' § ').slice(0,500));
+    if(!ws) throw new Error('en-tête « ID Personne » introuvable dans aucun onglet. Onglets : '+infos.join(' — ').slice(0,600));
+    var lignesCsv=ws.ls, iEntete=ws.iEntete;
     var entetes = lignesCsv[iEntete].split('\u0001').map(function(h){return h.trim();});
     var rows = lignesCsv.slice(iEntete+1).map(function(l){
       var cels=l.split('\u0001'), o={};

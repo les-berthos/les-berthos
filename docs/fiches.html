@@ -124,20 +124,25 @@ async function chargerDonnees(){
     if(!rep.ok) throw 0;
     await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
     var wb=XLSX.read(await rep.arrayBuffer());
-    var np=wb.SheetNames.find(function(n){return /personne/i.test(n);});
-    var nd=wb.SheetNames.find(function(n){return /document/i.test(n);});
-    function versRows(nomOnglet){
-      var csv=XLSX.utils.sheet_to_csv(wb.Sheets[nomOnglet],{FS:'\u0001'});
-      var ls=csv.split('\n').filter(function(l){return l.replace(/\u0001/g,'').trim()!=='';});
-      var ih=-1;
-      for(var i=0;i<ls.length;i++){ var c=ls[i].toLowerCase(); if(c.indexOf('id')>-1&&(c.indexOf('personne')>-1||c.indexOf('document')>-1)){ih=i;break;} }
-      if(ih===-1) throw 0;
-      var ent=ls[ih].split('\u0001').map(function(h){return h.trim();});
-      return ls.slice(ih+1).map(function(l){var cels=l.split('\u0001'),o={};ent.forEach(function(h,j){if(h){var v=(cels[j]||'').trim();o[h]=(v==='nan')?'':v;}});return o;});
+    function trouveOnglet(mot){
+      for(var s=0;s<wb.SheetNames.length;s++){
+        var nomS=wb.SheetNames[s];
+        if(mot==='personne'&&!/personne/i.test(nomS)) continue;
+        var csvS=XLSX.utils.sheet_to_csv(wb.Sheets[nomS],{FS:'\u0001'});
+        var lsS=csvS.split('\n').filter(function(l){return l.replace(/\u0001/g,'').trim()!=='';});
+        for(var i=0;i<lsS.length;i++){
+          var c=lsS[i].toLowerCase();
+          if(c.indexOf('id')>-1&&(c.indexOf('personne')>-1||c.indexOf('document')>-1)){
+            var ent=lsS[i].split('\u0001').map(function(h){return h.trim();});
+            return lsS.slice(i+1).map(function(l){var cels=l.split('\u0001'),o={};ent.forEach(function(h,j){if(h){var v=(cels[j]||'').trim();o[h]=(v==='nan')?'':v;}});return o;});
+          }
+        }
+      }
+      return null;
     }
-    var P=parsePersonnes(versRows(np));
-    if(!P.length) throw 0;
-    var D=nd?parseDocuments(versRows(nd)):[];
+    var P=trouveOnglet('personne'); if(P) P=parsePersonnes(P);
+    if(!P||!P.length) throw 0;
+    var D=trouveOnglet('document'); D=D?parseDocuments(D):[];
     return {P:P,D:D,demo:false};
   }catch(e){ return {P:DEMO_P,D:DEMO_D,demo:true}; }
 }
