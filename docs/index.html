@@ -383,57 +383,84 @@ function construireArbre(P){
   var positions={}; // id -> {x,y}
   var lignes=[], ordreLignes=[];
 
+  // ---- dimensions des zones fixes (bandes) à partir des effectifs max par branche ----
+  placees.forEach(function(p){ if(p._br===undefined) branche(p,map); });
+  var maxB={0:1,1:1,2:1};
+  gens.forEach(function(g){
+    var n={0:0,1:0,2:0};
+    parGen[g].forEach(function(p){ var b=(p._br===0||p._br===2)?p._br:1; n[b]++; });
+    [0,1,2].forEach(function(b){ maxB[b]=Math.max(maxB[b], n[b]); });
+  });
+  var cM   = X0 + ((maxB[0]-1)*ESP)/2;                     // axe de la zone MÉMÉ (gauche)
+  var stE  = X0 + maxB[0]*ESP + GAP;
+  var cE   = stE + ((maxB[1]-1)*ESP)/2;                    // axe central (enfants, couple)
+  var stP  = stE + maxB[1]*ESP + GAP;
+  var cP   = stP + ((maxB[2]-1)*ESP)/2;                    // axe de la zone PÉPÉ (droite)
+  var coupleIds=null;
+
   gens.forEach(function(g){
     var liste=parGen[g].slice();
-    // branche : 0 = côté MEME, 1 = enfants du couple, 2 = côté PEPE, 1.5 = autres
-    placees.forEach(function(p){ if(p._br===undefined) branche(p,map); });
     liste.forEach(function(p,i){
       p._idx=i;
       var px=[];
       if(positions[p.pere]) px.push(positions[p.pere].x);
       if(positions[p.mere]) px.push(positions[p.mere].x);
-      if(!px.length && positions[p.conjoint]) px.push(positions[p.conjoint].x);
       p._cle = px.length ? px.reduce(function(a,b){return a+b;},0)/px.length : Infinity;
     });
     liste.sort(function(a,b){
-      if(a._br!==b._br) return a._br-b._br;
       if(a._cle!==b._cle) return a._cle-b._cle;
       return a._idx-b._idx;
     });
-    // conjoints côte à côte (seulement s'ils sont de la même branche/colonne)
-    var fin=[];
+    // répartition par branche
+    var b0=[], b1=[], b2=[];
     liste.forEach(function(p){
-      if(fin.indexOf(p)>-1) return;
-      fin.push(p);
-      var c=map[p.conjoint];
-      if(c && c._br===p._br && c.g!==null && (c.g-gMin)===g && liste.indexOf(c)>-1 && fin.indexOf(c)===-1){
-        fin.push(c);
-      }
+      if(p._br===0) b0.push(p); else if(p._br===2) b2.push(p); else b1.push(p);
     });
-    // placement avec vraies colonnes : grand espace entre zone MEME / enfants / zone PEPE
-    var x=X0, prevBr=null;
-    fin.forEach(function(p){
-      if(prevBr!==null && p._br>prevBr) x+=GAP;
-      positions[p.id]={x:x, y:0};
-      x+=ESP;
-      prevBr=p._br;
-    });
-    // si toute la rangée est d'une seule branche (ex: les enfants), on la centre sous les parents
-    var tousMemeBranche = fin.every(function(p){ return p._br===fin[0]._br; });
-    if(tousMemeBranche && fin.length>0){
-      var cibles=[], valide=false;
-      fin.forEach(function(p){
-        var px=[];
-        if(positions[p.pere]) px.push(positions[p.pere].x);
-        if(positions[p.mere]) px.push(positions[p.mere].x);
-        if(px.length){ cibles.push(px.reduce(function(a,b){return a+b;},0)/px.length); valide=true; }
+    // couple pivot : conjoints de branches opposées (MÉMÉ + PÉPÉ) centrés sur l'axe central
+    var pivot=null;
+    for(var pi=0;pi<b0.length && !pivot;pi++){
+      var c=map[b0[pi].conjoint];
+      if(c && c._br===2 && liste.indexOf(c)>-1) pivot={g:b0[pi], d:c};
+    }
+    if(pivot){
+      positions[pivot.g.id]={x:cE-ESP/2, y:0};
+      positions[pivot.d.id]={x:cE+ESP/2, y:0};
+      coupleIds=[pivot.g.id, pivot.d.id];
+      b0.splice(b0.indexOf(pivot.g),1);
+      b2.splice(b2.indexOf(pivot.d),1);
+    }
+    // placer un groupe : centré sur un axe, conjoints de la même branche côte à côte
+    function placerCentre(arr, axe){
+      var fin=[];
+      arr.forEach(function(p){
+        if(fin.indexOf(p)>-1) return;
+        fin.push(p);
+        var c=map[p.conjoint];
+        if(c && c._br===p._br && c.g!==null && (c.g-gMin)===g && arr.indexOf(c)>-1 && fin.indexOf(c)===-1) fin.push(c);
       });
-      if(valide){
-        var cible=cibles.reduce(function(a,b){return a+b;},0)/cibles.length;
-        var centre=(positions[fin[0].id].x + positions[fin[fin.length-1].id].x)/2;
-        var decal=Math.round(cible-centre);
-        if(decal>0) fin.forEach(function(p){ positions[p.id].x+=decal; });
-      }
+      var n=fin.length, debut=axe-((n-1)*ESP)/2;
+      fin.forEach(function(p,i){ positions[p.id]={x:debut+i*ESP, y:0}; });
+    }
+    // aligner un groupe depuis un point de départ (pour encadrer le couple)
+    function aligner(arr, x0, sens){
+      var fin=[];
+      arr.forEach(function(p){
+        if(fin.indexOf(p)>-1) return;
+        fin.push(p);
+        var c=map[p.conjoint];
+        if(c && c._br===p._br && c.g!==null && (c.g-gMin)===g && arr.indexOf(c)>-1 && fin.indexOf(c)===-1) fin.push(c);
+      });
+      if(sens<0) fin.reverse();
+      var x=x0;
+      fin.forEach(function(p){ positions[p.id]={x:x, y:0}; x+=sens*ESP; });
+    }
+    placerCentre(b1, cE);                                   // enfants centrés sous le couple
+    if(pivot){
+      aligner(b0, cE-ESP/2-ESP, -1);                        // fratrie MÉMÉ à gauche d'elle
+      aligner(b2, cE+ESP/2+ESP, +1);                         // fratrie PÉPÉ à droite de lui
+    }else{
+      placerCentre(b0, cM);                                  // ancêtres MÉMÉ dans leur bande
+      placerCentre(b2, cP);                                  // ancêtres PÉPÉ dans leur bande
     }
   });
   // y par génération : g décroissant vers le bas
@@ -460,7 +487,7 @@ function construireArbre(P){
     if(faits[k]) return; faits[k]=1;
     lignes.push({a:p.id,b:c.id,x1:positions[p.id].x,y1:positions[p.id].y,x2:positions[c.id].x,y2:positions[c.id].y,classe:'couple'});
   });
-  return {positions:positions, lignes:lignes, hors:hors, gens:gens, parGen:parGen};
+  return {positions:positions, lignes:lignes, hors:hors, gens:gens, parGen:parGen, coupleIds:coupleIds};
 }
 
 /* ============ 4. Rendu SVG ============ */
@@ -471,11 +498,25 @@ function afficher(P){
   var R=42, W=0, H=0;
   Object.values(t.positions).forEach(function(q){ W=Math.max(W,q.x+R); H=Math.max(H,q.y+R+70); });
   var svg='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">';
-  // encadrés par branche : MEME (gauche), enfants (centre), PEPE (droite)
+  // lignes de séparation par génération, avec libellé
+  t.gens.forEach(function(g, idx){
+    var row=t.parGen[g]; if(!row || !row.length) return;
+    var q0=t.positions[row[0].id]; if(!q0) return;
+    var yL=q0.y-118;
+    if(idx>0){
+      svg+='<line x1="30" y1="'+yL+'" x2="'+(W-30)+'" y2="'+yL+'" stroke="#c9bda3" stroke-width="1.2" stroke-dasharray="3,7" opacity=".8"/>';
+    }
+    var maxG=row[0].g||0;
+    row.forEach(function(p){ if(p.g && p.g>maxG) maxG=p.g; });
+    var lib = maxG>0 ? 'Génération '+maxG : 'Enfants & descendants';
+    svg+='<text x="34" y="'+(yL+20)+'" font-family="Special Elite, Courier New, monospace" font-size="14" fill="#6b5c48" opacity=".9" letter-spacing="1">'+esc(lib)+'</text>';
+  });
+  // encadrés par branche : MÉMÉ (gauche), enfants (centre), PÉPÉ (droite) — sans le couple central
   var zones={};
   P.forEach(function(p){
     var q=t.positions[p.id]; if(!q) return;
     var b=p._br===undefined?1.5:p._br;
+    if(t.coupleIds && (t.coupleIds[0]===p.id || t.coupleIds[1]===p.id)) return;
     var cle=(b===0)?'meme':(b===2)?'pepe':(b===1)?'enfants':'autres';
     var z=zones[cle]=zones[cle]||{minX:1e9,maxX:-1e9,minY:1e9,maxY:-1e9,n:0};
     z.minX=Math.min(z.minX,q.x); z.maxX=Math.max(z.maxX,q.x);
