@@ -119,47 +119,160 @@ function colonnesVersPersonnes(rows){
   });
   return P;
 }
+function parseurSecours(buf){
+  var u8=new Uint8Array(buf), dv=new DataView(u8.buffer);
+  var eocd=-1; for(var i=u8.length-22;i>=0;i--){ if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;} }
+  if(eocd<0) throw new Error('zip invalide');
+  var nb=dv.getUint16(eocd+10,true), cd=dv.getUint32(eocd+16,true), p=cd, entrees=[];
+  for(var e=0;e<nb;e++){
+    var cs=dv.getUint32(p+20,true), nl=dv.getUint16(p+28,true), el=dv.getUint16(p+30,true), cl2=dv.getUint16(p+32,true), lo=dv.getUint32(p+42,true);
+    var nm=''; for(var k=p+46;k<p+46+nl;k++) nm+=String.fromCharCode(u8[k]);
+    entrees.push({nom:nm,cs:cs,lo:lo}); p+=46+nl+el+cl2;
+  }
+  function decodeEnt(s){
+    return s.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"');
+  }
+  function inflate(src,start){
+    var pos=start,bitbuf=0,bitcnt=0,out=[];
+    function bits(n){ while(bitcnt<n){ bitbuf|=src[pos++]<<bitcnt; bitcnt+=8; } var v=bitbuf&((1<<n)-1); bitbuf>>>=n; bitcnt-=n; return v; }
+    var LB=[3,4,5,6,7,8,9,10,11,13,15,17,19,23,27,31,35,43,51,59,67,83,99,115,131,163,195,227,258],
+        LE=[0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0],
+        DB=[1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577],
+        DE=[0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13];
+    function tr(ls){ var c=new Array(16).fill(0); for(var q=0;q<ls.length;q++)c[ls[q]]++; c[0]=0;
+      var o=new Array(16).fill(0); for(var j=1;j<16;j++)o[j]=o[j-1]+c[j-1];
+      var s=new Array(ls.length).fill(0); for(var w=0;w<ls.length;w++) if(ls[w]) s[o[ls[w]]++]=w; return {c:c,s:s}; }
+    function ds(t){ var code=0,first=0,idx=0; for(var l=1;l<16;l++){ code|=bits(1); var n=t.c[l]; if(code-first<n) return t.s[idx+code-first]; idx+=n; first=(first+n)<<1; code<<=1; } return -1; }
+    while(true){
+      var bf=bits(1), bt=bits(2);
+      if(bt===0){ bitbuf=0;bitcnt=0; var len=src[pos]|(src[pos+1]<<8); pos+=4; for(var j2=0;j2<len;j2++)out.push(src[pos++]); }
+      else{
+        var lt,dt;
+        if(bt===1){ var l=[]; for(var a=0;a<144;a++)l.push(8); for(var b2=0;b2<112;b2++)l.push(9); for(var c2=0;c2<24;c2++)l.push(7); for(var d2=0;d2<8;d2++)l.push(8); var dd=[]; for(var e2=0;e2<30;e2++)dd.push(5); lt=tr(l); dt=tr(dd); }
+        else{
+          var hl=bits(5)+257, hd=bits(5)+1, hc=bits(4)+4;
+          var ord=[16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15], cla=new Array(19).fill(0);
+          for(var m=0;m<hc;m++)cla[ord[m]]=bits(3); var clt=tr(cla);
+          var ls=new Array(hl+hd).fill(0), ii=0;
+          while(ii<hl+hd){ var sy=ds(clt); if(sy<0)throw new Error('code longueur');
+            if(sy===16){ var pv=ls[ii-1], rp=3+bits(2); for(var r=0;r<rp&&ii<hl+hd;r++)ls[ii++]=pv; }
+            else if(sy===17) ii+=3+bits(3);
+            else if(sy===18) ii+=11+bits(7);
+            else ls[ii++]=sy; }
+          lt=tr(ls.slice(0,hl)); dt=tr(ls.slice(hl));
+        }
+        while(true){ var s2=ds(lt); if(s2<0)throw new Error('symbole'); if(s2===256)break;
+          if(s2<256) out.push(s2);
+          else{ var li=s2-257, L=LB[li]+(LE[li]?bits(LE[li]):0); var dsy=ds(dt); if(dsy<0)throw new Error('distance');
+            var D=DB[dsy]+(DE[dsy]?bits(DE[dsy]):0); var oo=out.length-D; for(var k2=0;k2<L;k2++)out.push(out[oo+k2]); } }
+      }
+      if(bf)break;
+    }
+    return new Uint8Array(out);
+  }
+  var fichiers={};
+  entrees.forEach(function(en){
+    if(fichiers[en.nom]!==undefined) return;
+    var meth=dv.getUint16(en.lo+8,true), nl2=dv.getUint16(en.lo+26,true), el2=dv.getUint16(en.lo+28,true);
+    var ds2=en.lo+30+nl2+el2, data;
+    if(meth===0){ data=u8.subarray(ds2,ds2+en.cs); } else { data=inflate(u8,ds2); }
+    try{ fichiers[en.nom]=new TextDecoder('utf-8').decode(data); }catch(e){ fichiers[en.nom]=''; }
+  });
+  var SS=[], sst=fichiers['xl/sharedStrings.xml']||'', rSi=/<(?:\w+:)?si\b[^>]*>([\s\S]*?)<\/(?:\w+:)?si\s*>/g, mSi;
+  while((mSi=rSi.exec(sst))){ var t='', rT=/<(?:\w+:)?t\b[^>]*>([\s\S]*?)<\/(?:\w+:)?t\s*>/g, mT;
+    while((mT=rT.exec(mSi[1]))) t+=mT[1]; SS.push(decodeEnt(t)); }
+  var wbxml=fichiers['xl/workbook.xml']||'';
+  var rels=fichiers['xl/_rels/workbook.xml.rels']||'', mapR={}, rRel=/<Relationship\b[^>]*Id="([^"]*)"[^>]*Target="([^"]*)"/g, mRel;
+  while((mRel=rRel.exec(rels))) mapR[mRel[1]]=mRel[2];
+  var onglets={}, rSh=/<(?:\w+:)?sheet\b[^>]*name="([^"]*)"[^>]*r:id="(rId\d+)"/g, mSh;
+  while((mSh=rSh.exec(wbxml))){
+    var cible=(mapR[mSh[2]]||'').replace(/^\//,'');
+    if(cible.indexOf('xl/')!==0) cible='xl/'+cible;
+    var xml=fichiers[cible]; if(!xml) continue;
+    var grille=[], rRow=/<(?:\w+:)?row\b[^>]*>([\s\S]*?)<\/(?:\w+:)?row\s*>/g, mRow;
+    while((mRow=rRow.exec(xml))){
+      var ligne=[], rC=/<(?:\w+:)?c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/(?:\w+:)?c\s*>)/g, mC;
+      while((mC=rC.exec(mRow[1]))){
+        var attrs=mC[1]||'', contenu=mC[2]||'';
+        var mR2=attrs.match(/r="([A-Z]+)\d+"/), colI=0;
+        if(mR2){ for(var ci=0;ci<mR2[1].length;ci++) colI=colI*26+(mR2[1].charCodeAt(ci)-64); colI--; }
+        var mTy=attrs.match(/t="(\w+)"/), typ=mTy?mTy[1]:'';
+        var val='';
+        if(typ==='inlineStr'){ var rT3=/<(?:\w+:)?t\b[^>]*>([\s\S]*?)<\/(?:\w+:)?t\s*>/g, mT3; while((mT3=rT3.exec(contenu))) val+=mT3[1]; }
+        else{ var mV=contenu.match(/<(?:\w+:)?v\b[^>]*>([\s\S]*?)<\/(?:\w+:)?v\s*>/); if(mV) val=mV[1]; }
+        if(typ==='s'){ var nIdx=parseInt(val,10); val=(!isNaN(nIdx)&&SS[nIdx]!==undefined)?SS[nIdx]:''; }
+        val=decodeEnt((''+val)).trim(); if(val==='nan') val='';
+        ligne[colI]=val;
+      }
+      for(var fi=0;fi<ligne.length;fi++) if(ligne[fi]===undefined) ligne[fi]='';
+      grille.push(ligne);
+    }
+    onglets[mSh[1]]=grille;
+  }
+  return onglets;
+}
+function secoursVersRows(onglets){
+  var noms=Object.keys(onglets);
+  for(var o=0;o<noms.length;o++){
+    var grille=onglets[noms[o]];
+    for(var i=0;i<grille.length;i++){
+      var joinTxt=grille[i].join(' ').toLowerCase();
+      if((joinTxt.indexOf('id')>-1&&joinTxt.indexOf('personne')>-1)||joinTxt.indexOf('prénom')>-1||joinTxt.indexOf('prenom')>-1){
+        var ent=grille[i];
+        return grille.slice(i+1).map(function(l){ var ob={}; ent.forEach(function(h,j){ if(h) ob[h]=l[j]||''; }); return ob; });
+      }
+    }
+  }
+  return [];
+}
 async function chargerDonnees(){
+  var buf=null, diag=null;
   try{
     var rep = await fetch('Genealogie_MEME.xlsx', {cache:'no-store'});
     if(!rep.ok) throw new Error('HTTP '+rep.status+' pour Genealogie_MEME.xlsx');
-    var buf = await rep.arrayBuffer();
+    buf = await rep.arrayBuffer();
+  }catch(e){
+    return {source:'demo', personnes: DONNEES_DEMO};
+  }
+  /* --- chemin 1 : SheetJS (lecture classique) --- */
+  try{
     await chargerScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js');
     var wb = XLSX.read(buf);
-    var nom = wb.SheetNames.find(function(n){ return /personnes/i.test(n); }) || wb.SheetNames[0];
-    // lecture via CSV (texte brut affiché) — scanne TOUS les onglets pour trouver le registre
-    var ws=null, infos=[];
+    var ws=null;
     for(var s=0;s<wb.SheetNames.length;s++){
       var nomS=wb.SheetNames[s];
       var csvS=XLSX.utils.sheet_to_csv(wb.Sheets[nomS],{FS:'\u0001'});
       var lsS=csvS.split('\n').filter(function(l){return l.replace(/\u0001/g,'').trim()!=='';});
-      infos.push(nomS+' ('+lsS.length+' lignes, début : '+lsS.slice(0,2).join(' / ').replace(/\u0001/g,'|').slice(0,120)+')');
       for(var i=0;i<lsS.length;i++){
         var cS=normaliser(lsS[i]);
         if((cS.indexOf('id')>-1&&cS.indexOf('personne')>-1)||cS.indexOf('prénom')>-1||cS.indexOf('prenom')>-1){
-          ws={csv:csvS, ls:lsS, iEntete:i}; break;
+          var entetes=lsS[i].split('\u0001').map(function(h){return h.trim();});
+          var rows=lsS.slice(i+1).map(function(l){
+            var cels=l.split('\u0001'), o={};
+            entetes.forEach(function(h,j){ if(h){var v=(cels[j]||'').trim(); o[h]=(v==='nan')?'':v;} });
+            return o;
+          });
+          var P1=colonnesVersPersonnes(rows);
+          if(P1.length) return {source:'xlsx', personnes:P1};
+          break;
         }
       }
-      if(ws) break;
     }
-    if(!ws) throw new Error('en-tête « ID Personne » introuvable dans aucun onglet. Onglets : '+infos.join(' — ').slice(0,600));
-    var lignesCsv=ws.ls, iEntete=ws.iEntete;
-    var entetes = lignesCsv[iEntete].split('\u0001').map(function(h){return h.trim();});
-    var rows = lignesCsv.slice(iEntete+1).map(function(l){
-      var cels=l.split('\u0001'), o={};
-      entetes.forEach(function(h,j){ if(h) o[h]=((cels[j]||'').trim()==='nan'?'':(cels[j]||'').trim()); });
-      return o;
-    });
-    var P = colonnesVersPersonnes(rows);
-    if(!P.length) throw new Error('xlsx lu mais aucune personne trouvée. Colonnes détectées : '+Object.keys(rows[0]||{}).join(' | '));
-    return {source:'xlsx', personnes:P};
-  }catch(e){
-    try{
-      document.getElementById('erreur').style.display='block';
-      document.getElementById('erreur').innerHTML='Diagnostic : '+e.message;
-    }catch(e2){}
-    return {source:'demo', personnes: DONNEES_DEMO};
-  }
+    diag='SheetJS n\'a pas trouvé les personnes';
+  }catch(e){ diag='SheetJS : '+e.message; }
+  /* --- chemin 2 : parseur de secours intégré (tolérant au formatage du XML) --- */
+  try{
+    var onglets=parseurSecours(buf);
+    var rows2=secoursVersRows(onglets);
+    var P2=colonnesVersPersonnes(rows2);
+    if(P2.length) return {source:'xlsx', personnes:P2};
+    diag=(diag?diag+' ; ':'')+'secours : aucun registre trouvé';
+  }catch(e2){ diag=(diag?diag+' ; ':'')+'secours : '+e2.message; }
+  try{
+    document.getElementById('erreur').style.display='block';
+    document.getElementById('erreur').innerHTML='Diagnostic : '+diag;
+  }catch(e3){}
+  return {source:'demo', personnes: DONNEES_DEMO};
 }
 
 /* ============ 2. Données de secours (aperçu hors ligne, état du 15/10/2026) ============ */
