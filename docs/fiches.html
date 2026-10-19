@@ -56,6 +56,8 @@ h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1
 .doc-list{display:flex; flex-direction:column; gap:.5rem}
 .doc-chip{background:var(--paper-dark); border:1px solid var(--line); border-radius:3px; padding:.6rem .9rem; font-size:.9rem}
 .doc-chip .meta{display:block; margin-top:.15rem}
+.doc-chip a.voir{color:var(--ink); text-decoration:none; border:1px solid var(--brass); border-radius:3px; padding:.1rem .45rem; margin-left:.25rem; font-size:.85rem; white-space:nowrap; background:#f7edd6}
+.doc-chip a.voir:hover{background:var(--brass); color:#fff}
 footer.contact{margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark); border-top:1px solid var(--line)}
 footer.contact a.btn{display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none; padding:.7rem 1.4rem; border-radius:3px; font-weight:700}
 footer.contact a.btn:hover{background:#732530}
@@ -105,7 +107,7 @@ function parsePersonnes(rows){
       naissance:(''+col(r,'date de naissance')).trim(),lieu:(''+col(r,'lieu de naissance')).trim(),deces:(''+col(r,'date de décès')).trim(),
       pere:(''+col(r,'père')).trim(),mere:(''+col(r,'mère')).trim(),conjoint:(''+col(r,'conjoint')).trim(),
       fratrie:(''+col(r,'fratrie')).trim(),lien:(''+col(r,'lien avec')).trim(),statut:(''+col(r,'statut')).trim(),
-      piste:(''+col(r,'piste de recherche')).trim(),photos:(''+col(r,'photo')).split(';').map(function(s){return s.trim();}).filter(Boolean)});
+      piste:(''+col(r,'piste de recherche')).trim(),photos:(''+col(r,'photo')).split(/[;,]/).map(function(s){return s.trim();}).filter(function(u){return u.indexOf('http')===0||u.indexOf('https://i.postimg')===0;})});
   });
   return P;
 }
@@ -114,8 +116,9 @@ function parseDocuments(rows){
     var id=(''+col(r,'id document')).trim();
     var pers=(''+col(r,'mentionn')).split(/[;,]/).map(function(s){return s.trim().toUpperCase();}).filter(Boolean);
     var lien=''; Object.keys(r).forEach(function(k){var kl=k.trim().toLowerCase(); if(kl.indexOf('lien')>-1||kl.indexOf('url')>-1||kl.indexOf('http')>-1){var v=(''+r[k]).trim(); if(v.indexOf('http')===0)lien=v;}});
-    return {id:id,nom:(''+col(r,'nom du doc')).trim(),date:(''+col(r,'date du document')).trim(),pers:pers,
-      rangement:(''+col(r,'rangement')).trim(),lien:lien};
+    return {id:id,type:(''+col(r,'type')).trim(),nom:(''+col(r,'nom du doc')).trim(),date:(''+col(r,'date du document')).trim(),pers:pers,
+      rangement:(''+col(r,'rangement')).trim(),lien:lien,
+      dos:(''+col(r,'au dos')).trim(),note:(''+col(r,'note')).trim()};
   }).filter(function(d){return d.id||d.nom;});
 }
 function parseurSecours(buf){
@@ -385,9 +388,12 @@ function renderFiche(p,P,D,map,app){
   if(frat.length) champ('Fratrie',frat.map(lienPers).join(', '));
   var docs=D.filter(function(d){return d.pers.indexOf(p.id.toUpperCase())>-1;});
   var docsHtml=docs.map(function(d){
-    var voir=d.lien?' — <a href="'+esc(d.lien)+'" target="_blank" rel="noopener">voir</a>':'';
+    var icoDoc=(d.type||'').indexOf('photo')>-1?'📷':(d.type?'📄':'📄');
+    var voir=d.lien?' — <a class="voir" href="'+esc(d.lien)+'" target="_blank" rel="noopener" title="Voir le document">👁 voir</a>':'';
+    var typ=d.type?'<span class="meta">('+esc(d.type)+')</span> ':'';
     var rg=d.rangement?'<span class="meta">Rangement : '+esc(d.rangement)+'</span>':'';
-    return '<div class="doc-chip"><strong>'+esc(d.nom||d.id)+'</strong> — '+esc(d.date)+voir+rg+'</div>';
+    var dos=d.dos?'<span class="meta">Au dos : « '+esc(d.dos)+' »</span>':'';
+    return '<div class="doc-chip">'+icoDoc+' <strong>'+esc(d.nom||d.id)+'</strong> — '+typ+esc(d.date)+voir+rg+dos+'</div>';
   }).join('');
   var galerie=p.photos.map(function(u){return '<img src="'+esc(u)+'" alt="Photo de '+esc(nomComplet(p))+'">';}).join('');
   var piste=p.piste?'<div class="piste"><strong>Piste de recherche :</strong> '+esc(p.piste)+'</div>':'';
