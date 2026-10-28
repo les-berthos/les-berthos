@@ -493,6 +493,40 @@ function construireArbre(P){
       placerSuite(trier(b2), cE+ESP/2+ESP, +1);
       return;
     }
+    if(oi>idxPivot){
+      // rangées PLUS JEUNES que le couple : enfants directs centrés sous les parents,
+      // cousins et autres descendants rejetés à part (à droite côté PÉPÉ, à gauche côté MÉMÉ)
+      function trierParParents(arr){
+        arr.forEach(function(p){
+          var xs=[];
+          if(positions[p.pere]) xs.push(positions[p.pere].x);
+          if(positions[p.mere]) xs.push(positions[p.mere].x);
+          p._xs = xs.length ? xs.reduce(function(a,b){return a+b;},0)/xs.length : Infinity;
+        });
+        arr.sort(function(a,b){ return a._xs-b._xs; });
+        return arr;
+      }
+      var finEnf=avecConjoints(trier(b1));
+      var maxEnf=cE, minEnf=cE;
+      if(finEnf.length){
+        var cible2=0, nb2=0;
+        finEnf.forEach(function(p){
+          var xs=[];
+          if(positions[p.pere]) xs.push(positions[p.pere].x);
+          if(positions[p.mere]) xs.push(positions[p.mere].x);
+          if(xs.length){ cible2+=xs.reduce(function(a,b){return a+b;},0)/xs.length; nb2++; }
+        });
+        if(nb2){ cible2/=nb2; }
+        else { cible2=cE; }
+        var debut2=cible2-((finEnf.length-1)*ESP)/2;
+        finEnf.forEach(function(p,i){ positions[p.id]={x:debut2+i*ESP, y:0}; });
+        finEnf.forEach(function(p){ maxEnf=Math.max(maxEnf,positions[p.id].x); minEnf=Math.min(minEnf,positions[p.id].x); });
+      }
+      b0.concat(b2).forEach(function(p){ p._zoneCousin=true; });
+      if(b2.length) placerSuite(trierParParents(b2), maxEnf+ESP*1.7, +1);
+      if(b0.length) placerSuite(trierParParents(b0), minEnf-ESP*1.7, -1);
+      return;
+    }
     // rangées plus anciennes : ancêtres directs collés au couple, les autres (oncles/tantes) plus loin
     if(pivot){
       var d0=b0.filter(function(p){return ancM[p.id];}), a0=b0.filter(function(p){return !ancM[p.id];});
@@ -559,12 +593,12 @@ function afficher(P){
     var q=t.positions[p.id]; if(!q) return;
     var b=p._br===undefined?1.5:p._br;
     if(t.coupleIds && (t.coupleIds[0]===p.id || t.coupleIds[1]===p.id)) return;
-    var cle=(b===0)?'meme':(b===2)?'pepe':(b===1)?'enfants':'autres';
+    var cle=p._zoneCousin?'cousins':((b===0)?'meme':(b===2)?'pepe':(b===1)?'enfants':'autres');
     var z=zones[cle]=zones[cle]||{minX:1e9,maxX:-1e9,minY:1e9,maxY:-1e9,n:0};
     z.minX=Math.min(z.minX,q.x); z.maxX=Math.max(z.maxX,q.x);
     z.minY=Math.min(z.minY,q.y); z.maxY=Math.max(z.maxY,q.y); z.n++;
   });
-  var titres={meme:['CÔTÉ MÉMÉ','#a8455c'],pepe:['CÔTÉ PÉPÉ','#3f6a78'],enfants:['ENFANTS DE MÉMÉ & PÉPÉ','#8c2f39'],autres:['AUTRES PISTES','#6b5c48']};
+  var titres={meme:['CÔTÉ MÉMÉ','#a8455c'],pepe:['CÔTÉ PÉPÉ','#3f6a78'],enfants:['ENFANTS DE MÉMÉ & PÉPÉ','#8c2f39'],cousins:['COUSINS & DESCENDANTS','#b8863b'],autres:['AUTRES PISTES','#6b5c48']};
   Object.keys(zones).forEach(function(cle){
     var z=zones[cle]; if(z.n<2) return;
     var x1=z.minX-72, x2=z.maxX+72, y1=z.minY-86, y2=z.maxY+96;
