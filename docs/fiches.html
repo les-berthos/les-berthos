@@ -331,7 +331,7 @@ function renderFiche(p,P,D,map,dmap,app){
   document.title=nomComplet(p)+' — Les Berthos';
   var l=(p.lien||'').toUpperCase();
   var bord = l.indexOf('MEME')>-1 ? 'var(--meme)' : (l.indexOf('PEPE')>-1 ? 'var(--pepe)' : 'var(--ink)');
-  var ph=p.photos[0]||(p.sexe==='F'?'https://i.postimg.cc/5tFdhyNh/femme-inconnue.png':'https://i.postimg.cc/k5t30GXk/homme-inconnu.png');
+  // (portrait supprimé : plus de petite photo en haut de fiche)
   var dl='';
   function champ(dt,dd){ if(dd) dl+='<dt>'+dt+'</dt><dd>'+dd+'</dd>'; }
   champ('Née/né le',esc(p.naissance));
@@ -360,7 +360,6 @@ function renderFiche(p,P,D,map,dmap,app){
   var reste=p.piste?'<div class="piste"><strong>Reste à confirmer / hypothèses :</strong>'+enrichir(p.piste,map,dmap)+'</div>':'';
   app.innerHTML='<a class="back" href="fiches.html">&larr; Retour aux fiches</a>'
     +'<div class="idcard" style="border-left-color:'+bord+'">'
-    +'<img class="photo" src="'+esc(ph)+'" alt="Portrait de '+esc(nomComplet(p))+'">'
     +'<div class="infos">'
     +'<div class="eyebrow">'+esc(p.id+' · '+(p.lien||'lien à préciser'))+'</div>'
     +'<h2>'+esc(nomComplet(p))+' '+stamp(p.statut)+'</h2>'
