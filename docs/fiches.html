@@ -66,6 +66,19 @@ h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1
 .outils-f button{font:inherit; font-size:.88rem; background:var(--paper-dark); color:var(--ink); border:1px solid var(--line); border-radius:3px; padding:.35rem .8rem; cursor:pointer}
 .outils-f button.on{background:var(--wax); color:#faf6ec; border-color:var(--wax)}
 .outils-f input{font:inherit; font-size:.9rem; padding:.35rem .6rem; border:1px solid var(--line); border-radius:3px; background:#faf6ec; min-width:12rem}
+button.ensavoir{font:inherit; font-size:.78rem; background:#f7edd6; color:var(--ink); border:1px solid var(--brass); border-radius:3px; padding:.15rem .55rem; cursor:pointer; margin-left:.5rem; vertical-align:middle}
+button.ensavoir:hover{background:var(--brass); color:#fff}
+.bulle{position:fixed; top:0; right:0; height:100vh; width:min(430px,94vw); background:#f7edd6; border-left:2px solid var(--brass); box-shadow:-4px 0 16px rgba(0,0,0,.22); z-index:120; transform:translateX(105%); transition:transform .25s ease; display:flex; flex-direction:column}
+.bulle.ouverte{transform:translateX(0)}
+.bulle-tete{display:flex; justify-content:space-between; align-items:center; gap:.6rem; padding:.9rem 1.1rem; border-bottom:1px solid var(--brass); background:#efe0ba}
+.bulle-tete strong{font-family:'Playfair Display',Georgia,serif; font-size:1.05rem; color:var(--ink)}
+.bulle-tete button{font:inherit; cursor:pointer; background:#faf6ec; border:1px solid var(--brass); border-radius:3px; padding:.1rem .5rem}
+.bulle-corps{padding:1rem 1.2rem 2rem; overflow-y:auto; font-size:.93rem; line-height:1.65}
+.bulle-corps .faits li{margin:.35rem 0}
+.barre-archives{position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:60; display:flex; flex-direction:column; gap:6px; background:var(--paper-dark); border:1px solid var(--line); border-right:none; border-radius:6px 0 0 6px; padding:7px 6px; box-shadow:0 1px 5px rgba(0,0,0,.12)}
+.barre-archives a{display:block; width:36px; height:36px; line-height:36px; text-align:center; font-size:.78rem; font-weight:700; color:var(--ink); text-decoration:none; background:#f7edd6; border:1px solid var(--brass); border-radius:3px}
+.barre-archives a:hover{background:var(--brass); color:#fff}
+@media (max-width:700px){.barre-archives{display:none}}
 footer.contact{margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark); border-top:1px solid var(--line)}
 footer.contact a.btn{display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none; padding:.7rem 1.4rem; border-radius:3px; font-weight:700}
 footer.contact a.btn:hover{background:#732530}
@@ -124,6 +137,7 @@ function parsePersonnes(rows){
       pere:(''+col(r,'père')).trim(),mere:(''+col(r,'mère')).trim(),conjoint:(''+col(r,'conjoint')).trim(),
       fratrie:(''+col(r,'fratrie')).trim(),lien:(''+col(r,'lien avec')).trim(),statut:(''+col(r,'statut')).trim(),
       confirme:(''+col(r,'confirmé par')).trim(),
+      note:(''+col(r,'notes')).trim(),
       piste:(''+(col(r,'reste à confirmer')||col(r,'piste de recherche'))).trim(),
       photos:(''+col(r,'photo')).split(/[;,\s]+/).map(function(s){return s.trim();}).filter(function(u){return u.indexOf('http')===0;})});
   });
@@ -370,7 +384,7 @@ function renderFiche(p,P,D,map,dmap,app){
     +'<div class="idcard" style="border-left-color:'+bord+'">'
     +'<div class="infos">'
     +'<div class="eyebrow">'+esc(p.id+' · '+(p.lien||'lien à préciser'))+'</div>'
-    +'<h2>'+esc(nomComplet(p))+' '+stamp(p.statut)+'</h2>'
+    +'<h2>'+esc(nomComplet(p))+' '+stamp(p.statut)+(p.note?' <button type="button" class="ensavoir" data-id="'+esc(p.id)+'" title="Remarques et choix de lecture (pourquoi telle info diffère de l’acte)">💡 En savoir plus</button>':'')+'</h2>'
     +'<dl>'+dl+'</dl>'
     +(galerie?'<div class="gallery">'+galerie+'</div>':'')
     +prouve+reste
@@ -399,7 +413,7 @@ function renderListe(P,app){
     var l=(p.lien||'').toUpperCase();
     var bord=l.indexOf('MEME')>-1&&l.indexOf('PEPE')>-1?'var(--wax)':(l.indexOf('MEME')>-1?'var(--meme)':(l.indexOf('PEPE')>-1?'var(--pepe)':'transparent'));
     var info=[p.naissance?'née/né '+p.naissance:'',p.deces?'décès '+p.deces:'',p.lien].filter(Boolean).join(' · ');
-    return '<div class="card" style="border-left:4px solid '+bord+'"><a class="name" href="#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>'+stamp(p.statut)
+    return '<div class="card" style="border-left:4px solid '+bord+'"><a class="name" href="#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>'+stamp(p.statut)+(p.note?' <button type="button" class="ensavoir" data-id="'+esc(p.id)+'" title="Remarques et choix de lecture">💡 En savoir plus</button>':'')
       +'<p class="meta">'+esc(p.id+' — '+info)+'</p></div>';
   }).join('');
   app.innerHTML='<h2>Fiches ('+vus.length+' sur '+P.length+')</h2>'
@@ -437,10 +451,32 @@ chargerDonnees().then(function(d){
     if(b&&b.getAttribute('data-k')){ ETAT_F[b.getAttribute('data-k')]=b.getAttribute('data-v'); afficher(d.P,d.D); return; }
     var r=(t&&t.closest)?t.closest('.rosette'):null;
     if(r){ var chip=r.parentNode;
-      if(chip&&chip.classList){ chip.classList.toggle('ouvert'); r.textContent=chip.classList.contains('ouvert')?'🗿 masquer':'🗿 transcription'; } }
+      if(chip&&chip.classList){ chip.classList.toggle('ouvert'); r.textContent=chip.classList.contains('ouvert')?'🗿 masquer':'🗿 transcription'; } return; }
+    var eb=(t&&t.closest)?t.closest('.ensavoir'):null;
+    if(eb){ var id=(eb.getAttribute('data-id')||'').toUpperCase(); var pp=null;
+      d.P.forEach(function(x){ if(x.id===id) pp=x; });
+      if(pp&&pp.note){ var ix=indexer(d.P,d.D);
+        document.getElementById('bulle-titre').textContent='Remarques — '+nomComplet(pp);
+        var corps=enrichir(pp.note,ix.map,ix.dmap); 
+        document.getElementById('bulle-corps').innerHTML=corps||('<p>'+esc(pp.note)+'</p>');
+        document.getElementById('bulle').classList.add('ouverte'); } return; }
+  });
+  document.getElementById('bulle-fermer').addEventListener('click',function(){
+    document.getElementById('bulle').classList.remove('ouverte');
   });
 }).catch(function(e){
   document.getElementById('app').innerHTML='<div class="avert-demo">Erreur d’affichage : '+esc(e&&e.message?e.message:''+e)+'</div>';
 });
 </script>
+<aside id="bulle" class="bulle" aria-label="Remarques et choix de lecture">
+  <div class="bulle-tete"><strong id="bulle-titre">Remarques</strong><button type="button" id="bulle-fermer" title="Fermer">✕ fermer</button></div>
+  <div id="bulle-corps" class="bulle-corps"></div>
+</aside>
+<nav class="barre-archives" aria-label="Archives en ligne">
+  <a href="https://www.loire.fr/jcms/lw_1334387/fr/les-archives-departementales-de-la-loire" target="_blank" rel="noopener" title="Archives départementales de la Loire">42</a>
+  <a href="https://www.archives43.fr/" target="_blank" rel="noopener" title="Archives départementales de la Haute-Loire">43</a>
+  <a href="https://archives.rhone.fr/" target="_blank" rel="noopener" title="Archives départementales du Rhône">69</a>
+  <a href="https://www.geneanet.org/" target="_blank" rel="noopener" title="Geneanet">Gn</a>
+  <a href="https://www.familysearch.org/fr/" target="_blank" rel="noopener" title="FamilySearch">Fs</a>
+</nav>
 </body></html>
