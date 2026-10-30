@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fiches des acteurs — Les Berthos</title>
+<title>Pistes de recherche — Les Berthos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Public+Sans:wght@400;600;700&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -10,69 +10,124 @@
   --meme:#a8455c; --pepe:#3f6a78;
 }
 *{box-sizing:border-box}
-body{margin:0; color:var(--ink); font-family:'Public Sans', Arial, sans-serif; font-size:18px; line-height:1.55;
+body{
+  margin:0; color:var(--ink);
+  font-family:'Public Sans', Arial, sans-serif; font-size:18px; line-height:1.55;
   background-image:
     radial-gradient(var(--paper-dark) 0.6px, transparent 0.6px),
     linear-gradient(rgba(239,231,216,.87), rgba(239,231,216,.87)),
     url('https://i.postimg.cc/vmTKF4ZQ/arriere-plan-Bertho.png');
-  background-size: 14px 14px, cover, cover; background-position: 0 0, center, center;
-  background-repeat: repeat, no-repeat, no-repeat; background-attachment: scroll, fixed, fixed;}
-.hero{background-image: linear-gradient(180deg, rgba(20,14,8,.4) 0%, rgba(20,14,8,.68) 100%); padding:4.5rem 1.5rem 2.2rem; text-align:center}
-.hero h1{font-family:'Playfair Display', Georgia, serif; font-size:3rem; margin:0 0 .4rem; color:var(--cream); letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.5)}
+  background-size: 14px 14px, cover, cover;
+  background-position: 0 0, center, center;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-attachment: scroll, fixed, fixed;
+}
+.hero{
+  position:relative;
+  background-image: linear-gradient(180deg, rgba(20,14,8,.4) 0%, rgba(20,14,8,.68) 100%);
+  padding:4.5rem 1.5rem 2.2rem; text-align:center;
+}
+.hero h1{
+  font-family:'Playfair Display', Georgia, serif; font-size:3rem; margin:0 0 .4rem;
+  color:var(--cream); letter-spacing:1px; text-shadow:0 2px 10px rgba(0,0,0,.5);
+}
 .hero p{margin:0; color:var(--cream); opacity:.9; font-size:1.05rem; text-shadow:0 1px 6px rgba(0,0,0,.5)}
-nav.site{display:flex; justify-content:center; gap:1.6rem; padding:.9rem 0; background:var(--paper-dark); border-bottom:1px solid var(--line); font-weight:600; letter-spacing:.3px; flex-wrap:wrap}
+nav.site{
+  display:flex; justify-content:center; gap:1.6rem; padding:.9rem 0; background:var(--paper-dark);
+  border-bottom:1px solid var(--line); font-weight:600; letter-spacing:.3px; flex-wrap:wrap;
+}
 nav.site a{color:var(--ink); text-decoration:none; border-bottom:2px solid transparent; padding-bottom:2px}
 nav.site a:hover, nav.site a:focus{border-bottom-color:var(--wax)}
 main{max-width:880px; margin:0 auto; padding:2.2rem 1.5rem 4rem}
 h2{font-family:'Playfair Display', Georgia, serif; color:var(--wax); font-size:1.7rem; margin-top:2.2rem}
-.card{background:#faf6ec; border:1px solid var(--line); border-radius:3px; padding:1.4rem 1.6rem; margin:1.1rem 0; box-shadow:0 1px 0 var(--line)}
+.card{
+  background:#faf6ec; border:1px solid var(--line); border-radius:3px;
+  padding:1.4rem 1.6rem; margin:1.1rem 0; box-shadow:0 1px 0 var(--line);
+}
 .card a.name{font-family:'Playfair Display', Georgia, serif; font-size:1.3rem; color:var(--ink); text-decoration:none}
 .card a.name:hover{color:var(--wax)}
-.stamp{display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:1.5px; padding:.25rem .55rem; border:2px solid; border-radius:2px; transform:rotate(-3deg); margin-left:.6rem; vertical-align:middle}
+.stamp{
+  display:inline-block; font-family:'Special Elite', 'Courier New', monospace; font-size:.72rem;
+  text-transform:uppercase; letter-spacing:1.5px; padding:.25rem .55rem; border:2px solid; border-radius:2px;
+  transform:rotate(-3deg); margin-left:.6rem; vertical-align:middle;
+}
 .stamp.confirme{color:var(--sage); border-color:var(--sage)}
 .stamp.hypothese{color:var(--brass); border-color:var(--brass)}
-.stamp.manque{color:var(--wax); border-color:var(--wax)}
+.stamp.inconnu{color:var(--wax); border-color:var(--wax)}
 .meta{color:var(--ink-soft); font-size:.95rem; margin:.3rem 0 0}
-.piste{background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin-top:.8rem; font-size:.98rem}
+.histoire{margin-top:.7rem}
+.piste{
+  background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin-top:.8rem;
+  font-size:.98rem;
+}
 .piste strong{color:var(--brass)}
-.idcard{display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px; padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px}
+.piste.piste-perso{border-left-color:var(--sage)}
+.piste.piste-perso strong{color:var(--sage)}
+.idcard{
+  display:flex; gap:1.4rem; background:#faf6ec; border:2px solid var(--ink); border-radius:4px;
+  padding:1.3rem; box-shadow:3px 3px 0 var(--line); flex-wrap:wrap; border-left-width:8px;
+}
+.idcard.branche-meme{border-left-color:var(--meme)}
+.idcard.branche-pepe{border-left-color:var(--pepe)}
 .legend{display:flex; gap:1.4rem; align-items:center; font-size:.9rem; color:var(--ink-soft); margin:.6rem 0 1.4rem; flex-wrap:wrap}
 .legend .dot{display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:.4rem; vertical-align:middle}
 .legend .dot.meme{background:var(--meme)} .legend .dot.pepe{background:var(--pepe)}
-.field-stamp{display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.62rem; text-transform:uppercase; letter-spacing:1px; padding:.1rem .4rem; border-radius:2px; margin-left:.5rem; border:1px solid}
+.field-stamp{
+  display:inline-block; font-family:'Special Elite','Courier New',monospace; font-size:.62rem;
+  text-transform:uppercase; letter-spacing:1px; padding:.1rem .4rem; border-radius:2px; margin-left:.5rem;
+  border:1px solid;
+}
 .field-stamp.confirme{color:var(--sage); border-color:var(--sage)}
 .field-stamp.verifier{color:var(--brass); border-color:var(--brass)}
 .field-stamp.manque{color:var(--wax); border-color:var(--wax)}
-.idcard .photo{width:140px; height:170px; flex-shrink:0; background:var(--paper-dark); border:1px solid var(--ink-soft); object-fit:cover; display:flex; align-items:center; justify-content:center; color:var(--ink-soft); font-size:.8rem; text-align:center; padding:.5rem}
+.idcard .photo{
+  width:140px; height:170px; flex-shrink:0; background:var(--paper-dark); border:1px solid var(--ink-soft);
+  object-fit:cover; display:flex; align-items:center; justify-content:center; color:var(--ink-soft);
+  font-size:.8rem; text-align:center; padding:.5rem;
+}
 .idcard .infos{flex:1; min-width:220px}
-.idcard .infos h2{margin:0 0 .2rem; font-size:1.5rem; font-family:'Playfair Display', Georgia, serif}
-.idcard .infos .eyebrow{font-family:'Special Elite','Courier New',monospace; font-size:.7rem; letter-spacing:2px; color:var(--ink-soft); text-transform:uppercase; margin-bottom:.4rem}
+.idcard .infos h2{margin:0 0 .2rem; font-size:1.5rem}
+.idcard .infos .eyebrow{
+  font-family:'Special Elite','Courier New',monospace; font-size:.7rem; letter-spacing:2px;
+  color:var(--ink-soft); text-transform:uppercase; margin-bottom:.4rem;
+}
 .idcard dl{display:grid; grid-template-columns:auto 1fr; gap:.25rem .8rem; margin:.7rem 0 0; font-size:.95rem}
 .idcard dt{color:var(--ink-soft)}
 .idcard dd{margin:0}
 .gallery{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.9rem}
-.gallery img{width:90px; height:90px; object-fit:cover; display:block; border:1px solid var(--line); border-radius:3px}
+.gallery a{display:block; width:90px; height:90px; overflow:hidden; border:1px solid var(--line); border-radius:3px}
+.gallery img{width:100%; height:100%; object-fit:cover; display:block}
 h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1.05rem; margin:1rem 0 .4rem}
 .doc-list{display:flex; flex-direction:column; gap:.5rem}
-.doc-chip{background:var(--paper-dark); border:1px solid var(--line); border-radius:3px; padding:.6rem .9rem; font-size:.9rem}
+.doc-chip{
+  background:var(--paper-dark); border:1px solid var(--line); border-radius:3px;
+  padding:.6rem .9rem; font-size:.9rem;
+}
 .doc-chip .meta{display:block; margin-top:.15rem}
-.doc-chip a.voir{color:var(--ink); text-decoration:none; border:1px solid var(--brass); border-radius:3px; padding:.1rem .45rem; margin-left:.25rem; font-size:.85rem; white-space:nowrap; background:#f7edd6}
-.doc-chip a.voir:hover{background:var(--brass); color:#fff}
-.doc-chip button.rosette{font:inherit; font-size:.8rem; background:#f7edd6; color:var(--ink); border:1px solid var(--brass); border-radius:3px; padding:.1rem .5rem; margin-left:.25rem; cursor:pointer; white-space:nowrap}
-.doc-chip button.rosette:hover{background:var(--brass); color:#fff}
-.transcription{display:none; margin-top:.55rem; padding:.65rem .85rem; background:#f4ecd9; border-left:3px solid var(--brass); font-size:.9rem; line-height:1.55; white-space:normal}
-.doc-chip.ouvert .transcription{display:block}
-.outils-f{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin:.7rem 0 1.1rem}
-.outils-f button{font:inherit; font-size:.88rem; background:var(--paper-dark); color:var(--ink); border:1px solid var(--line); border-radius:3px; padding:.35rem .8rem; cursor:pointer}
-.outils-f button.on{background:var(--wax); color:#faf6ec; border-color:var(--wax)}
-.outils-f input{font:inherit; font-size:.9rem; padding:.35rem .6rem; border:1px solid var(--line); border-radius:3px; background:#faf6ec; min-width:12rem}
-footer.contact{margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark); border-top:1px solid var(--line)}
-footer.contact a.btn{display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none; padding:.7rem 1.4rem; border-radius:3px; font-weight:700}
+.sources{margin-top:2rem; padding:1.2rem 1.4rem; background:var(--paper-dark); border:1px solid var(--line); border-radius:3px}
+.sources h3{font-family:'Playfair Display',Georgia,serif; font-size:1.05rem; margin:0 0 .6rem; color:var(--ink)}
+.sources p.meta{font-size:.85rem; color:var(--ink-soft); margin:0 0 .7rem}
+.src-list{display:flex; flex-wrap:wrap; gap:.55rem}
+.src-list a{font-size:.88rem; color:var(--ink); text-decoration:none; border:1px solid var(--brass); background:#f7edd6; border-radius:3px; padding:.4rem .75rem}
+.src-list a:hover{background:var(--brass); color:#fff}
+footer.contact{
+  margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark);
+  border-top:1px solid var(--line);
+}
+footer.contact a.btn{
+  display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none;
+  padding:.7rem 1.4rem; border-radius:3px; font-weight:700;
+}
 footer.contact a.btn:hover{background:#732530}
+.empty{color:var(--ink-soft); font-style:italic}
 .back{display:inline-block; margin-bottom:1.2rem; color:var(--ink-soft); text-decoration:none}
 .back:hover{color:var(--wax)}
-.liste-fiches{display:flex; flex-direction:column; gap:.6rem}
-.avert-demo{background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin:0 0 1.2rem; font-size:.95rem}
+.archive-box{background:#faf6ec; border:1px solid var(--line); border-left:4px solid var(--wax); padding:1.2rem 1.4rem; margin:1.2rem 0}
+.noeud{cursor:pointer}
+.noeud .photo-wrap{transition:transform .15s ease, filter .15s ease; transform-box:fill-box; transform-origin:center}
+.noeud.actif .photo-wrap{filter:drop-shadow(0 0 6px var(--wax)); transform:scale(1.08)}
+.lien{transition:stroke .15s ease, stroke-width .15s ease, opacity .15s ease}
+.lien.actif{stroke:var(--wax) !important; stroke-width:3.5 !important; opacity:1 !important}
 @media (max-width:600px){
   .hero h1{font-size:2.1rem} body{font-size:17px} .idcard{flex-direction:column; align-items:center; text-align:center}
   .idcard dl{grid-template-columns:1fr; text-align:center}
@@ -85,22 +140,61 @@ footer.contact a.btn:hover{background:#732530}
 .dref{font-family:'Special Elite','Courier New',monospace; font-size:.85em; border:1px solid var(--brass); border-radius:3px; padding:0 .3em; color:var(--ink); text-decoration:none; background:#f7edd6}
 a.dref:hover{background:var(--brass); color:#fff}
 .stamp.inconnu{color:var(--wax); border-color:var(--wax)}
-</style>
-</head><body>
-<header class="hero"><h1>Les Berthos</h1><p>Fiches des acteurs de l'enquête — générées depuis le tableau Excel.</p></header>
-<nav class="site">
-  <a href="index.html">Accueil</a>
-  <a href="fiches.html" style="border-bottom-color:var(--wax)">Fiches des acteurs</a>
-  <a href="pistes.html">Pistes de recherche</a>
-  <a href="archives-privees.html">Archives</a>
-</nav>
+
+.outils{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin:1rem 0 .4rem}
+.outils button{font:inherit; font-size:.88rem; background:var(--paper-dark); color:var(--ink); border:1px solid var(--line); border-radius:3px; padding:.35rem .8rem; cursor:pointer}
+.outils button.on{background:var(--wax); color:#faf6ec; border-color:var(--wax)}
+.outils input{font:inherit; font-size:.9rem; padding:.35rem .6rem; border:1px solid var(--line); border-radius:3px; background:#faf6ec; min-width:12rem}
+.resume{color:var(--ink-soft); font-size:.95rem; margin:.3rem 0 0}
+.avert-demo{background:#f3e7c9; border-left:4px solid var(--brass); padding:.7rem 1rem; margin:0 0 1.2rem; font-size:.95rem}
+.vide{color:var(--ink-soft); font-style:italic; margin:.6rem 0 0}
+</style></head>
+<body>
+<header style="padding:1.6rem 1.5rem; text-align:center; border-bottom:1px solid var(--line);">
+                   <a href="index.html" style="font-family:'Playfair Display',Georgia,serif; font-size:1.5rem; color:var(--wax); text-decoration:none;">Les Berthos</a>
+                 </header>
+
+    <nav class="site">
+      <a href="index.html">Accueil</a>
+      <a href="fiches.html">Fiches des acteurs</a>
+      <a href="pistes.html" style="border-bottom-color:var(--wax)">Pistes de recherche</a>
+      <a href="archives-privees.html">Archives</a>
+    </nav>
 <main>
   <div class="avert-demo" id="avert-demo" style="display:none"></div>
-  <div id="app"></div>
+  <h2>Ce qu'il nous manque encore</h2>
+  <p class="resume" id="resume"></p>
+  <div class="outils">
+    <button data-k="statut" data-v="tous">Toutes</button>
+    <button data-k="statut" data-v="aconfirmer">À confirmer</button>
+    <button data-k="statut" data-v="partiel">Partielles</button>
+    <button data-k="statut" data-v="confirme">Confirmées</button>
+  </div>
+  <div class="outils">
+    <button data-k="branche" data-v="toutes">Toutes les branches</button>
+    <button data-k="branche" data-v="meme">Côté MEME</button>
+    <button data-k="branche" data-v="pepe">Côté PEPE</button>
+    <button data-k="branche" data-v="enfants">Enfants de PEPE et MEME</button>
+    <input id="rech" type="search" placeholder="Chercher un nom ou un ID…">
+  </div>
+  <p class="resume" id="nb"></p>
+  <div id="liste"></div>
 </main>
+<section class="sources">
+  <h3>🏛️ Sources &amp; archives en ligne</h3>
+  <p class="meta">Les registres cités dans le tableau de bord se consultent ici — inutile d’être un paléographe, les actes s’ouvrent en deux clics :</p>
+  <div class="src-list">
+    <a href="https://www.loire.fr/jcms/lw_1334387/fr/les-archives-departementales-de-la-loire" target="_blank" rel="noopener">Archives dép. de la Loire (42)</a>
+    <a href="https://www.archives43.fr/" target="_blank" rel="noopener">Archives dép. de la Haute-Loire (43)</a>
+    <a href="https://archives.rhone.fr/" target="_blank" rel="noopener">Archives dép. du Rhône (69)</a>
+    <a href="https://www.geneanet.org/" target="_blank" rel="noopener">Geneanet</a>
+    <a href="https://www.familysearch.org/fr/" target="_blank" rel="noopener">FamilySearch</a>
+  </div>
+</section>
 <footer class="contact">
   <p>Une photo, une lettre, un souvenir, une correction ? Écrivez-nous, ça complète directement l'enquête.</p>
-  <a class="btn" href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">Envoyer une piste par mail</a>
+  <a class="btn" href="mailto:FamBertho@proton.me?subject=Une%20piste%20pour%20l'arbre%20des%20Berthos">
+    Envoyer une piste par mail</a>
 </footer>
 <script>
 /* ===== Lecture du xlsx (commun aux pages) ===== */
@@ -327,120 +421,51 @@ function avertDemo(d){
   if(d.demo){ el.style.display='block'; el.innerHTML='⚠️ Aperçu hors ligne : données intégrées du <em>27/10/2026</em>. Raison : '+esc(d.diag||'inconnue')+'. Sur GitHub Pages avec le xlsx à côté, la page se met à jour toute seule.'; }
 }
 
-function afficher(P,D){
-  var ix=indexer(P,D);
-  var hash=(location.hash||'').replace('#','').toUpperCase();
-  var app=document.getElementById('app');
-  if(hash&&ix.map[hash]){ renderFiche(ix.map[hash],P,D,ix.map,ix.dmap,app); }
-  else{ renderListe(P,app); }
+var ETAT={statut:'tous',branche:'toutes',q:''};
+function brancheCode(p){
+  var l=(p.lien||'').toUpperCase(), m=l.indexOf('MEME')>-1, pe=l.indexOf('PEPE')>-1;
+  if(m&&pe) return 'enfants'; if(m) return 'meme'; if(pe) return 'pepe'; return 'autre';
 }
-function lienPers(p){return '<a href="#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>';}
-function renderFiche(p,P,D,map,dmap,app){
-  document.title=nomComplet(p)+' — Les Berthos';
-  var l=(p.lien||'').toUpperCase();
-  var bord = l.indexOf('MEME')>-1 ? 'var(--meme)' : (l.indexOf('PEPE')>-1 ? 'var(--pepe)' : 'var(--ink)');
-  // (portrait supprimé : plus de petite photo en haut de fiche)
-  var dl='';
-  function champ(dt,dd){ if(dd) dl+='<dt>'+dt+'</dt><dd>'+dd+'</dd>'; }
-  champ('Née/né le',esc(p.naissance));
-  champ('Lieu de naissance',esc(p.lieu));
-  champ('Décédée/décédé le',esc(p.deces));
-  p.conjoint.split(/[;,]/).forEach(function(id){id=id.trim().toUpperCase(); if(map[id]) champ('Conjoint',lienPers(map[id]));});
-  if(map[p.pere.toUpperCase()]) champ('Père',lienPers(map[p.pere.toUpperCase()]));
-  if(map[p.mere.toUpperCase()]) champ('Mère',lienPers(map[p.mere.toUpperCase()]));
-  var enfants=P.filter(function(e){return e.pere.toUpperCase()===p.id||e.mere.toUpperCase()===p.id;});
-  if(enfants.length) champ('Enfants',enfants.map(lienPers).join(', '));
-  var frat=[];
-  (p.fratrie||'').split(/[;,]/).forEach(function(id){id=id.trim().toUpperCase(); if(map[id]) frat.push(map[id]);});
-  if(frat.length) champ('Fratrie',frat.map(lienPers).join(', '));
-  var docs=D.filter(function(d){return d.pers.indexOf(p.id.toUpperCase())>-1;});
-  var docsHtml=docs.map(function(d){
-    var ico=(d.type||'').indexOf('photo')>-1?'📷':'📄';
-    var voir=d.lien?' — <a class="voir" href="'+esc(d.lien)+'" target="_blank" rel="noopener" title="Voir le document">👁 voir</a>':'';
-    var typ=d.type?'<span class="meta">('+esc(d.type)+')</span> ':'';
-    var rg=d.rangement?'<span class="meta">Rangement : '+esc(d.rangement)+'</span>':'';
-    var ct=d.cote?'<span class="meta">Cote archives : '+esc(d.cote)+'</span>':'';
-    var dos=d.dos?' <button type="button" class="rosette" title="Lire la transcription de l’acte (la « rosette » du document)">🗿 transcription</button><div class="transcription"><strong>Transcription :</strong><br>'+esc(d.dos).replace(/\n/g,'<br>')+'</div>':'';
-    return '<div class="doc-chip">'+ico+' <strong>'+esc(d.id)+' · '+esc(d.nom||'')+'</strong> — '+typ+esc(d.date)+voir+rg+ct+dos+'</div>';
-  }).join('');
-  var galerie=p.photos.map(function(u){return '<img src="'+esc(u)+'" alt="Photo de '+esc(nomComplet(p))+'">';}).join('');
-  var prouve=p.confirme?'<div class="prouve"><strong>Confirmé par :</strong>'+enrichir(p.confirme,map,dmap)+'</div>':'';
-  var reste=p.piste?'<div class="piste"><strong>Reste à confirmer / hypothèses :</strong>'+enrichir(p.piste,map,dmap)+'</div>':'';
-  app.innerHTML='<a class="back" href="fiches.html">&larr; Retour aux fiches</a>'
-    +'<div class="idcard" style="border-left-color:'+bord+'">'
-    +'<div class="infos">'
-    +'<div class="eyebrow">'+esc(p.id+' · '+(p.lien||'lien à préciser'))+'</div>'
-    +'<h2>'+esc(nomComplet(p))+' '+stamp(p.statut)+'</h2>'
-    +'<dl>'+dl+'</dl>'
-    +(galerie?'<div class="gallery">'+galerie+'</div>':'')
-    +prouve+reste
-    +(docs.length?'<h3>Documents ('+docs.length+')</h3><div class="doc-list">'+docsHtml+'</div>':'<h3>Documents</h3><p class="meta">Aucun document ne mentionne encore cette personne dans le registre.</p>')
-    +'</div></div>';
-  window.scrollTo(0,0);
+function mailto(p,txt){
+  var sujet='Une piste pour '+nomComplet(p);
+  var corps='Bonjour,\n\nÀ propos de '+nomComplet(p)+' ('+p.id+') :\n'+(txt||'')+'\n\nVoici ce que j’ai :';
+  return 'mailto:FamBertho@proton.me?subject='+encodeURIComponent(sujet)+'&body='+encodeURIComponent(corps);
 }
-var ETAT_F={statut:'tous',branche:'toutes',q:''};
-function codeBrancheF(p){
-  var l=normaliser(p.lien||'');
-  if(l.indexOf('meme')>-1&&l.indexOf('pepe')>-1) return 'enfants';
-  if(l.indexOf('meme')>-1) return 'meme';
-  if(l.indexOf('pepe')>-1) return 'pepe';
-  return 'autres';
-}
-function renderListe(P,app){
-  document.title='Fiches des acteurs — Les Berthos';
-  var q=normaliser(ETAT_F.q);
-  var vus=P.filter(function(p){
-    if(ETAT_F.statut!=='tous'&&codeStatut(p.statut)!==ETAT_F.statut) return false;
-    if(ETAT_F.branche!=='toutes'&&codeBrancheF(p)!==ETAT_F.branche) return false;
-    if(q&&normaliser(nomComplet(p)+' '+p.id).indexOf(q)===-1) return false;
+function dessiner(d){
+  var ix=indexer(d.P,d.D), app=document.getElementById('liste');
+  var cnt={confirme:0,partiel:0,aconfirmer:0};
+  d.P.forEach(function(p){cnt[codeStatut(p.statut)]++;});
+  document.getElementById('resume').innerHTML='<strong>'+d.P.length+'</strong> personnes : <strong>'+cnt.confirme+'</strong> confirmées, <strong>'+cnt.partiel+'</strong> partielles (il reste des pistes), <strong>'+cnt.aconfirmer+'</strong> à confirmer (aucun document ne les cite encore).';
+  var q=normaliser(ETAT.q);
+  var vus=d.P.filter(function(p){
+    if(ETAT.statut!=='tous'&&codeStatut(p.statut)!==ETAT.statut) return false;
+    if(ETAT.branche!=='toutes'&&brancheCode(p)!==ETAT.branche) return false;
+    if(q&&normaliser(nomComplet(p)+' '+p.id+' '+p.piste+' '+p.confirme).indexOf(q)===-1) return false;
     return true;
   });
-  var cards=vus.map(function(p){
-    var l=(p.lien||'').toUpperCase();
-    var bord=l.indexOf('MEME')>-1&&l.indexOf('PEPE')>-1?'var(--wax)':(l.indexOf('MEME')>-1?'var(--meme)':(l.indexOf('PEPE')>-1?'var(--pepe)':'transparent'));
-    var info=[p.naissance?'née/né '+p.naissance:'',p.deces?'décès '+p.deces:'',p.lien].filter(Boolean).join(' · ');
-    return '<div class="card" style="border-left:4px solid '+bord+'"><a class="name" href="#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>'+stamp(p.statut)
-      +'<p class="meta">'+esc(p.id+' — '+info)+'</p></div>';
-  }).join('');
-  app.innerHTML='<h2>Fiches ('+vus.length+' sur '+P.length+')</h2>'
-    +'<div class="outils-f">'
-    +'<button data-k="statut" data-v="tous">Toutes</button>'
-    +'<button data-k="statut" data-v="aconfirmer">À confirmer</button>'
-    +'<button data-k="statut" data-v="partiel">Partielles</button>'
-    +'<button data-k="statut" data-v="confirme">Confirmées</button>'
-    +'</div>'
-    +'<div class="outils-f">'
-    +'<button data-k="branche" data-v="toutes">Toutes les branches</button>'
-    +'<button data-k="branche" data-v="meme">Côté MÉMÉ</button>'
-    +'<button data-k="branche" data-v="pepe">Côté PÉPÉ</button>'
-    +'<button data-k="branche" data-v="enfants">Enfants de PÉPÉ et MÉMÉ</button>'
-    +'<input id="rech-f" type="search" placeholder="Chercher un nom ou un ID…" value="'+esc(ETAT_F.q)+'">'
-    +'</div>'
-    +'<div class="liste-fiches">'+(cards||'<p class="meta">Aucune fiche ne correspond à ce filtre.</p>')+'</div>';
-  Array.prototype.forEach.call(app.querySelectorAll('.outils-f button'),function(b){
-    var on=(b.getAttribute('data-k')==='statut'&&b.getAttribute('data-v')===ETAT_F.statut)||(b.getAttribute('data-k')==='branche'&&b.getAttribute('data-v')===ETAT_F.branche);
+  document.getElementById('nb').textContent=vus.length+' fiche'+(vus.length>1?'s':'')+' affichée'+(vus.length>1?'s':'');
+  app.innerHTML=vus.map(function(p){
+    var info=[p.naissance?'né(e) '+p.naissance:'',p.deces?'décès '+p.deces:''].filter(Boolean).join(' · ');
+    var prouve=p.confirme?'<div class="prouve"><strong>Confirmé par :</strong>'+enrichir(p.confirme,ix.map,ix.dmap)+'</div>':'';
+    var reste=p.piste?'<div class="piste"><strong>Reste à confirmer / hypothèses :</strong>'+enrichir(p.piste,ix.map,ix.dmap)+'</div>':'<p class="vide">Rien à chercher pour l’instant.</p>';
+    var btn=p.piste?'<a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec; text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;" href="'+mailto(p,p.piste)+'">Envoyer un document pour cette piste</a>':'';
+    return '<div class="card"><a class="name" href="fiches.html#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>'+stamp(p.statut)
+      +'<p class="meta">'+esc(p.id+(info?' — '+info:''))+'</p>'+prouve+reste+btn+'</div>';
+  }).join('')||'<p class="vide">Aucune fiche ne correspond à ce filtre.</p>';
+  document.querySelectorAll('.outils button').forEach(function(b){
+    var on=(b.getAttribute('data-k')==='statut'&&b.getAttribute('data-v')===ETAT.statut)||(b.getAttribute('data-k')==='branche'&&b.getAttribute('data-v')===ETAT.branche);
     b.classList.toggle('on',on);
   });
 }
 chargerDonnees().then(function(d){
   avertDemo(d);
-  afficher(d.P,d.D);
-  window.addEventListener('hashchange',function(){afficher(d.P,d.D);});
-  document.getElementById('app').addEventListener('input',function(e){
-    if(e.target&&e.target.id==='rech-f'){ ETAT_F.q=e.target.value; afficher(d.P,d.D);
-      var inp=document.getElementById('rech-f');
-      if(inp){ inp.focus(); try{ inp.setSelectionRange(inp.value.length, inp.value.length); }catch(err){} } }
+  document.querySelectorAll('.outils button').forEach(function(b){
+    b.addEventListener('click',function(){ ETAT[b.getAttribute('data-k')]=b.getAttribute('data-v'); dessiner(d); });
   });
-  document.getElementById('app').addEventListener('click',function(e){
-    var t=e.target;
-    var b=(t&&t.closest)?t.closest('.outils-f button'):null;
-    if(b&&b.getAttribute('data-k')){ ETAT_F[b.getAttribute('data-k')]=b.getAttribute('data-v'); afficher(d.P,d.D); return; }
-    var r=(t&&t.closest)?t.closest('.rosette'):null;
-    if(r){ var chip=r.parentNode;
-      if(chip&&chip.classList){ chip.classList.toggle('ouvert'); r.textContent=chip.classList.contains('ouvert')?'🗿 masquer':'🗿 transcription'; } }
-  });
+  document.getElementById('rech').addEventListener('input',function(e){ ETAT.q=e.target.value; dessiner(d); });
+  dessiner(d);
 }).catch(function(e){
-  document.getElementById('app').innerHTML='<div class="avert-demo">Erreur d’affichage : '+esc(e&&e.message?e.message:''+e)+'</div>';
+  document.getElementById('liste').innerHTML='<div class="avert-demo">Erreur d’affichage : '+esc(e&&e.message?e.message:''+e)+'</div>';
 });
 </script>
 </body></html>
