@@ -58,6 +58,14 @@ h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1
 .doc-chip .meta{display:block; margin-top:.15rem}
 .doc-chip a.voir{color:var(--ink); text-decoration:none; border:1px solid var(--brass); border-radius:3px; padding:.1rem .45rem; margin-left:.25rem; font-size:.85rem; white-space:nowrap; background:#f7edd6}
 .doc-chip a.voir:hover{background:var(--brass); color:#fff}
+.doc-chip button.rosette{font:inherit; font-size:.8rem; background:#f7edd6; color:var(--ink); border:1px solid var(--brass); border-radius:3px; padding:.1rem .5rem; margin-left:.25rem; cursor:pointer; white-space:nowrap}
+.doc-chip button.rosette:hover{background:var(--brass); color:#fff}
+.transcription{display:none; margin-top:.55rem; padding:.65rem .85rem; background:#f4ecd9; border-left:3px solid var(--brass); font-size:.9rem; line-height:1.55; white-space:normal}
+.doc-chip.ouvert .transcription{display:block}
+.outils-f{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin:.7rem 0 1.1rem}
+.outils-f button{font:inherit; font-size:.88rem; background:var(--paper-dark); color:var(--ink); border:1px solid var(--line); border-radius:3px; padding:.35rem .8rem; cursor:pointer}
+.outils-f button.on{background:var(--wax); color:#faf6ec; border-color:var(--wax)}
+.outils-f input{font:inherit; font-size:.9rem; padding:.35rem .6rem; border:1px solid var(--line); border-radius:3px; background:#faf6ec; min-width:12rem}
 footer.contact{margin-top:3rem; padding:1.8rem; text-align:center; background:var(--paper-dark); border-top:1px solid var(--line)}
 footer.contact a.btn{display:inline-block; margin-top:.6rem; background:var(--wax); color:#faf6ec; text-decoration:none; padding:.7rem 1.4rem; border-radius:3px; font-weight:700}
 footer.contact a.btn:hover{background:#732530}
@@ -352,7 +360,7 @@ function renderFiche(p,P,D,map,dmap,app){
     var typ=d.type?'<span class="meta">('+esc(d.type)+')</span> ':'';
     var rg=d.rangement?'<span class="meta">Rangement : '+esc(d.rangement)+'</span>':'';
     var ct=d.cote?'<span class="meta">Cote archives : '+esc(d.cote)+'</span>':'';
-    var dos=d.dos?'<span class="meta">Au dos : « '+esc(d.dos.length>300?d.dos.slice(0,300)+'…':d.dos)+' »</span>':'';
+    var dos=d.dos?' <button type="button" class="rosette" title="Lire la transcription de l’acte (la « rosette » du document)">🗿 transcription</button><div class="transcription"><strong>Transcription :</strong><br>'+esc(d.dos).replace(/\n/g,'<br>')+'</div>':'';
     return '<div class="doc-chip">'+ico+' <strong>'+esc(d.id)+' · '+esc(d.nom||'')+'</strong> — '+typ+esc(d.date)+voir+rg+ct+dos+'</div>';
   }).join('');
   var galerie=p.photos.map(function(u){return '<img src="'+esc(u)+'" alt="Photo de '+esc(nomComplet(p))+'">';}).join('');
@@ -370,21 +378,67 @@ function renderFiche(p,P,D,map,dmap,app){
     +'</div></div>';
   window.scrollTo(0,0);
 }
+var ETAT_F={statut:'tous',branche:'toutes',q:''};
+function codeBrancheF(p){
+  var l=normaliser(p.lien||'');
+  if(l.indexOf('meme')>-1&&l.indexOf('pepe')>-1) return 'enfants';
+  if(l.indexOf('meme')>-1) return 'meme';
+  if(l.indexOf('pepe')>-1) return 'pepe';
+  return 'autres';
+}
 function renderListe(P,app){
   document.title='Fiches des acteurs — Les Berthos';
-  var cards=P.map(function(p){
+  var q=normaliser(ETAT_F.q);
+  var vus=P.filter(function(p){
+    if(ETAT_F.statut!=='tous'&&codeStatut(p.statut)!==ETAT_F.statut) return false;
+    if(ETAT_F.branche!=='toutes'&&codeBrancheF(p)!==ETAT_F.branche) return false;
+    if(q&&normaliser(nomComplet(p)+' '+p.id).indexOf(q)===-1) return false;
+    return true;
+  });
+  var cards=vus.map(function(p){
     var l=(p.lien||'').toUpperCase();
     var bord=l.indexOf('MEME')>-1&&l.indexOf('PEPE')>-1?'var(--wax)':(l.indexOf('MEME')>-1?'var(--meme)':(l.indexOf('PEPE')>-1?'var(--pepe)':'transparent'));
     var info=[p.naissance?'née/né '+p.naissance:'',p.deces?'décès '+p.deces:'',p.lien].filter(Boolean).join(' · ');
     return '<div class="card" style="border-left:4px solid '+bord+'"><a class="name" href="#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>'+stamp(p.statut)
       +'<p class="meta">'+esc(p.id+' — '+info)+'</p></div>';
   }).join('');
-  app.innerHTML='<h2>Toutes les fiches ('+P.length+')</h2><div class="liste-fiches">'+cards+'</div>';
+  app.innerHTML='<h2>Fiches ('+vus.length+' sur '+P.length+')</h2>'
+    +'<div class="outils-f">'
+    +'<button data-k="statut" data-v="tous">Toutes</button>'
+    +'<button data-k="statut" data-v="aconfirmer">À confirmer</button>'
+    +'<button data-k="statut" data-v="partiel">Partielles</button>'
+    +'<button data-k="statut" data-v="confirme">Confirmées</button>'
+    +'</div>'
+    +'<div class="outils-f">'
+    +'<button data-k="branche" data-v="toutes">Toutes les branches</button>'
+    +'<button data-k="branche" data-v="meme">Côté MÉMÉ</button>'
+    +'<button data-k="branche" data-v="pepe">Côté PÉPÉ</button>'
+    +'<button data-k="branche" data-v="enfants">Enfants de PÉPÉ et MÉMÉ</button>'
+    +'<input id="rech-f" type="search" placeholder="Chercher un nom ou un ID…" value="'+esc(ETAT_F.q)+'">'
+    +'</div>'
+    +'<div class="liste-fiches">'+(cards||'<p class="meta">Aucune fiche ne correspond à ce filtre.</p>')+'</div>';
+  Array.prototype.forEach.call(app.querySelectorAll('.outils-f button'),function(b){
+    var on=(b.getAttribute('data-k')==='statut'&&b.getAttribute('data-v')===ETAT_F.statut)||(b.getAttribute('data-k')==='branche'&&b.getAttribute('data-v')===ETAT_F.branche);
+    b.classList.toggle('on',on);
+  });
 }
 chargerDonnees().then(function(d){
   avertDemo(d);
   afficher(d.P,d.D);
   window.addEventListener('hashchange',function(){afficher(d.P,d.D);});
+  document.getElementById('app').addEventListener('input',function(e){
+    if(e.target&&e.target.id==='rech-f'){ ETAT_F.q=e.target.value; afficher(d.P,d.D);
+      var inp=document.getElementById('rech-f');
+      if(inp){ inp.focus(); try{ inp.setSelectionRange(inp.value.length, inp.value.length); }catch(err){} } }
+  });
+  document.getElementById('app').addEventListener('click',function(e){
+    var t=e.target;
+    var b=(t&&t.closest)?t.closest('.outils-f button'):null;
+    if(b&&b.getAttribute('data-k')){ ETAT_F[b.getAttribute('data-k')]=b.getAttribute('data-v'); afficher(d.P,d.D); return; }
+    var r=(t&&t.closest)?t.closest('.rosette'):null;
+    if(r){ var chip=r.parentNode;
+      if(chip&&chip.classList){ chip.classList.toggle('ouvert'); r.textContent=chip.classList.contains('ouvert')?'🗿 masquer':'🗿 transcription'; } }
+  });
 }).catch(function(e){
   document.getElementById('app').innerHTML='<div class="avert-demo">Erreur d’affichage : '+esc(e&&e.message?e.message:''+e)+'</div>';
 });
