@@ -159,9 +159,12 @@ function parseActes(rows){
   return rows.map(function(r){
     var id=(''+col(r,'id acte')).trim();
     var lien=''; Object.keys(r).forEach(function(k){var kl=k.trim().toLowerCase(); if(kl==='liens'||kl==='lien'||kl.indexOf('url')>-1){var v=(''+r[k]).trim(); if(v.indexOf('http')===0)lien=v;}});
+    var cote=(''+col(r,'cote')).trim(), vue=(''+col(r,'vue')).trim();
     return {id:id,type:(''+col(r,'type')).trim(),date:(''+col(r,'date')).trim(),commune:(''+col(r,'commune')).trim(),
-      archives:(''+col(r,'archives')).trim(),num:(''+col(r,'n° acte')).trim(),lien:lien,
-      pers:(''+col(r,'personnes')).trim(),faits:(''+col(r,'faits')).trim()};
+      archives:((''+col(r,'archives')).trim()+(cote?' ; '+cote:'')).trim(),
+      num:((''+col(r,'n° acte')).trim()+(vue?' ; vue '+vue:'')).trim(),
+      lien:lien,
+      pers:(''+col(r,'personne')).trim(),faits:(''+col(r,'faits')).trim()};
   }).filter(function(a){return a.id;});
 }
 function parseurSecours(buf){
@@ -272,7 +275,7 @@ function trouverTable(aoa,cle){
   }
   return null;
 }
-var DEMO_A=parseActes([{"ID acte": "A024", "Type": "Mariage", "Date": "1831-11-03", "Commune": "Araules [?]", "Archives (dépôt + cote)": "AD Haute-Loire 43", "N° acte + vue": "", "Lien": "https://drive.proton.me/urls/HPJPNPY8KM#tnSyNRUOFP3N", "Personnes (ID — rôle)": "P029 époux ; P030 épouse ; P062 père de l'époux ; P063 mère de l'époux ; P060 feu père de l'épouse ; P061 mère de l'épouse", "Faits confirmés": "Mariage P029-P030 ; identité, profession et domicile des époux ; identité des 4 parents"}]);
+var DEMO_A=parseActes([{"ID acte": "A024", "Type": "Mariage", "Date": "1831-11-03", "Commune": "Araules [?]", "Archives": "AD Haute-Loire 43", "Cote": "Araules ; 1827-1850 ; Mariage", "N° acte": "19", "Vue": "54", "Lien": "https://drive.proton.me/urls/HPJPNPY8KM#tnSyNRUOFP3N", "Personne (ID Nom)": "P029 Jacques LAULAGNIER époux ; P030 Élisabeth BESSIÈRES épouse ; P062 père de l'époux ; P063 mère de l'époux ; P060 feu père de l'épouse ; P061 mère de l'épouse", "Faits confirmés": "Mariage P029-P030 ; identité, profession et domicile des époux ; identité des 4 parents"}]);
 function lireClasseur(onglets){
   var P=null,D=null,A=null;
   Object.keys(onglets).forEach(function(nom){
