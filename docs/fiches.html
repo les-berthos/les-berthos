@@ -160,10 +160,12 @@ function parseActes(rows){
     var id=(''+col(r,'id acte')).trim();
     var lien=''; Object.keys(r).forEach(function(k){var kl=k.trim().toLowerCase(); if(kl==='liens'||kl==='lien'||kl.indexOf('url')>-1){var v=(''+r[k]).trim(); if(v.indexOf('http')===0)lien=v;}});
     var cote=(''+col(r,'cote')).trim(), vue=(''+col(r,'vue')).trim();
+    var tout=''; Object.keys(r).forEach(function(k){ tout+=' '+r[k]; });
     return {id:id,type:(''+col(r,'type')).trim(),date:(''+col(r,'date')).trim(),commune:(''+col(r,'commune')).trim(),
       archives:((''+col(r,'archives')).trim()+(cote?' ; '+cote:'')).trim(),
       num:((''+col(r,'n° acte')).trim()+(vue?' ; vue '+vue:'')).trim(),
       lien:lien,
+      tout:tout.trim(),
       pers:(''+col(r,'personne')).trim(),faits:(''+col(r,'faits')).trim()};
   }).filter(function(a){return a.id;});
 }
@@ -396,7 +398,7 @@ function renderFiche(p,P,D,map,dmap,app){
   }).join('');
   var galerie=p.photos.map(function(u){return '<img src="'+esc(u)+'" alt="Photo de '+esc(nomComplet(p))+'">';}).join('');
   var prouve=p.confirme?'<div class="prouve"><strong>Confirmé par :</strong>'+enrichir(p.confirme,map,dmap)+'</div>':'';
-  var actes=(G_A||[]).filter(function(a){ return new RegExp('(^|[^A-Za-z0-9])'+p.id+'([^A-Za-z0-9]|$)','i').test(a.pers||''); });
+  var actes=(G_A||[]).filter(function(a){ return new RegExp('(^|[^A-Za-z0-9])'+p.id+'([^A-Za-z0-9]|$)','i').test(a.tout||a.pers||''); });
   var actesHtml=actes.map(function(a){
     var voir=a.lien?' <a class="voir" href="'+esc(a.lien)+'" target="_blank" rel="noopener" title="Voir l’acte">👁 voir</a>':'';
     var num=a.num?'<span class="meta">'+esc(a.num)+'</span>':'';

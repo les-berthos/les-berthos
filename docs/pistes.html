@@ -238,10 +238,12 @@ function parseActes(rows){
     var id=(''+col(r,'id acte')).trim();
     var lien=''; Object.keys(r).forEach(function(k){var kl=k.trim().toLowerCase(); if(kl==='liens'||kl==='lien'||kl.indexOf('url')>-1){var v=(''+r[k]).trim(); if(v.indexOf('http')===0)lien=v;}});
     var cote=(''+col(r,'cote')).trim(), vue=(''+col(r,'vue')).trim();
+    var tout=''; Object.keys(r).forEach(function(k){ tout+=' '+r[k]; });
     return {id:id,type:(''+col(r,'type')).trim(),date:(''+col(r,'date')).trim(),commune:(''+col(r,'commune')).trim(),
       archives:((''+col(r,'archives')).trim()+(cote?' ; '+cote:'')).trim(),
       num:((''+col(r,'n° acte')).trim()+(vue?' ; vue '+vue:'')).trim(),
       lien:lien,
+      tout:tout.trim(),
       pers:(''+col(r,'personne')).trim(),faits:(''+col(r,'faits')).trim()};
   }).filter(function(a){return a.id;});
 }
@@ -463,7 +465,7 @@ function dessiner(d){
     var prouve=p.confirme?'<div class="prouve"><strong>Confirmé par :</strong>'+enrichir(p.confirme,ix.map,ix.dmap)+'</div>':'';
     var reste=p.piste?'<div class="piste"><strong>Reste à confirmer / hypothèses :</strong>'+enrichir(p.piste,ix.map,ix.dmap)+'</div>':'<p class="vide">Rien à chercher pour l’instant.</p>';
     var btn=p.piste?'<a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec; text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;" href="'+mailto(p,p.piste)+'">Envoyer un document pour cette piste</a>':'';
-    var actes=(d.A||[]).filter(function(a){ return new RegExp('(^|[^A-Za-z0-9])'+p.id+'([^A-Za-z0-9]|$)','i').test(a.pers||''); });
+    var actes=(d.A||[]).filter(function(a){ return new RegExp('(^|[^A-Za-z0-9])'+p.id+'([^A-Za-z0-9]|$)','i').test(a.tout||a.pers||''); });
     var actesHtml=actes.map(function(a){
       var voir=a.lien?' <a href="'+esc(a.lien)+'" target="_blank" rel="noopener">👁</a>':'';
       return '<span class="acte-mini" title="'+esc(a.faits||('Acte '+a.id))+'">📜 '+esc(a.id)+' · '+esc(a.type||'')+' '+esc(a.date)+voir+'</span>';
