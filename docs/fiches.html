@@ -402,8 +402,9 @@ function renderFiche(p,P,D,map,dmap,app){
   var actesHtml=actes.map(function(a){
     var voir=a.lien?' <a class="voir" href="'+esc(a.lien)+'" target="_blank" rel="noopener" title="Voir l’acte">👁 voir</a>':'';
     var num=a.num?'<span class="meta">'+esc(a.num)+'</span>':'';
+    var qui=a.pers?'<strong class="qui">'+esc(a.pers)+'</strong> — ':'';
     var faits=a.faits?'<span class="faits">✔ '+esc(a.faits)+'</span>':'';
-    return '<div class="doc-chip acte-chip" title="'+esc(a.faits||'')+'">📜 <strong>'+esc(a.id)+' · '+esc(a.type||'')+'</strong> — '+esc(a.date)+(a.commune?' · '+esc(a.commune):'')+(a.archives?' <span class="meta">('+esc(a.archives)+')</span>':'')+num+voir+faits+'</div>';
+    return '<div class="doc-chip acte-chip" title="'+esc(a.faits||'')+'">📜 <strong>'+esc(a.id)+' · '+esc(a.type||'')+'</strong> — '+qui+esc(a.date)+(a.commune?' · '+esc(a.commune):'')+(a.archives?' <span class="meta">('+esc(a.archives)+')</span>':'')+num+voir+faits+'</div>';
   }).join('');
   var reste=p.piste?'<div class="piste"><strong>Reste à confirmer / hypothèses :</strong>'+enrichir(p.piste,map,dmap)+'</div>':'';
   app.innerHTML='<a class="back" href="fiches.html">&larr; Retour aux fiches</a>'
