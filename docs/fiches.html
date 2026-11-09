@@ -64,6 +64,7 @@ h3{font-family:'Playfair Display', Georgia, serif; color:var(--ink); font-size:1
 .doc-chip.ouvert .transcription{display:block}
 .acte-chip .faits{display:none; margin-top:.3rem; padding:.35rem .5rem; background:#f7edd6; border:1px dashed var(--brass); border-radius:3px}
 .acte-chip:hover .faits, .acte-chip:focus-within .faits{display:block}
+.acte-chip.cite{opacity:.62; border-style:dashed; font-style:italic}
 .outils-f{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin:.7rem 0 1.1rem}
 .outils-f button{font:inherit; font-size:.88rem; background:var(--paper-dark); color:var(--ink); border:1px solid var(--line); border-radius:3px; padding:.35rem .8rem; cursor:pointer}
 .outils-f button.on{background:var(--wax); color:#faf6ec; border-color:var(--wax)}
@@ -398,13 +399,15 @@ function renderFiche(p,P,D,map,dmap,app){
   }).join('');
   var galerie=p.photos.map(function(u){return '<img src="'+esc(u)+'" alt="Photo de '+esc(nomComplet(p))+'">';}).join('');
   var prouve=p.confirme?'<div class="prouve"><strong>Confirmé par :</strong>'+enrichir(p.confirme,map,dmap)+'</div>':'';
-  var actes=(G_A||[]).filter(function(a){ return new RegExp('(^|[^A-Za-z0-9])'+p.id+'([^A-Za-z0-9]|$)','i').test(a.tout||a.pers||''); });
+  var rxP=new RegExp('(^|[^A-Za-z0-9])'+p.id+'([^A-Za-z0-9]|$)','i');
+  var actes=(G_A||[]).filter(function(a){ return rxP.test(a.tout||a.pers||''); });
   var actesHtml=actes.map(function(a){
+    var principal=rxP.test(a.pers||'');
     var voir=a.lien?' <a class="voir" href="'+esc(a.lien)+'" target="_blank" rel="noopener" title="Voir l’acte">👁 voir</a>':'';
     var num=a.num?'<span class="meta">'+esc(a.num)+'</span>':'';
     var qui=a.pers?'<strong class="qui">'+esc(a.pers)+'</strong> — ':'';
     var faits=a.faits?'<span class="faits">✔ '+esc(a.faits)+'</span>':'';
-    return '<div class="doc-chip acte-chip" title="'+esc(a.faits||'')+'">📜 <strong>'+esc(a.id)+' · '+esc(a.type||'')+'</strong> — '+qui+esc(a.date)+(a.commune?' · '+esc(a.commune):'')+(a.archives?' <span class="meta">('+esc(a.archives)+')</span>':'')+num+voir+faits+'</div>';
+    return '<div class="doc-chip acte-chip'+(principal?'':' cite')+'" title="'+esc(a.faits||'')+'">'+(principal?'📜 ':'◔ ')+'<strong>'+esc(a.id)+' · '+esc(a.type||'')+(principal?'':' — simple mention dans cet acte')+'</strong> — '+qui+esc(a.date)+(a.commune?' · '+esc(a.commune):'')+(a.archives?' <span class="meta">('+esc(a.archives)+')</span>':'')+num+voir+faits+'</div>';
   }).join('');
   var reste=p.piste?'<div class="piste"><strong>Reste à confirmer / hypothèses :</strong>'+enrichir(p.piste,map,dmap)+'</div>':'';
   app.innerHTML='<a class="back" href="fiches.html">&larr; Retour aux fiches</a>'

@@ -108,6 +108,7 @@ button.ensavoir{font:inherit; font-size:.78rem; background:#f7edd6; color:var(--
 button.ensavoir:hover{background:var(--brass); color:#fff}
 .actes-ligne{margin:.35rem 0 0; line-height:1.9}
 .acte-mini{display:inline-block; font-size:.8rem; background:var(--paper-dark); border:1px solid var(--brass); border-radius:3px; padding:.15rem .5rem; cursor:help; white-space:nowrap}
+.acte-mini.cite{opacity:.62; border-style:dashed; font-style:italic}
 .acte-mini a{color:var(--ink); text-decoration:none}
 .bulle{position:fixed; top:0; right:0; height:100vh; width:min(430px,94vw); background:#f7edd6; border-left:2px solid var(--brass); box-shadow:-4px 0 16px rgba(0,0,0,.22); z-index:120; transform:translateX(105%); transition:transform .25s ease; display:flex; flex-direction:column}
 .bulle.ouverte{transform:translateX(0)}
@@ -465,10 +466,12 @@ function dessiner(d){
     var prouve=p.confirme?'<div class="prouve"><strong>Confirmé par :</strong>'+enrichir(p.confirme,ix.map,ix.dmap)+'</div>':'';
     var reste=p.piste?'<div class="piste"><strong>Reste à confirmer / hypothèses :</strong>'+enrichir(p.piste,ix.map,ix.dmap)+'</div>':'<p class="vide">Rien à chercher pour l’instant.</p>';
     var btn=p.piste?'<a class="btn" style="display:inline-block; margin-top:.7rem; background:var(--brass); color:#faf6ec; text-decoration:none; padding:.5rem 1rem; border-radius:3px; font-weight:700; font-size:.85rem;" href="'+mailto(p,p.piste)+'">Envoyer un document pour cette piste</a>':'';
-    var actes=(d.A||[]).filter(function(a){ return new RegExp('(^|[^A-Za-z0-9])'+p.id+'([^A-Za-z0-9]|$)','i').test(a.tout||a.pers||''); });
+    var rxP=new RegExp('(^|[^A-Za-z0-9])'+p.id+'([^A-Za-z0-9]|$)','i');
+    var actes=(d.A||[]).filter(function(a){ return rxP.test(a.tout||a.pers||''); });
     var actesHtml=actes.map(function(a){
+      var principal=rxP.test(a.pers||'');
       var voir=a.lien?' <a href="'+esc(a.lien)+'" target="_blank" rel="noopener">👁</a>':'';
-      return '<span class="acte-mini" title="'+esc(a.faits||('Acte '+a.id))+'">📜 '+esc(a.id)+' · '+esc(a.type||'')+' '+esc(a.date)+voir+'</span>';
+      return '<span class="acte-mini'+(principal?'':' cite')+'" title="'+esc((principal?'':'Simple mention — ')+(a.faits||('Acte '+a.id)))+'">'+(principal?'📜 ':'◔ ')+esc(a.id)+' · '+esc(a.type||'')+' '+esc(a.date)+voir+'</span>';
     }).join(' ');
     return '<div class="card"><a class="name" href="fiches.html#'+esc(p.id)+'">'+esc(nomComplet(p))+'</a>'+stamp(p.statut)+(p.note?' <button type="button" class="ensavoir" data-id="'+esc(p.id)+'" title="Remarques et choix de lecture">💡 En savoir plus</button>':'')
       +'<p class="meta">'+esc(p.id+(info?' — '+info:''))+'</p>'+(actesHtml?'<div class="actes-ligne">'+actesHtml+'</div>':'')+prouve+reste+btn+'</div>';
